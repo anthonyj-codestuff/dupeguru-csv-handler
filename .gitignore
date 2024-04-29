@@ -1,0 +1,6 @@
+.idea/
+*.import
+.DS_Store
+/exports/
+# Godot 4+ specific ignores
+.godot/
