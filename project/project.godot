@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 Data="*res://core/singletons/data.gd"
+Utils="*res://core/singletons/utils.gd"
 
 [display]
 
