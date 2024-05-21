@@ -2,30 +2,29 @@ extends Node2D
 
 const path = "/Users/anthonyjett/Documents/Godot/My Projects/240429-Dupe CSV Handler/external_assets"
 var ImageBlock = preload("res://Image.tscn")
+
+# data from csv file
 var dupeData = []
-var extensions: Array[String] = ["jpg", "jpeg", "png"]
-var options = {
-		"delim": ",",
-		"detect_numbers": true,
-		"headers": true,
-		"force_float": false
-	}
-var currentGroup = 0
+# storage for generated nodes
+var imageNodes = []
+# holding onto importand reference nodes
 var hBoxNode
 var labelNode
+
+var currentIndex = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	labelNode = get_node("Label")
 	hBoxNode = get_node("HBox")
-	dupeData = Utils.importCSV(Data.CSV_ASSET_PATH, options)
+	dupeData = Utils.importCSV(Data.CSV_ASSET_PATH, Data.CSV_OPTIONS)
 	if dupeData[0] != Data.CSV_FOOTPRINT:
 		printerr("File does not match expected footprint")
 		return
 
 	# Find first index with a group id
-	currentGroup = getNextGroupIndex(currentGroup)
-	loadImageNodesByGroup(currentGroup)
+	currentIndex = getNextGroupIndex(currentIndex)
+	loadImageNodesByGroup(currentIndex)
 
 func loadImageNodesByGroup(index: int):
 	var newNode = ImageBlock.instantiate()
@@ -63,19 +62,19 @@ func getNextGroupIndex(currentIndex: int):
 	
 
 func _on_left_pressed()->void:
-	if currentGroup == 0 and len(dupeData) > 0:
-		currentGroup = len(dupeData)-1
+	if currentIndex == 0 and len(dupeData) > 0:
+		currentIndex = len(dupeData)-1
 	elif len(dupeData) > 0:
-		currentGroup -= 1
-	setLabel("%s: %s" % [str(currentGroup), dupeData[currentGroup]])
+		currentIndex -= 1
+	setLabel("%s: %s" % [str(currentIndex), dupeData[currentIndex]])
 	pass
 
 func _on_right_pressed()->void:
-	if currentGroup == len(dupeData)-1 and len(dupeData) > 0:
-		currentGroup = 0
+	if currentIndex == len(dupeData)-1 and len(dupeData) > 0:
+		currentIndex = 0
 	elif len(dupeData) > 0:
-		currentGroup += 1
-	setLabel("%s: %s" % [str(currentGroup), dupeData[currentGroup]])
+		currentIndex += 1
+	setLabel("%s: %s" % [str(currentIndex), dupeData[currentIndex]])
 	pass
 
 func setLabel(str: String)->void:

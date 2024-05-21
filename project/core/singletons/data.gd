@@ -17,3 +17,10 @@ var PACKAGE_PATHS : Array = [
 
 var CSV_ASSET_PATH: String = "res://assets/dupes.csv"
 var CSV_FOOTPRINT: PackedStringArray = ["Group ID", "Filename", "Folder", "Size (KB)", "Modification", "Match %"]
+var CSV_OPTIONS = {
+		"delim": ",",
+		"detect_numbers": true,
+		"headers": true,
+		"force_float": false
+	}
+var VALID_IMAGE_EXTENSIONS: Array[String] = ["jpg", "jpeg", "png"]
