@@ -5,4 +5,4 @@
 /external_assets/
 # Godot 4+ specific ignores
 .godot/
-project/assets/dupes.csv
+*.csv
