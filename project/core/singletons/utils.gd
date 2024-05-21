@@ -1,7 +1,9 @@
 extends Node
+const MODULE_NAME = "Utils"
 
 func importCSV(source_file, options):
 	var file = FileAccess.open(source_file, FileAccess.READ)
+	listFilesInDirectory(Data.EXTERNAL_ASSETS_FOLDER)
 	if not file:
 		printerr("Failed to open file: ", source_file)
 		return
@@ -50,3 +52,20 @@ func importCSV(source_file, options):
 	else:
 		return lines
 	pass
+
+static func listFilesInDirectory(path):
+	var Logger = LogWriter.new()
+	var dir := DirAccess.open(path)
+	if dir:
+		if dir.list_dir_begin() == OK:
+			while true:
+				var file = dir.get_next()
+				if file == "":
+					break
+				elif not file.begins_with("."): # This would be a directory
+					Logger.info(file, MODULE_NAME)
+			dir.list_dir_end()
+		else:
+			print("Could not open the directory " + path)
+	else:
+		print("Could not load the path " + path)

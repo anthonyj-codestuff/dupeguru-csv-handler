@@ -1,6 +1,6 @@
 extends Node2D
+const MODULE_NAME = "ImageLoader"
 
-const path = "/Users/anthonyjett/Documents/Godot/My Projects/240429-Dupe CSV Handler/external_assets"
 var ImageBlock = preload("res://Image.tscn")
 
 # data from csv file
@@ -17,7 +17,7 @@ var currentIndex = 0
 func _ready():
 	labelNode = get_node("Label")
 	hBoxNode = get_node("HBox")
-	dupeData = Utils.importCSV(Data.CSV_ASSET_PATH, Data.CSV_OPTIONS)
+	dupeData = Utils.importCSV(Data.CSV_FILE_PATH, Data.CSV_OPTIONS)
 	if dupeData[0] != Data.CSV_FOOTPRINT:
 		printerr("File does not match expected footprint")
 		return

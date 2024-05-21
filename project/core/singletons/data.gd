@@ -15,7 +15,8 @@ var PACKAGE_PATHS : Array = [
 	PACKAGE_ROOT.path_join("patches"),
 ]
 
-var CSV_ASSET_PATH: String = "res://assets/dupes.csv"
+var EXTERNAL_ASSETS_FOLDER: String = "../external_assets"
+var CSV_FILE_PATH: String = "../external_assets/dupes.csv"
 var CSV_FOOTPRINT: PackedStringArray = ["Group ID", "Filename", "Folder", "Size (KB)", "Modification", "Match %"]
 var CSV_OPTIONS = {
 		"delim": ",",
