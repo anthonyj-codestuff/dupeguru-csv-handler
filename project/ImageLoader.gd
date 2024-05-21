@@ -1,7 +1,8 @@
 extends Node2D
 
 const path = "/Users/anthonyjett/Documents/Godot/My Projects/240429-Dupe CSV Handler/external_assets"
-var images = []
+var ImageBlock = preload("res://Image.tscn")
+var dupeData = []
 var extensions: Array[String] = ["jpg", "jpeg", "png"]
 var options = {
 		"delim": ",",
@@ -9,7 +10,7 @@ var options = {
 		"headers": true,
 		"force_float": false
 	}
-var index = 0
+var currentGroup = 0
 var hBoxNode
 var labelNode
 
@@ -17,14 +18,21 @@ var labelNode
 func _ready():
 	labelNode = get_node("Label")
 	hBoxNode = get_node("HBox")
-	var dupeData = Utils.importCSV(Data.CSV_ASSET_PATH, options)
+	dupeData = Utils.importCSV(Data.CSV_ASSET_PATH, options)
 	if dupeData[0] != Data.CSV_FOOTPRINT:
 		printerr("File does not match expected footprint")
 		return
-	hBoxNode.size.x = get_viewport().get_visible_rect().size.x
-	hBoxNode.size.y = get_viewport().get_visible_rect().size.y
+
+	# Find first index with a group id
+	currentGroup = getNextGroupIndex(currentGroup)
+	loadImageNodesByGroup(currentGroup)
 
 func loadImageNodesByGroup(index: int):
+	var newNode = ImageBlock.instantiate()
+	var dict = dupeData[index]
+	var imagePath = dict["Folder"] + "/" + dict["Filename"]
+	newNode.setImgProperties(imagePath, 200, 200)
+	add_child(newNode)
 	pass
 
 func loadImageFile(path: String, node: Node):
@@ -37,21 +45,37 @@ func loadImageFile(path: String, node: Node):
 
 func loadImageGroup():
 	pass
+	
+func getNextGroupIndex(currentIndex: int):
+	var index = currentIndex
+	# Get the next index that is not a header (plaintext)
+	# and is not the current index
+	var foundNewIndex:bool = false
+	while not foundNewIndex:
+		index += 1
+		var indexIsDictionary = dupeData[index] is Dictionary
+		var indexHasInt = dupeData[index]["Group ID"] is int
+		var indexIsDifferent = index != currentIndex
+		if indexIsDictionary and indexHasInt and indexIsDifferent:
+			foundNewIndex = true
+	# TODO this will fail if it goes outside the range of the array
+	return index
+	
 
 func _on_left_pressed()->void:
-	if index == 0 and len(images) > 0:
-		index = len(images)-1
-	elif len(images) > 0:
-		index -= 1
-	setLabel("%s: %s" % [str(index), images[index]])
+	if currentGroup == 0 and len(dupeData) > 0:
+		currentGroup = len(dupeData)-1
+	elif len(dupeData) > 0:
+		currentGroup -= 1
+	setLabel("%s: %s" % [str(currentGroup), dupeData[currentGroup]])
 	pass
 
 func _on_right_pressed()->void:
-	if index == len(images)-1 and len(images) > 0:
-		index = 0
-	elif len(images) > 0:
-		index += 1
-	setLabel("%s: %s" % [str(index), images[index]])
+	if currentGroup == len(dupeData)-1 and len(dupeData) > 0:
+		currentGroup = 0
+	elif len(dupeData) > 0:
+		currentGroup += 1
+	setLabel("%s: %s" % [str(currentGroup), dupeData[currentGroup]])
 	pass
 
 func setLabel(str: String)->void:
