@@ -7,22 +7,20 @@
 [sub_resource type="Theme" id="Theme_xrt0u"]
 Panel/styles/panel = ExtResource("2_gda3h")
 
-[node name="Image" type="Node2D"]
-script = ExtResource("1_gk6qi")
-
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="Image" type="MarginContainer"]
 offset_right = 1280.0
 offset_bottom = 720.0
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
+script = ExtResource("1_gk6qi")
 
-[node name="Container" type="PanelContainer" parent="MarginContainer"]
+[node name="Container" type="PanelContainer" parent="."]
 layout_mode = 2
 theme = SubResource("Theme_xrt0u")
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/Container"]
+[node name="TextureRect" type="TextureRect" parent="Container"]
 layout_mode = 2
 texture = ExtResource("3_emrej")
 expand_mode = 1

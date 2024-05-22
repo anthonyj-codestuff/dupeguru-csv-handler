@@ -1,4 +1,4 @@
-extends Node2D
+extends Control
 const MODULE_NAME = "ImageLoader"
 
 var ImageBlock = preload("res://Image.tscn")
@@ -16,7 +16,7 @@ var currentIndex = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	labelNode = get_node("Label")
-	hBoxNode = get_node("HBox")
+	hBoxNode = get_node("ImageBox")
 	dupeData = Utils.importCSV(Data.CSV_FILE_PATH, Data.CSV_OPTIONS)
 	if dupeData[0] != Data.CSV_FOOTPRINT:
 		printerr("File does not match expected footprint")
@@ -31,7 +31,15 @@ func loadImageNodesByGroup(index: int):
 	var dict = dupeData[index]
 	var imagePath = dict["Folder"] + "/" + dict["Filename"]
 	newNode.setImgProperties(imagePath, 200, 200)
+	#$ImageBox.addImageNode(newNode)
 	add_child(newNode)
+	
+	var newNode2 = ImageBlock.instantiate()
+	var dict2 = dupeData[index+1]
+	var imagePath2 = dict2["Folder"] + "/" + dict2["Filename"]
+	newNode2.setImgProperties(imagePath2, 200, 200)
+	#$ImageBox.addImageNode(newNode2)
+	add_child(newNode2)
 	pass
 
 func loadImageFile(path: String, node: Node):

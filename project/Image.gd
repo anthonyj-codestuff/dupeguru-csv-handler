@@ -1,7 +1,6 @@
-extends Node2D
+extends MarginContainer
 
 var textureNode: Node
-var marginNode: Node
 
 func _ready():
 	pass
@@ -10,10 +9,8 @@ func _process(delta):
 	pass
 
 func setImgProperties(texture_path: String, sizex: int, sizey: int, selected: bool = false):
-	textureNode = get_node("MarginContainer/Container/TextureRect")
-	marginNode = get_node("MarginContainer")
-	marginNode.size.x = sizex
-	marginNode.size.y = sizey
+	textureNode = get_node("Container/TextureRect")
+	size = Vector2(sizex, sizey)
 	loadImageFile(texture_path, textureNode)
 	pass
 	
