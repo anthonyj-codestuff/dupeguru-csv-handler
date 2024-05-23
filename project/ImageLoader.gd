@@ -1,14 +1,14 @@
 extends Control
 const MODULE_NAME = "ImageLoader"
 
-var ImageBlock = preload("res://Image.tscn")
+var ImageBlockPacked = preload("res://Image.tscn")
 
 # data from csv file
 var dupeData = []
 # storage for generated nodes
 var imageNodes = []
 # holding onto importand reference nodes
-var hBoxNode
+var imageBoxNode
 var labelNode
 
 var currentIndex = 0
@@ -16,7 +16,7 @@ var currentIndex = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	labelNode = get_node("Label")
-	hBoxNode = get_node("ImageBox")
+	imageBoxNode = get_node("ImageBox")
 	dupeData = Utils.importCSV(Data.CSV_FILE_PATH, Data.CSV_OPTIONS)
 	if dupeData[0] != Data.CSV_FOOTPRINT:
 		printerr("File does not match expected footprint")
@@ -26,20 +26,29 @@ func _ready():
 	currentIndex = getNextGroupIndex(currentIndex)
 	loadImageNodesByGroup(currentIndex)
 
-func loadImageNodesByGroup(index: int):
-	var newNode = ImageBlock.instantiate()
+func loadImageNodesByGroup(startingIndex: int):
+	var index = startingIndex
+	var currentGroup = dupeData[index]["Group ID"]
+	var groupIndices = []
+	groupIndices.append(startingIndex)
+	while(dupeData[index+1] and dupeData[index+1]["Group ID"] == currentGroup):
+		# this should usually only run once
+		groupIndices.append(index+1)
+		index+=1
+	for i in groupIndices:
+		createImageNodeByIndex(i)
+	currentIndex = index+1
+	pass
+
+func createImageNodeByIndex(index:int):
+	var newNode = ImageBlockPacked.instantiate()
 	var dict = dupeData[index]
 	var imagePath = dict["Folder"] + "/" + dict["Filename"]
-	newNode.setImgProperties(imagePath, 200, 200)
-	#$ImageBox.addImageNode(newNode)
-	add_child(newNode)
-	
-	var newNode2 = ImageBlock.instantiate()
-	var dict2 = dupeData[index+1]
-	var imagePath2 = dict2["Folder"] + "/" + dict2["Filename"]
-	newNode2.setImgProperties(imagePath2, 200, 200)
-	#$ImageBox.addImageNode(newNode2)
-	add_child(newNode2)
+	newNode.setImgProperties(imagePath)
+	imageBoxNode.addImageNode(newNode)
+	# add new node to list
+	imageNodes.append(newNode)
+	pass
 	pass
 
 func loadImageFile(path: String, node: Node):
