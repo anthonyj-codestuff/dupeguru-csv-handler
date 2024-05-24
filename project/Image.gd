@@ -1,6 +1,7 @@
-extends MarginContainer
+extends Control
+const MODULE_NAME = "Image"
 
-var textureNode: Node
+var textureNode
 
 func _ready():
 	pass
@@ -8,16 +9,11 @@ func _ready():
 func _process(delta):
 	pass
 
-func setImgProperties(texture_path: String, sizex: int, sizey: int, selected: bool = false):
+func setImgProperties(texture_path: String, selected: bool = false):
 	textureNode = get_node("Container/TextureRect")
-	size = Vector2(sizex, sizey)
 	loadImageFile(texture_path, textureNode)
 	pass
-	
+
 func loadImageFile(path: String, node: Node):
-	var image = Image.new()
-	image.load(path)
-	
-	var image_texture = ImageTexture.new()
-	image_texture.set_image(image)
-	node.texture = image_texture
+	# TODO check if image exists and load placeholder image if it does not
+	node.texture = Utils.loadImageToTexture(path)

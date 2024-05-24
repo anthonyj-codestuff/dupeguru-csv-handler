@@ -1,7 +1,7 @@
 extends Control
 const MODULE_NAME = "ImageLoader"
-
 var ImageBlockPacked = preload("res://Image.tscn")
+var logger = LogWriter.new()
 
 # data from csv file
 var dupeData = []
@@ -10,7 +10,8 @@ var imageNodes = []
 # holding onto importand reference nodes
 var imageBoxNode
 var labelNode
-
+# Indicates the 0th index of the current group
+# if on group 2 of [0,0,1,1,2,2,3,3,3], index should be 4
 var currentIndex = 0
 
 # Called when the node enters the scene tree for the first time.
@@ -21,10 +22,12 @@ func _ready():
 	if dupeData[0] != Data.CSV_FOOTPRINT:
 		printerr("File does not match expected footprint")
 		return
-
 	# Find first index with a group id
-	currentIndex = getNextGroupIndex(currentIndex)
+	currentIndex = getNextGroupZeroIndex(currentIndex)
 	loadImageNodesByGroup(currentIndex)
+
+func _process(delta):
+	pass
 
 func loadImageNodesByGroup(startingIndex: int):
 	var index = startingIndex
@@ -37,7 +40,6 @@ func loadImageNodesByGroup(startingIndex: int):
 		index+=1
 	for i in groupIndices:
 		createImageNodeByIndex(i)
-	currentIndex = index+1
 	pass
 
 func createImageNodeByIndex(index:int):
@@ -49,23 +51,18 @@ func createImageNodeByIndex(index:int):
 	# add new node to list
 	imageNodes.append(newNode)
 	pass
+
+func clearImageNodes():
+	for n in imageNodes:
+		n.queue_free()
+	imageNodes = []
 	pass
 
-func loadImageFile(path: String, node: Node):
-	var image = Image.new()
-	image.load(path)
-	
-	var image_texture = ImageTexture.new()
-	image_texture.set_image(image)
-	node.texture = image_texture
-
-func loadImageGroup():
-	pass
-	
-func getNextGroupIndex(currentIndex: int):
+func getNextGroupZeroIndex(currentIndex: int):
 	var index = currentIndex
 	# Get the next index that is not a header (plaintext)
 	# and is not the current index
+	# TODO and at least one image at the index exists
 	var foundNewIndex:bool = false
 	while not foundNewIndex:
 		index += 1
@@ -76,9 +73,18 @@ func getNextGroupIndex(currentIndex: int):
 			foundNewIndex = true
 	# TODO this will fail if it goes outside the range of the array
 	return index
-	
+
+func getPrevGroupZeroIndex(currentIndex: int):
+	var index = currentIndex
+	# Get the next index that is not a header (plaintext)
+	# and is not the current index
+	# and at least one image at the index exists
+	var foundNewIndex:bool = false
+	pass
 
 func _on_left_pressed()->void:
+	clearImageNodes()
+	# set previous group index or null if no other group exists
 	if currentIndex == 0 and len(dupeData) > 0:
 		currentIndex = len(dupeData)-1
 	elif len(dupeData) > 0:
@@ -87,6 +93,8 @@ func _on_left_pressed()->void:
 	pass
 
 func _on_right_pressed()->void:
+	clearImageNodes()
+	# set next group index or null if no other group exists
 	if currentIndex == len(dupeData)-1 and len(dupeData) > 0:
 		currentIndex = 0
 	elif len(dupeData) > 0:

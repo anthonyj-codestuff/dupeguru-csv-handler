@@ -1,5 +1,6 @@
 extends Node
 const MODULE_NAME = "Utils"
+var logger = LogWriter.new()
 
 func importCSV(source_file, options):
 	var file = FileAccess.open(source_file, FileAccess.READ)
@@ -53,7 +54,7 @@ func importCSV(source_file, options):
 		return lines
 	pass
 
-static func listFilesInDirectory(path):
+func listFilesInDirectory(path):
 	var Logger = LogWriter.new()
 	var dir := DirAccess.open(path)
 	if dir:
@@ -69,3 +70,10 @@ static func listFilesInDirectory(path):
 			print("Could not open the directory " + path)
 	else:
 		print("Could not load the path " + path)
+
+func loadImageToTexture(path: String)->ImageTexture:
+	var image_texture = ImageTexture.new()
+	var image = Image.new()
+	image.load(path)
+	image_texture.set_image(image)
+	return image_texture
