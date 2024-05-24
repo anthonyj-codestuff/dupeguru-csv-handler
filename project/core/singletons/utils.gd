@@ -73,7 +73,15 @@ func listFilesInDirectory(path):
 
 func loadImageToTexture(path: String)->ImageTexture:
 	var image_texture = ImageTexture.new()
-	var image = Image.new()
-	image.load(path)
-	image_texture.set_image(image)
+	if(fileExistsAtLocation(path)):
+		var image = Image.new()
+		image.load(path)
+		image_texture.set_image(image)
+	else:
+		var texture: CompressedTexture2D = load("res://assets/notfound.png")
+		var image: Image = texture.get_image()
+		image_texture.set_image(image)
 	return image_texture
+
+func fileExistsAtLocation(path: String):
+	return FileAccess.file_exists(path)
