@@ -1,5 +1,6 @@
 extends Control
 const MODULE_NAME = "Image"
+var logger = LogWriter.new()
 
 var textureNode
 

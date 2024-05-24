@@ -1,7 +1,7 @@
 extends Control
 const MODULE_NAME = "ImageLoader"
-var ImageBlockPacked = preload("res://Image.tscn")
 var logger = LogWriter.new()
+var ImageBlockPacked = preload("res://Image.tscn")
 
 # data from csv file
 var dupeData = []

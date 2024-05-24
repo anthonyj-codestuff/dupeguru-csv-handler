@@ -1,6 +1,7 @@
 # Stores all data and config presets.
 extends Node
 const MODULE_NAME = "GlobalData"
+var logger = LogWriter.new()
 
 # Scene Configs --------------------------
 #const SPLASH_SCENE_PATH : String = "res://core/ui/splash/splash.tscn"
