@@ -3,21 +3,19 @@ const MODULE_NAME = "ImageLoader"
 var logger = LogWriter.new()
 var ImageBlockPacked = preload("res://Image.tscn")
 
+# define important reference nodes
+@onready var imageBoxNode = get_node("ImageBox")
+@onready var labelNode = get_node("Label")
 # data from csv file
 var dupeData = []
 # storage for generated nodes
 var imageNodes = []
-# holding onto importand reference nodes
-var imageBoxNode
-var labelNode
 # Indicates the 0th index of the current group
 # if on group 2 of [0,0,1,1,2,2,3,3,3], index should be 4
 var currentIndex = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	labelNode = get_node("Label")
-	imageBoxNode = get_node("ImageBox")
 	dupeData = Utils.importCSV(Data.CSV_FILE_PATH, Data.CSV_OPTIONS)
 	if dupeData[0] != Data.CSV_FOOTPRINT:
 		printerr("File does not match expected footprint")
@@ -117,16 +115,18 @@ func _on_left_pressed()->void:
 	clearImageNodes()
 	# set previous group index or null if no other group exists
 	currentIndex = getPrevGroupZeroIndex(currentIndex)
-	loadImageNodeGroupByStartingIndex(currentIndex)
-	setLabel("%s: %s" % [str(currentIndex), dupeData[currentIndex]])
+	if currentIndex:
+		loadImageNodeGroupByStartingIndex(currentIndex)
+		setLabel("%s: %s" % [str(currentIndex), dupeData[currentIndex]])
 	pass
 
 func _on_right_pressed()->void:
 	clearImageNodes()
 	# set next group index or null if no other group exists
 	currentIndex = getNextGroupZeroIndex(currentIndex)
-	loadImageNodeGroupByStartingIndex(currentIndex)
-	setLabel("%s: %s" % [str(currentIndex), dupeData[currentIndex]])
+	if currentIndex:
+		loadImageNodeGroupByStartingIndex(currentIndex)
+		setLabel("%s: %s" % [str(currentIndex), dupeData[currentIndex]])
 	pass
 
 func setLabel(str: String)->void:
