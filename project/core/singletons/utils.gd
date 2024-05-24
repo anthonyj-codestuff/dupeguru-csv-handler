@@ -3,6 +3,7 @@ const MODULE_NAME = "Utils"
 var logger = LogWriter.new()
 
 func importCSV(source_file, options):
+	# TODO sort the array by group ID just in case, a lot of logic depends on that
 	var file = FileAccess.open(source_file, FileAccess.READ)
 	listFilesInDirectory(Data.EXTERNAL_ASSETS_FOLDER)
 	if not file:

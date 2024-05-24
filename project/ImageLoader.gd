@@ -22,19 +22,31 @@ func _ready():
 	if dupeData[0] != Data.CSV_FOOTPRINT:
 		printerr("File does not match expected footprint")
 		return
-	# Find first index with a group id
-	currentIndex = getNextGroupZeroIndex(currentIndex)
-	loadImageNodesByGroup(currentIndex)
+	# Remove CSV header, it will only get in the way
+	dupeData.pop_front()
+	loadImageNodeGroupByStartingIndex(currentIndex)
 
 func _process(delta):
 	pass
 
-func loadImageNodesByGroup(startingIndex: int):
+func getIndexListForGroupId(id: int):
+	var list = []
+	for i in range(dupeData.size()):
+		if dupeData[i]["Group ID"] == id:
+			list.append(i)
+	return list
+
+func fileExistsForIndex(id: int):
+	var dict = dupeData[id]
+	var filepath = dict["Folder"] + "/" + dict["Filename"]
+	return Utils.fileExistsAtLocation(filepath)
+
+func loadImageNodeGroupByStartingIndex(startingIndex: int):
 	var index = startingIndex
 	var currentGroup = dupeData[index]["Group ID"]
 	var groupIndices = []
 	groupIndices.append(startingIndex)
-	while(dupeData[index+1] and dupeData[index+1]["Group ID"] == currentGroup):
+	while(index+1 < dupeData.size() and dupeData[index+1]["Group ID"] == currentGroup):
 		# this should usually only run once
 		groupIndices.append(index+1)
 		index+=1
@@ -59,46 +71,61 @@ func clearImageNodes():
 	pass
 
 func getNextGroupZeroIndex(currentIndex: int):
-	var index = currentIndex
-	# Get the next index that is not a header (plaintext)
-	# and is not the current index
-	# TODO and at least one image at the index exists
+	var currentGroup = dupeData[currentIndex]["Group ID"]
+	var index = currentIndex + 1
 	var foundNewIndex:bool = false
-	while not foundNewIndex:
+	while not foundNewIndex and index != currentIndex:
+		if len(dupeData)-1 < index:
+			index = 0
+		if dupeData[index]["Group ID"] != currentGroup:
+			var groupIndexList = getIndexListForGroupId(dupeData[index]["Group ID"])
+			if groupIndexList.any(func(i): return fileExistsForIndex(i)):
+				# if there is any file that exists for this group, accept it
+				foundNewIndex = true
+				break
 		index += 1
-		var indexIsDictionary = dupeData[index] is Dictionary
-		var indexHasInt = dupeData[index]["Group ID"] is int
-		var indexIsDifferent = index != currentIndex
-		if indexIsDictionary and indexHasInt and indexIsDifferent:
-			foundNewIndex = true
-	# TODO this will fail if it goes outside the range of the array
-	return index
+	if foundNewIndex:
+		return index
+	else:
+		# this will happen if there is only one valid group in dupedata
+		return null
 
 func getPrevGroupZeroIndex(currentIndex: int):
-	var index = currentIndex
-	# Get the next index that is not a header (plaintext)
-	# and is not the current index
-	# and at least one image at the index exists
+	var currentGroup = dupeData[currentIndex]["Group ID"]
+	var index = currentIndex - 1
 	var foundNewIndex:bool = false
-	pass
+	while not foundNewIndex and index != currentIndex:
+		if 0 > index:
+			index = dupeData.size() - 1
+		var thisGroupId = dupeData[index]["Group ID"]
+		var beforeThisGroupId = dupeData[index-1]["Group ID"] if index>0 else dupeData[-1]["Group ID"]
+		# we have reached the correct index if it has a different group and it is the earliest instance of that group
+		if thisGroupId != currentGroup and thisGroupId != beforeThisGroupId:
+			var groupIndexList = getIndexListForGroupId(dupeData[index]["Group ID"])
+			if groupIndexList.any(func(i): return fileExistsForIndex(i)):
+				# if there is any file that exists for this group, accept it
+				foundNewIndex = true
+				break
+		index -= 1
+	if foundNewIndex:
+		return index
+	else:
+		# this will happen if there is only one valid group in dupedata
+		return null
 
 func _on_left_pressed()->void:
 	clearImageNodes()
 	# set previous group index or null if no other group exists
-	if currentIndex == 0 and len(dupeData) > 0:
-		currentIndex = len(dupeData)-1
-	elif len(dupeData) > 0:
-		currentIndex -= 1
+	currentIndex = getPrevGroupZeroIndex(currentIndex)
+	loadImageNodeGroupByStartingIndex(currentIndex)
 	setLabel("%s: %s" % [str(currentIndex), dupeData[currentIndex]])
 	pass
 
 func _on_right_pressed()->void:
 	clearImageNodes()
 	# set next group index or null if no other group exists
-	if currentIndex == len(dupeData)-1 and len(dupeData) > 0:
-		currentIndex = 0
-	elif len(dupeData) > 0:
-		currentIndex += 1
+	currentIndex = getNextGroupZeroIndex(currentIndex)
+	loadImageNodeGroupByStartingIndex(currentIndex)
 	setLabel("%s: %s" % [str(currentIndex), dupeData[currentIndex]])
 	pass
 
