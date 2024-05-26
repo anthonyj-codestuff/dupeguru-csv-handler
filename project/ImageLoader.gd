@@ -5,7 +5,6 @@ var ImageBlockPacked = preload("res://Image.tscn")
 
 # define important reference nodes
 @onready var imageBoxNode = get_node("ImageBox")
-@onready var labelNode = get_node("Label")
 # data from csv file
 var dupeData = []
 # storage for generated nodes
@@ -36,7 +35,7 @@ func getIndexListForGroupId(id: int):
 
 func fileExistsForIndex(id: int):
 	var dict = dupeData[id]
-	var filepath = dict["Folder"] + "/" + dict["Filename"]
+	var filepath = dict["Folder"].path_join(dict["Filename"])
 	return Utils.fileExistsAtLocation(filepath)
 
 func loadImageNodeGroupByStartingIndex(startingIndex: int):
@@ -55,8 +54,13 @@ func loadImageNodeGroupByStartingIndex(startingIndex: int):
 func createImageNodeByIndex(index:int):
 	var newNode = ImageBlockPacked.instantiate()
 	var dict = dupeData[index]
-	var imagePath = dict["Folder"] + "/" + dict["Filename"]
-	newNode.setImgProperties(imagePath)
+	var imagePath = dict["Folder"].path_join(dict["Filename"])
+	var options = ImageOptions.new()
+	options.dupeIndex = index
+	options.imageFilepath = imagePath
+	options.selected = false
+	
+	newNode.setProperties(options)
 	imageBoxNode.addImageNode(newNode)
 	# add new node to list
 	imageNodes.append(newNode)
@@ -117,7 +121,6 @@ func _on_left_pressed()->void:
 	currentIndex = getPrevGroupZeroIndex(currentIndex)
 	if currentIndex != null:
 		loadImageNodeGroupByStartingIndex(currentIndex)
-		setLabel("%s: %s" % [str(currentIndex), dupeData[currentIndex]])
 	pass
 
 func _on_right_pressed()->void:
@@ -126,9 +129,4 @@ func _on_right_pressed()->void:
 	currentIndex = getNextGroupZeroIndex(currentIndex)
 	if currentIndex != null:
 		loadImageNodeGroupByStartingIndex(currentIndex)
-		setLabel("%s: %s" % [str(currentIndex), dupeData[currentIndex]])
-	pass
-
-func setLabel(str: String)->void:
-	labelNode.text = str
 	pass

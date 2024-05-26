@@ -18,6 +18,14 @@ script = ExtResource("1_gk6qi")
 layout_mode = 2
 theme = SubResource("Theme_xrt0u")
 
+[node name="FilenameLabel" type="Label" parent="Container"]
+z_index = 1
+layout_mode = 2
+size_flags_vertical = 0
+text = "TEXT"
+autowrap_mode = 3
+justification_flags = 160
+
 [node name="TextureRect" type="TextureRect" parent="Container"]
 layout_mode = 2
 texture = ExtResource("3_emrej")

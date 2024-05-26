@@ -8,17 +8,6 @@ layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_wsykj")
 
-[node name="Label" type="Label" parent="."]
-layout_mode = 0
-offset_left = 21.0
-offset_top = 13.0
-offset_right = 1209.0
-offset_bottom = 36.0
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 16
-text = "TEXT"
-
 [node name="ImageBox" type="HBoxContainer" parent="."]
 layout_mode = 0
 offset_right = 1280.0
