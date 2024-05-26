@@ -1,5 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://cbvk31312xpcu"]
+[gd_scene load_steps=3 format=3 uid="uid://cbvk31312xpcu"]
 
+[ext_resource type="Script" path="res://WindowSizeManager.gd" id="1_ahrg1"]
 [ext_resource type="PackedScene" uid="uid://dnh2tu3ju0e26" path="res://ImageLoader.tscn" id="1_hr7x3"]
 
 [node name="Main" type="Node2D"]
@@ -32,6 +33,9 @@ size_flags_horizontal = 3
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 text = "->"
+
+[node name="Node" type="Node" parent="."]
+script = ExtResource("1_ahrg1")
 
 [connection signal="pressed" from="HBoxContainer/Left" to="ImageLoader" method="_on_left_pressed"]
 [connection signal="pressed" from="HBoxContainer/Right" to="ImageLoader" method="_on_right_pressed"]
