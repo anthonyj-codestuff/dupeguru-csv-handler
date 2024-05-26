@@ -115,7 +115,7 @@ func _on_left_pressed()->void:
 	clearImageNodes()
 	# set previous group index or null if no other group exists
 	currentIndex = getPrevGroupZeroIndex(currentIndex)
-	if currentIndex:
+	if currentIndex != null:
 		loadImageNodeGroupByStartingIndex(currentIndex)
 		setLabel("%s: %s" % [str(currentIndex), dupeData[currentIndex]])
 	pass
@@ -124,7 +124,7 @@ func _on_right_pressed()->void:
 	clearImageNodes()
 	# set next group index or null if no other group exists
 	currentIndex = getNextGroupZeroIndex(currentIndex)
-	if currentIndex:
+	if currentIndex != null:
 		loadImageNodeGroupByStartingIndex(currentIndex)
 		setLabel("%s: %s" % [str(currentIndex), dupeData[currentIndex]])
 	pass
