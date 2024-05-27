@@ -2,10 +2,15 @@ extends Node
 const MODULE_NAME = "Utils"
 var logger = LogWriter.new()
 
+func replaceWindowsBackslashes(string: String):
+	if not string.is_valid_int() and OS.has_feature("windows"):
+		return string.replace("\\", "/")
+	return string
+
 func importCSV(source_file, options):
 	# TODO sort the array by group ID just in case, a lot of logic depends on that
 	var file = FileAccess.open(source_file, FileAccess.READ)
-	listFilesInDirectory(Data.EXTERNAL_ASSETS_FOLDER)
+	printFilesInDirectory(Data.EXTERNAL_ASSETS_FOLDER)
 	if not file:
 		printerr("Failed to open file: ", source_file)
 		return
@@ -18,6 +23,7 @@ func importCSV(source_file, options):
 			if options.detect_numbers and (not options.headers or lines.size() > 0):
 				var detected := []
 				for field in line:
+					field = replaceWindowsBackslashes(field)
 					if not options.force_float and field.is_valid_int():
 						detected.append(int(field))
 					elif field.is_valid_float():
@@ -26,6 +32,8 @@ func importCSV(source_file, options):
 						detected.append(field)
 				lines.append(detected)
 			else:
+				for field in line:
+					field = replaceWindowsBackslashes(field)
 				lines.append(line)
 	file.close()
 
@@ -55,7 +63,7 @@ func importCSV(source_file, options):
 		return lines
 	pass
 
-func listFilesInDirectory(path):
+func printFilesInDirectory(path):
 	var Logger = LogWriter.new()
 	var dir := DirAccess.open(path)
 	if dir:
