@@ -18,7 +18,7 @@ var PACKAGE_PATHS : Array = [
 
 var EXTERNAL_ASSETS_FOLDER: String = "../external_assets"
 var CSV_FILE_PATH: String = "../external_assets/dupes.csv"
-var CSV_FOOTPRINT: PackedStringArray = ["Group ID", "Filename", "Folder", "Size (KB)", "Modification", "Match %"]
+var CSV_FOOTPRINT: PackedStringArray = ["Group ID", "Filename", "Folder", "Size (KB)", "Kind", "Dimensions", "Modification", "Match %"]
 var CSV_OPTIONS = {
 		"delim": ",",
 		"detect_numbers": true,

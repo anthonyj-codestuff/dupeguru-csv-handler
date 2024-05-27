@@ -1,7 +1,7 @@
 extends Control
 const MODULE_NAME = "ImageLoader"
 var logger = LogWriter.new()
-var ImageBlockPacked = preload("res://Image.tscn")
+var ImageScenePacked = preload("res://Image.tscn")
 
 # define important reference nodes
 @onready var imageBoxNode = get_node("ImageBox")
@@ -16,7 +16,9 @@ var currentIndex = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	dupeData = Utils.importCSV(Data.CSV_FILE_PATH, Data.CSV_OPTIONS)
-	if dupeData[0] != Data.CSV_FOOTPRINT:
+	# TODO This mostly gets in the way.
+	# Figure out what is absolutely necessary and make the others optional
+	if dupeData[0] != Data.CSV_FOOTPRINT and false:
 		printerr("File does not match expected footprint")
 		return
 	# Remove CSV header, it will only get in the way
@@ -52,14 +54,8 @@ func loadImageNodeGroupByStartingIndex(startingIndex: int):
 	pass
 
 func createImageNodeByIndex(index:int):
-	var newNode = ImageBlockPacked.instantiate()
-	var dict = dupeData[index]
-	var imagePath = dict["Folder"].path_join(dict["Filename"])
-	var options = ImageOptions.new()
-	options.dupeIndex = index
-	options.imageFilepath = imagePath
-	options.selected = false
-	
+	var options = ImageOptions.new(index, dupeData[index])
+	var newNode = ImageScenePacked.instantiate()
 	newNode.setProperties(options)
 	imageBoxNode.addImageNode(newNode)
 	# add new node to list

@@ -2,8 +2,8 @@ extends Control
 const MODULE_NAME = "Image"
 var logger = LogWriter.new()
 
-@onready var textureNode = get_node("Container/TextureRect")
-@onready var labelNode = get_node("Container/FilenameLabel")
+@onready var TextureNode
+@onready var LabelNode
 var imageOptions: ImageOptions
 
 func _ready():
@@ -13,21 +13,22 @@ func _process(delta):
 	pass
 
 func setProperties(options:ImageOptions):
-	imageOptions = options
-	textureNode = get_node("Container/TextureRect")
-	labelNode = get_node("Container/FilenameLabel")
-	loadImageFile(options.imageFilepath, textureNode)
-	labelNode.text = getFilepathByLayers(3)
+	TextureNode = get_node("Container/TextureRect")
+	LabelNode = get_node("Container/FilenameLabel")
+	if not options.initLoadingError:
+		imageOptions = options
+		loadImageFile(imageOptions.imageFilepath, TextureNode)
+		LabelNode.text = getFilepathByLayers(imageOptions.imageFilepath, 3)
+	else:
+		loadImageFile("", TextureNode)
 	pass
 
 func loadImageFile(path: String, node: Node):
 	node.texture = Utils.loadImageToTexture(path)
 
-func getFilepathByLayers(layers: int):
-	var fileLayers = imageOptions.imageFilepath.split("/")
+func getFilepathByLayers(path: String, layers: int):
+	var fileLayers = path.split("/")
 	if fileLayers.size() > layers:
-		print(str(fileLayers.size()-layers))
-		print(str(fileLayers.size()))
 		return "/".join(fileLayers.slice(fileLayers.size()-layers, fileLayers.size()))
 	else:
 		return imageOptions.imageFilepath
