@@ -16,7 +16,7 @@ var currentIndex = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	dupeData = Utils.importCSV(Data.CSV_FILE_PATH, Data.CSV_OPTIONS)
-	var headers: Array = Array(dupeData[0])
+	var headers: Array = Array(dupeData[0]) if dupeData else []
 	# if the CSV file does not have the absolutely necessary keys,
 	# post an error message and delete the loaded CSV data
 	if not Data.CSV_FOOTPRINT_MVP.all(func(key): return headers.has(key)):
