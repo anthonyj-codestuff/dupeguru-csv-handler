@@ -4,7 +4,8 @@ var logger = LogWriter.new()
 
 @onready var BorderNode
 @onready var TextureNode
-@onready var LabelNode
+@onready var FilenameLabelNode
+@onready var InfoLabelNode
 var imageOptions: ImageOptions
 var styleBox: StyleBoxFlat
 
@@ -17,12 +18,14 @@ func _process(delta):
 func setProperties(options:ImageOptions):
 	BorderNode = get_node("SelectedBorder")
 	TextureNode = get_node("PanelContainer/TextureRect")
-	LabelNode = get_node("PanelContainer/MarginContainer/FilenameLabel")
+	FilenameLabelNode = get_node("PanelContainer/MarginContainer/FilenameLabel")
+	InfoLabelNode = get_node("PanelContainer/MarginContainer/InfoLabel")
 	BorderNode.visible = false
 	if not options.initLoadingError:
 		imageOptions = options
 		loadImageFile(imageOptions.imageFilepath, TextureNode)
-		LabelNode.text = getFilepathByLayers(imageOptions.imageFilepath, 3)
+		FilenameLabelNode.text = getFilepathByLayers(imageOptions.imageFilepath, 3)
+		InfoLabelNode.text = "\n".join([options.dictIndex, options.groupId, options.imageFilename, options.fileSizeKB, options.imageDimensionsReadable, options.modificationDateReadable, options.matchPercent, options.imageWidth, options.imageHeight, options.modificationDateUnix])
 	else:
 		loadImageFile("", TextureNode)
 	pass
