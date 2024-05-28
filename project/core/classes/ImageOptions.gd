@@ -97,3 +97,27 @@ func _init(index, values: Dictionary):
 		logger.error("error detected with dictionary ["+str(values)+"]", MODULE_NAME)
 	else:
 		logger.info("options for node "+str(dictIndex)+" loaded successfully", MODULE_NAME)
+
+func getStatsReadableString():
+	var strings = []
+	if dictIndex or dictIndex is int:
+		strings.append("index: %s" % dictIndex)
+	if groupId or groupId is int:
+		strings.append("groupId: %s" % groupId)
+	if imageFilename:
+		strings.append("imageFilename: %s" % imageFilename)
+	if fileSizeKB or fileSizeKB is int:
+		strings.append("fileSize: %s KB" % fileSizeKB)
+	if imageDimensionsReadable:
+		strings.append("imageDimensionsReadable: %s" % imageDimensionsReadable)
+	if modificationDateReadable:
+		strings.append("modificationDateReadable: %s" % modificationDateReadable)
+	if matchPercent or matchPercent is int:
+		strings.append("matchPercent: %s%%" % matchPercent)
+	if imageWidth and imageWidth is int:
+		strings.append("imageWidth: %spx" % imageWidth)
+	if imageHeight and imageHeight is int:
+		strings.append("imageHeight: %spx" % imageHeight)
+	if modificationDateUnix and modificationDateUnix is int:
+		strings.append("modificationDateUnix: %s" % modificationDateUnix)
+	return "\n".join(strings)

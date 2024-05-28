@@ -25,7 +25,7 @@ func setProperties(options:ImageOptions):
 		imageOptions = options
 		loadImageFile(imageOptions.imageFilepath, TextureNode)
 		FilenameLabelNode.text = getFilepathByLayers(imageOptions.imageFilepath, 3)
-		InfoLabelNode.text = "\n".join([options.dictIndex, options.groupId, options.imageFilename, options.fileSizeKB, options.imageDimensionsReadable, options.modificationDateReadable, options.matchPercent, options.imageWidth, options.imageHeight, options.modificationDateUnix])
+		InfoLabelNode.text = imageOptions.getStatsReadableString()
 	else:
 		loadImageFile("", TextureNode)
 	pass

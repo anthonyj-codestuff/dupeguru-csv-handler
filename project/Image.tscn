@@ -27,7 +27,7 @@ layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 7
 theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 5
+theme_override_constants/margin_bottom = 72
 
 [node name="FilenameLabel" type="Label" parent="PanelContainer/MarginContainer"]
 layout_mode = 2
