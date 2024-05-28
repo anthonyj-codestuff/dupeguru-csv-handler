@@ -5,7 +5,16 @@
 
 [node name="Main" type="Node2D"]
 
-[node name="ImageLoader" parent="." instance=ExtResource("1_hr7x3")]
+[node name="MarginContainer" type="MarginContainer" parent="."]
+offset_right = 1280.0
+offset_bottom = 720.0
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="ImageLoader" parent="MarginContainer" instance=ExtResource("1_hr7x3")]
+layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchors_preset = 8
@@ -37,5 +46,5 @@ text = "->"
 [node name="Node" type="Node" parent="."]
 script = ExtResource("1_ahrg1")
 
-[connection signal="pressed" from="HBoxContainer/Left" to="ImageLoader" method="_on_left_pressed"]
-[connection signal="pressed" from="HBoxContainer/Right" to="ImageLoader" method="_on_right_pressed"]
+[connection signal="pressed" from="HBoxContainer/Left" to="MarginContainer/ImageLoader" method="_on_left_pressed"]
+[connection signal="pressed" from="HBoxContainer/Right" to="MarginContainer/ImageLoader" method="_on_right_pressed"]

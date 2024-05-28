@@ -4,8 +4,8 @@
 [ext_resource type="StyleBox" uid="uid://skvui3iyamgx" path="res://style_box_flat.tres" id="2_gda3h"]
 [ext_resource type="Texture2D" uid="uid://bpn561bdslo" path="res://icon.svg" id="3_emrej"]
 
-[sub_resource type="Theme" id="Theme_xrt0u"]
-Panel/styles/panel = ExtResource("2_gda3h")
+[sub_resource type="Theme" id="Theme_5u7tv"]
+PanelContainer/styles/panel = ExtResource("2_gda3h")
 
 [node name="Image" type="MarginContainer"]
 offset_right = 1280.0
@@ -14,20 +14,41 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_gk6qi")
 
-[node name="Container" type="PanelContainer" parent="."]
-layout_mode = 2
-theme = SubResource("Theme_xrt0u")
-
-[node name="FilenameLabel" type="Label" parent="Container"]
+[node name="SelectedBorder" type="PanelContainer" parent="."]
 z_index = 1
+layout_mode = 2
+theme = SubResource("Theme_5u7tv")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 7
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 7
+
+[node name="FilenameLabel" type="Label" parent="PanelContainer/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 0
 text = "TEXT"
 autowrap_mode = 3
 justification_flags = 160
 
-[node name="TextureRect" type="TextureRect" parent="Container"]
+[node name="TextureRect" type="TextureRect" parent="PanelContainer"]
 layout_mode = 2
 texture = ExtResource("3_emrej")
 expand_mode = 1
 stretch_mode = 5
+
+[node name="Button" type="Button" parent="PanelContainer/TextureRect"]
+self_modulate = Color(0, 0, 0, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[connection signal="pressed" from="PanelContainer/TextureRect/Button" to="." method="_on_image_button_pressed"]
