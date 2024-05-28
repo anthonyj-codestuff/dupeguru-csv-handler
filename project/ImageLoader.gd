@@ -16,11 +16,15 @@ var currentIndex = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	dupeData = Utils.importCSV(Data.CSV_FILE_PATH, Data.CSV_OPTIONS)
-	# TODO This mostly gets in the way.
-	# Figure out what is absolutely necessary and make the others optional
-	if dupeData[0] != Data.CSV_FOOTPRINT and false:
-		printerr("File does not match expected footprint")
-		return
+	var headers: Array = Array(dupeData[0])
+	# if the CSV file does not have the absolutely necessary keys,
+	# post an error message and delete the loaded CSV data
+	if not Data.CSV_FOOTPRINT_MVP.all(func(key): return headers.has(key)):
+		var errLabelNode = get_node("Node2D/ErrorLabel")
+		var missingKeys = Data.CSV_FOOTPRINT_MVP.filter(func(key): return not headers.has(key))
+		var missingKeysStr = " ".join(missingKeys)
+		errLabelNode.text = "CSV file does not have expected minimum footprint. Missing keys [%s]" % missingKeysStr
+		dupeData = []
 	# Remove CSV header, it will only get in the way
 	dupeData.pop_front()
 	loadImageNodeGroupByStartingIndex(currentIndex)
@@ -41,6 +45,8 @@ func fileExistsForIndex(id: int):
 	return Utils.fileExistsAtLocation(filepath)
 
 func loadImageNodeGroupByStartingIndex(startingIndex: int):
+	if not dupeData.size():
+		return
 	var index = startingIndex
 	var currentGroup = dupeData[index]["Group ID"]
 	var groupIndices = []
@@ -69,6 +75,8 @@ func clearImageNodes():
 	pass
 
 func getNextGroupZeroIndex(currentIndex: int):
+	if not dupeData.size():
+		return
 	var currentGroup = dupeData[currentIndex]["Group ID"]
 	var index = currentIndex + 1
 	var foundNewIndex:bool = false
@@ -89,6 +97,8 @@ func getNextGroupZeroIndex(currentIndex: int):
 		return null
 
 func getPrevGroupZeroIndex(currentIndex: int):
+	if not dupeData.size():
+		return
 	var currentGroup = dupeData[currentIndex]["Group ID"]
 	var index = currentIndex - 1
 	var foundNewIndex:bool = false
@@ -113,6 +123,8 @@ func getPrevGroupZeroIndex(currentIndex: int):
 
 func _on_left_pressed()->void:
 	clearImageNodes()
+	if not dupeData.size():
+		return
 	# set previous group index or null if no other group exists
 	currentIndex = getPrevGroupZeroIndex(currentIndex)
 	if currentIndex != null:
@@ -121,6 +133,8 @@ func _on_left_pressed()->void:
 
 func _on_right_pressed()->void:
 	clearImageNodes()
+	if not dupeData.size():
+		return
 	# set next group index or null if no other group exists
 	currentIndex = getNextGroupZeroIndex(currentIndex)
 	if currentIndex != null:

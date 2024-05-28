@@ -4,7 +4,7 @@ const MODULE_NAME = "LogWriter"
 
 var _level_dict : Dictionary = {
 	0 : "INFO",
-	1 : "WARNING",
+	1 : "WARN",
 	2 : "ERROR",
 	3 : "FATAL",
 }
@@ -16,7 +16,7 @@ func info(text: String, module: String = "NONE") -> void:
 	pass
 
 # Log WARNING 1.
-func warning(text: String, module: String = "NONE") -> void:
+func warn(text: String, module: String = "NONE") -> void:
 	_write(1, module, text)
 	pass
 

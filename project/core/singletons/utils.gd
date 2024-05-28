@@ -95,10 +95,9 @@ func loadImageToTexture(path: String)->ImageTexture:
 func fileExistsAtLocation(path: String):
 	return FileAccess.file_exists(path)
 
-func stringIsValidDatetime(string: String)->bool:
-	# true if time string matches "YYYY/MM/DD HH:MM:SS"
+func stringMatchesRegex(string: String, pattern: String)->bool:
 	var regex = RegEx.new()
-	regex.compile("\\d{4}/\\d{2}/\\d{2} \\d{2}:\\d{2}:\\d{2}")
+	regex.compile(pattern)
 	var result = regex.search(string)
 	if result:
 		return true

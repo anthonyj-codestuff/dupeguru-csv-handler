@@ -3,11 +3,6 @@ extends Node
 const MODULE_NAME = "GlobalData"
 var logger = LogWriter.new()
 
-# Scene Configs --------------------------
-#const SPLASH_SCENE_PATH : String = "res://core/ui/splash/splash.tscn"
-#const MAIN_SCENE_PATH : String = "res://template/maps/placeholder/placeholder.tscn"
-#const TRANSITION_IMAGE_PATH : String = "res://core/ui/transitions/transition_image.tscn"
-
 # Resource & Packages --------------------
 var LOADER_WAIT_TIME : float = 0.5
 var PACKAGE_ROOT : String = OS.get_executable_path().get_base_dir()
@@ -17,8 +12,9 @@ var PACKAGE_PATHS : Array = [
 ]
 
 var EXTERNAL_ASSETS_FOLDER: String = "../external_assets"
-var CSV_FILE_PATH: String = "../external_assets/dupes.csv"
-var CSV_FOOTPRINT: PackedStringArray = ["Group ID", "Filename", "Folder", "Size (KB)", "Kind", "Dimensions", "Modification", "Match %"]
+var CSV_FILE_PATH: String = "../external_assets/dupes2.csv"
+var CSV_FOOTPRINT_MVP: Array[String] = ["Group ID", "Filename", "Folder"]
+var CSV_HEADER_OPTIONS: Array[String] = ["Group ID", "Filename", "Folder", "Size (KB)", "Dimensions", "Modification","Match %"]
 var CSV_OPTIONS = {
 		"delim": ",",
 		"detect_numbers": true,
