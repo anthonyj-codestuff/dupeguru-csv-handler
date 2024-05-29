@@ -22,8 +22,8 @@ func _ready():
 	if not Data.CSV_FOOTPRINT_MVP.all(func(key): return headers.has(key)):
 		var errLabelNode = get_node("Node2D/ErrorLabel")
 		var missingKeys = Data.CSV_FOOTPRINT_MVP.filter(func(key): return not headers.has(key))
-		var missingKeysStr = " ".join(missingKeys)
-		errLabelNode.text = "CSV file does not have expected minimum footprint. Missing keys [%s]" % missingKeysStr
+		var missingKeysStr = ", ".join(missingKeys)
+		errLabelNode.text = "CSV file not found or does not have expected minimum footprint. Missing keys [%s]" % missingKeysStr
 		dupeData = []
 	# Remove CSV header, it will only get in the way
 	dupeData.pop_front()
