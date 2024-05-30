@@ -19,18 +19,34 @@ var imageWidth: int
 var imageHeight: int
 var modificationDateUnix: int
 
+# Extended values (requires Python)
+var pyCreationDateReadable: String
+var pyCreationDateUnix: int
+
 # Control variables
 var initLoadingError: bool = false
 var selected: bool = false
 
-func _init(index, values: Dictionary):
-	# Check for required values
+func _init(index, values: Dictionary, python):
 	if not index and index != 0 or not index is int:
 		logger.error("index value not found ["+str(values.index)+"]", MODULE_NAME)
 		initLoadingError = true
 	else:
 		dictIndex = index
 
+	setRequiredValues(values)
+	setOptionalValues(values)
+	setDerivedValues(values)
+	if imageFilepath:
+		setExtendedStats(imageFilepath, python)
+
+	if initLoadingError:
+		logger.error("error detected with dictionary ["+str(values)+"]", MODULE_NAME)
+	else:
+		logger.info("options for node "+str(dictIndex)+" loaded successfully", MODULE_NAME)
+	pass
+
+func setRequiredValues(values):
 	if not values["Group ID"] and values["Group ID"] != 0 or not values["Group ID"] is int:
 		logger.error("group id value not found ["+str(values["Group ID"])+"]", MODULE_NAME)
 		initLoadingError = true
@@ -49,7 +65,7 @@ func _init(index, values: Dictionary):
 	else:
 		imageFolder = values["Folder"]
 
-	# Check for optional values
+func setOptionalValues(values):
 	if not values["Size (KB)"] or not values["Size (KB)"] is int:
 		logger.warn("file size value not found ["+str(values["Size (KB)"])+"]", MODULE_NAME)
 	else:
@@ -70,7 +86,7 @@ func _init(index, values: Dictionary):
 	else:
 		matchPercent = values["Match %"]
 
-	# Set derived values
+func setDerivedValues(values):
 	if not imageFolder.length() or not imageFilename.length():
 		logger.warn("invalid file path elements ["+str(imageFolder)+", "+str(imageFilename)+"]", MODULE_NAME)
 	else:
@@ -92,11 +108,25 @@ func _init(index, values: Dictionary):
 		dateAndTime[0] = dateAndTime[0].replace("/", "-")
 		var ISO8601Datestring = "T".join(dateAndTime)
 		modificationDateUnix = Time.get_unix_time_from_datetime_string(ISO8601Datestring)
-	
-	if initLoadingError:
-		logger.error("error detected with dictionary ["+str(values)+"]", MODULE_NAME)
-	else:
-		logger.info("options for node "+str(dictIndex)+" loaded successfully", MODULE_NAME)
+	pass
+
+func setExtendedStats(filepath, python):
+	var stats = python.getFileProperties(filepath)
+	if "creationDateReadable" in stats:
+		pyCreationDateReadable = stats.creationDateReadable
+	if "creationDateUnix" in stats:
+		pyCreationDateUnix = stats.creationDateUnix
+	if "modificationDateReadable" in stats and not modificationDateReadable:
+		modificationDateReadable = stats.modificationDateReadable
+	if "modificationDateUnix" in stats and not modificationDateUnix:
+		modificationDateUnix = stats.modificationDateUnix
+	if "imageWidth" in stats and not imageWidth:
+		imageWidth = stats.imageWidth
+	if "imageHeight" in stats and not imageHeight:
+		imageHeight = stats.imageHeight
+	if "imageDimensionsReadable" in stats and not imageDimensionsReadable:
+		imageDimensionsReadable = stats.imageDimensionsReadable
+	pass
 
 func getStatsReadableString():
 	var strings = []
@@ -110,6 +140,8 @@ func getStatsReadableString():
 		strings.append("Size: %s KB" % fileSizeKB)
 	if imageDimensionsReadable:
 		strings.append("Dimensions: %s" % imageDimensionsReadable)
+	if pyCreationDateReadable:
+		strings.append("Created At: %s" % pyCreationDateReadable)
 	if modificationDateReadable:
 		strings.append("Modified At: %s" % modificationDateReadable)
 	if matchPercent or matchPercent is int:

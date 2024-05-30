@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://cbvk31312xpcu"]
+[gd_scene load_steps=3 format=3 uid="uid://cbvk31312xpcu"]
 
 [ext_resource type="Script" path="res://WindowSizeManager.gd" id="1_ahrg1"]
 [ext_resource type="PackedScene" uid="uid://dnh2tu3ju0e26" path="res://ImageLoader.tscn" id="1_hr7x3"]
-[ext_resource type="Script" path="res://RunPython.gd" id="2_tx3nj"]
 
 [node name="Main" type="Node2D"]
 
@@ -45,10 +44,7 @@ layout_mode = 2
 text = "->"
 
 [node name="WindowSizeManager" type="Node" parent="."]
-script = ExtResource("1_ahrg1")
-
-[node name="PythonManager" type="Node" parent="."]
-script = ExtResource("2_tx3nj")
+script = ExtResource("2_06db7")
 
 [connection signal="pressed" from="HBoxContainer/Left" to="MarginContainer/ImageLoader" method="_on_left_pressed"]
 [connection signal="pressed" from="HBoxContainer/Right" to="MarginContainer/ImageLoader" method="_on_right_pressed"]

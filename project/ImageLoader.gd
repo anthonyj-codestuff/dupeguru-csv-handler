@@ -5,6 +5,7 @@ var ImageScenePacked = preload("res://Image.tscn")
 
 # define important reference nodes
 @onready var imageBoxNode = get_node("ImageBox")
+@onready var python = get_node("PythonManager")
 # data from csv file
 var dupeData = []
 # storage for generated nodes
@@ -60,7 +61,7 @@ func loadImageNodeGroupByStartingIndex(startingIndex: int):
 	pass
 
 func createImageNodeByIndex(index:int):
-	var options = ImageOptions.new(index, dupeData[index])
+	var options = ImageOptions.new(index, dupeData[index], python)
 	var newNode = ImageScenePacked.instantiate()
 	newNode.setProperties(options)
 	imageBoxNode.addImageNode(newNode)
