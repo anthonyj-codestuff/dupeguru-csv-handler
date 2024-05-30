@@ -39,19 +39,16 @@ text = "<-"
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Button" type="Button" parent="HBoxContainer"]
-custom_minimum_size = Vector2(40, 2.08165e-12)
-layout_mode = 2
-script = ExtResource("2_tx3nj")
-
 [node name="Right" type="Button" parent="HBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 text = "->"
 
-[node name="Node" type="Node" parent="."]
+[node name="WindowSizeManager" type="Node" parent="."]
 script = ExtResource("1_ahrg1")
 
+[node name="PythonManager" type="Node" parent="."]
+script = ExtResource("2_tx3nj")
+
 [connection signal="pressed" from="HBoxContainer/Left" to="MarginContainer/ImageLoader" method="_on_left_pressed"]
-[connection signal="pressed" from="HBoxContainer/Button" to="HBoxContainer/Button" method="_on_pressed"]
 [connection signal="pressed" from="HBoxContainer/Right" to="MarginContainer/ImageLoader" method="_on_right_pressed"]

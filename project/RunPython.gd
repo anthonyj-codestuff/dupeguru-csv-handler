@@ -1,20 +1,34 @@
-extends Button
+extends Node
+const MODULE_NAME = "PythonManager"
+var logger = LogWriter.new()
+
+const pyScript = "./assets/GetFileProperties.py"
+var pythonEnabled = false
+var command
 
 func _ready():
-	pass
-
-
-func _on_pressed():
-	var filename = "../external_assets/0.jpeg"
-	var command = "python3"
-	var pystdout = []
-#	var args = ["./assets/GetFileProperties.py", filename]
-	var args = ["./assets/echo.py", filename]
-	var result = OS.execute(command, args, pystdout)
-
-	if result == 0:
-		for i in pystdout:
-			print("pyout  "+ str(pystdout))
+	logger.info("Checking system for Python installation...", MODULE_NAME)
+	var version = OS.execute("python", ["--version"], [])
+	var version3 = OS.execute("python3", ["--version"], [])
+	if version3 == 0:
+		logger.info("Python3 detected. Enabling extended functionality", MODULE_NAME)
+		pythonEnabled = true
+		command = "python3"
+	elif version == 0:
+		logger.info("Python detected. Enabling extended functionality", MODULE_NAME)
+		pythonEnabled = true
+		command = "python"
+	else:
+		logger.info("Python not detected. Extended functionality not enabled", MODULE_NAME)
 		
-	print("result "+ str(result))
-	pass
+
+
+func getFileProperties(filename)->Dictionary:
+	if pythonEnabled:
+		var pystdout = []
+		var args = [pyScript, filename]
+		var result = OS.execute(command, args, pystdout)
+
+		if result == 0:
+			return JSON.parse_string(pystdout[0])
+	return {}
