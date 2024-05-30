@@ -101,23 +101,21 @@ func _init(index, values: Dictionary):
 func getStatsReadableString():
 	var strings = []
 	if dictIndex or dictIndex is int:
-		strings.append("index: %s" % dictIndex)
+		strings.append("Index: %s" % dictIndex)
 	if groupId or groupId is int:
-		strings.append("groupId: %s" % groupId)
+		strings.append("Group Id: %s" % groupId)
 	if imageFilename:
-		strings.append("imageFilename: %s" % imageFilename)
+		strings.append("Filename: %s" % imageFilename)
 	if fileSizeKB or fileSizeKB is int:
-		strings.append("fileSize: %s KB" % fileSizeKB)
+		strings.append("Size: %s KB" % fileSizeKB)
 	if imageDimensionsReadable:
-		strings.append("imageDimensionsReadable: %s" % imageDimensionsReadable)
+		strings.append("Dimensions: %s" % imageDimensionsReadable)
 	if modificationDateReadable:
-		strings.append("modificationDateReadable: %s" % modificationDateReadable)
+		strings.append("Modified At: %s" % modificationDateReadable)
 	if matchPercent or matchPercent is int:
-		strings.append("matchPercent: %s%%" % matchPercent)
+		strings.append("Match Percent: %s%%" % matchPercent)
 	if imageWidth and imageWidth is int:
-		strings.append("imageWidth: %spx" % imageWidth)
+		strings.append("Width: %spx" % imageWidth)
 	if imageHeight and imageHeight is int:
-		strings.append("imageHeight: %spx" % imageHeight)
-	if modificationDateUnix and modificationDateUnix is int:
-		strings.append("modificationDateUnix: %s" % modificationDateUnix)
+		strings.append("Height: %spx" % imageHeight)
 	return "\n".join(strings)
