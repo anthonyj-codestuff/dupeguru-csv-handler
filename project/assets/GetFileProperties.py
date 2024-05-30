@@ -12,6 +12,11 @@ def handler(signum, frame):
 signal.signal(signal.SIGALRM, handler)
 signal.alarm(1)
 
+def unix_to_datetime(unix_timestamp):
+    dt_object = datetime.datetime.fromtimestamp(unix_timestamp)
+    formatted_datetime = dt_object.strftime('%Y/%m/%d %H:%M:%S')
+    return formatted_datetime
+
 def get_modification_date(file_path):
     modification_time = round(os.path.getmtime(file_path))
     return modification_time
@@ -36,9 +41,11 @@ def get_file_properties(file_path):
     # Getting file creation and modification datetime
     if os.path.exists(file_path):
         creation_time = get_creation_date(file_path)
-        properties['creationDateReadable'] = str(datetime.datetime.fromtimestamp(creation_time))
+        properties['creationDateUnix'] = creation_time
+        properties['creationDateReadable'] = str(unix_to_datetime(creation_time))
         modification_time = get_modification_date(file_path)
-        properties['modificationDateReadable'] = str(datetime.datetime.fromtimestamp(modification_time))
+        properties['modificationDateUnix'] = modification_time
+        properties['modificationDateReadable'] = str(unix_to_datetime(modification_time))
 
         # Checking if it's an image to get image dimensions
         if any(file_path.endswith(ext) for ext in ['.jpg', '.jpeg', '.png', '.bmp', '.gif']):
@@ -50,6 +57,7 @@ def get_file_properties(file_path):
                         width, height = struct.unpack('>LL', header[16:24])
                         properties['imageWidth'] = width
                         properties['imageHeight'] = height
+                        properties['imageDimensionsReadable'] = "%s x %s" % (width, height)
                     elif header.startswith(b'\xff\xd8'):
                         img_file.seek(0)
                         img_file.read(2)
@@ -64,13 +72,13 @@ def get_file_properties(file_path):
                                 height, width = struct.unpack('>HH', img_file.read(4))
                                 properties['imageWidth'] = width
                                 properties['imageHeight'] = height
+                                properties['imageDimensionsReadable'] = "%s x %s" % (width, height)
                                 break
                             else:
                                 img_file.read(int(struct.unpack('>H', img_file.read(2))[0]) - 2)
                             b = img_file.read(1)
             except Exception as e:
-                properties['imageWidth'] = ""
-                properties['imageHeight'] = ""
+                sys.exit(1)
     print(json.dumps(properties))
 
 if __name__ == "__main__":
@@ -79,7 +87,6 @@ if __name__ == "__main__":
         try:
             get_file_properties(file_path)
         except Exception as e:
-            print("An error has occurred", e)
             sys.exit(1)
         finally:
             signal.alarm(0)
