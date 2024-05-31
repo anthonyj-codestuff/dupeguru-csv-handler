@@ -15,6 +15,7 @@ var matchPercent: int
 # Derived and context-specific values
 var dictIndex: int
 var imageFilepath: String
+var imageFiletype: String
 var imageWidth: int
 var imageHeight: int
 var modificationDateUnix: int
@@ -91,6 +92,11 @@ func setDerivedValues(values):
 		logger.warn("invalid file path elements ["+str(imageFolder)+", "+str(imageFilename)+"]", MODULE_NAME)
 	else:
 		imageFilepath = imageFolder.path_join(imageFilename)
+
+	if not imageFilename.length():
+		logger.warn("invalid file name ["+str(imageFilename)+"]", MODULE_NAME)
+	else:
+		imageFiletype = imageFilename.split(".")[-1]
 
 	if not imageDimensionsReadable or not Utils.stringMatchesRegex(imageDimensionsReadable, "\\d{1,5} x \\d{1,5}"):
 		# true if time string matches "##### x #####"
