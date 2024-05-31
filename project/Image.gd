@@ -6,8 +6,10 @@ var logger = LogWriter.new()
 @onready var TextureNode
 @onready var FilenameLabelNode
 @onready var InfoLabelNode
+@onready var ReasonsLabelNode
 var imageOptions: ImageOptions
 var styleBox: StyleBoxFlat
+var autoselectReasons = []
 
 func _ready():
 	pass
@@ -19,7 +21,8 @@ func setProperties(options:ImageOptions):
 	BorderNode = get_node("SelectedBorder")
 	TextureNode = get_node("PanelContainer/TextureRect")
 	FilenameLabelNode = get_node("PanelContainer/MarginContainer/FilenameLabel")
-	InfoLabelNode = get_node("PanelContainer/MarginContainer/InfoLabel")
+	InfoLabelNode = get_node("PanelContainer/MarginContainer/HBoxContainer/InfoLabel")
+	ReasonsLabelNode = get_node("PanelContainer/MarginContainer/HBoxContainer/ReasonsLabel")
 	BorderNode.visible = false
 	if not options.initLoadingError:
 		imageOptions = options
@@ -40,11 +43,22 @@ func getFilepathByLayers(path: String, layers: int):
 	else:
 		return imageOptions.imageFilepath
 
+func addPotentialDeletionReason(reason: String = ""):
+	if reason.length():
+		autoselectReasons.append(reason)
+		ReasonsLabelNode.text = "\n".join(autoselectReasons)
+
+func select():
+	imageOptions.selected = true
+	BorderNode.visible = true
+	
+func deselect():
+	imageOptions.selected = false
+	BorderNode.visible = false
+
 func _on_image_button_pressed():
 	if imageOptions.selected:
-		imageOptions.selected = false
-		BorderNode.visible = false
+		deselect()
 	else:
-		imageOptions.selected = true
-		BorderNode.visible = true
+		select()
 	pass
