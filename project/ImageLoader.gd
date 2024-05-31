@@ -6,6 +6,7 @@ var ImageScenePacked = preload("res://Image.tscn")
 # define important reference nodes
 @onready var imageBoxNode = get_node("ImageBox")
 @onready var python = get_node("PythonManager")
+@onready var selector = get_node("AutoSelector")
 # data from csv file
 var dupeData = []
 # storage for generated nodes
@@ -29,6 +30,7 @@ func _ready():
 	# Remove CSV header, it will only get in the way
 	dupeData.pop_front()
 	loadImageNodeGroupByStartingIndex(currentIndex)
+	selector.autoSelectNodes(imageNodes)
 
 func _process(delta):
 	pass
@@ -130,6 +132,7 @@ func _on_left_pressed()->void:
 	currentIndex = getPrevGroupZeroIndex(currentIndex)
 	if currentIndex != null:
 		loadImageNodeGroupByStartingIndex(currentIndex)
+		selector.autoSelectNodes(imageNodes)
 	pass
 
 func _on_right_pressed()->void:
@@ -140,4 +143,5 @@ func _on_right_pressed()->void:
 	currentIndex = getNextGroupZeroIndex(currentIndex)
 	if currentIndex != null:
 		loadImageNodeGroupByStartingIndex(currentIndex)
+		selector.autoSelectNodes(imageNodes)
 	pass
