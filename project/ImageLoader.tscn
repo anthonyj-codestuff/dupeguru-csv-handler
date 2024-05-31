@@ -24,7 +24,7 @@ script = ExtResource("2_aoym1")
 [node name="ErrorLabel" type="Label" parent="Node2D"]
 offset_left = 12.0
 offset_top = 32.0
-offset_right = 262.0
+offset_right = 502.0
 offset_bottom = 327.0
 autowrap_mode = 3
 
