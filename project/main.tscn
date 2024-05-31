@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://cbvk31312xpcu"]
+[gd_scene load_steps=31 format=3 uid="uid://cbvk31312xpcu"]
 
 [ext_resource type="PackedScene" uid="uid://dnh2tu3ju0e26" path="res://ImageLoader.tscn" id="1_hr7x3"]
 [ext_resource type="Texture2D" uid="uid://bmrangi1qcj5g" path="res://assets/keyicons/all.png" id="2_2kk33"]
@@ -16,12 +16,18 @@
 [ext_resource type="Texture2D" uid="uid://kv8fh4oits5" path="res://assets/keyicons/right_hover.png" id="13_p58yw"]
 [ext_resource type="Texture2D" uid="uid://bebmvkp1yowe2" path="res://assets/keyicons/help.png" id="14_6xkm2"]
 [ext_resource type="Texture2D" uid="uid://bqucrjea4hmuj" path="res://assets/keyicons/help_hover.png" id="16_2fsxw"]
+[ext_resource type="Texture2D" uid="uid://ih8k5v62f0mp" path="res://assets/keyicons/commit.png" id="16_krlln"]
 [ext_resource type="Texture2D" uid="uid://dxtyn8ojwmoju" path="res://assets/keyicons/undo.png" id="16_nemvv"]
 [ext_resource type="Texture2D" uid="uid://d07novhypkyhg" path="res://assets/keyicons/undo_pressed.png" id="17_jf4v4"]
+[ext_resource type="Texture2D" uid="uid://dulxy8mrfobpw" path="res://assets/keyicons/commit_pressed.png" id="17_p40ss"]
+[ext_resource type="Texture2D" uid="uid://frxqyjki4kk3" path="res://assets/keyicons/commit_hover.png" id="18_o2t86"]
 [ext_resource type="Texture2D" uid="uid://b6fxlg0bnfk1c" path="res://assets/keyicons/undo_hover.png" id="18_pv2u4"]
 [ext_resource type="Texture2D" uid="uid://b3646a3ydqr3q" path="res://assets/keyicons/trash.png" id="19_kh64f"]
+[ext_resource type="Texture2D" uid="uid://bmf7k5du2joo6" path="res://assets/keyicons/commit_disabled.png" id="19_t02gu"]
 [ext_resource type="Texture2D" uid="uid://m3k76ss01yru" path="res://assets/keyicons/trash_pressed.png" id="20_q2qxe"]
 [ext_resource type="Texture2D" uid="uid://d0np0g2jb7ch7" path="res://assets/keyicons/trash_hover.png" id="21_t3swg"]
+[ext_resource type="Texture2D" uid="uid://cdg5sbfe6x81j" path="res://assets/keyicons/undo_disabled.png" id="23_j7m0c"]
+[ext_resource type="Texture2D" uid="uid://jwki3sfyd576" path="res://assets/keyicons/trash_disabled.png" id="27_she3f"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_al5kg"]
 content_margin_left = 10.0
@@ -158,6 +164,33 @@ stretch_mode = 0
 [node name="TextureRect3" type="Panel" parent="."]
 z_index = 1
 layout_direction = 2
+offset_left = 783.0
+offset_top = 655.0
+offset_right = 833.0
+offset_bottom = 705.0
+size_flags_horizontal = 3
+
+[node name="BoxContainer2" type="BoxContainer" parent="."]
+z_index = 3
+offset_left = 783.0
+offset_top = 655.0
+offset_right = 833.0
+offset_bottom = 705.0
+
+[node name="Commit" type="TextureButton" parent="BoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Stage Selected Images"
+disabled = true
+texture_normal = ExtResource("16_krlln")
+texture_pressed = ExtResource("17_p40ss")
+texture_hover = ExtResource("18_o2t86")
+texture_disabled = ExtResource("19_t02gu")
+stretch_mode = 0
+
+[node name="TextureRect4" type="Panel" parent="."]
+z_index = 1
+layout_direction = 2
 offset_left = 1215.0
 offset_top = 591.0
 offset_right = 1265.0
@@ -174,9 +207,11 @@ offset_bottom = 705.0
 [node name="Undo" type="TextureButton" parent="VBoxContainer"]
 layout_mode = 2
 tooltip_text = "Undelete Last Group"
+disabled = true
 texture_normal = ExtResource("16_nemvv")
 texture_pressed = ExtResource("17_jf4v4")
 texture_hover = ExtResource("18_pv2u4")
+texture_disabled = ExtResource("23_j7m0c")
 stretch_mode = 0
 
 [node name="Container" type="Container" parent="VBoxContainer"]
@@ -186,13 +221,17 @@ layout_mode = 2
 [node name="Delete" type="TextureButton" parent="VBoxContainer"]
 layout_mode = 2
 tooltip_text = "Delete All Selected"
+disabled = true
 texture_normal = ExtResource("19_kh64f")
 texture_pressed = ExtResource("20_q2qxe")
 texture_hover = ExtResource("21_t3swg")
+texture_disabled = ExtResource("27_she3f")
 stretch_mode = 0
 
 [node name="WindowSizeManager" type="Node" parent="."]
 script = ExtResource("2_06db7")
 
 [connection signal="pressed" from="HBoxContainer/Left" to="MarginContainer/ImageLoader" method="_on_left_pressed"]
+[connection signal="pressed" from="HBoxContainer/Select All" to="MarginContainer/ImageLoader" method="_on_select_all_pressed"]
+[connection signal="pressed" from="HBoxContainer/Deselect" to="MarginContainer/ImageLoader" method="_on_deselect_pressed"]
 [connection signal="pressed" from="HBoxContainer/Right" to="MarginContainer/ImageLoader" method="_on_right_pressed"]

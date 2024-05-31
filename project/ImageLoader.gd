@@ -145,3 +145,15 @@ func _on_right_pressed()->void:
 		loadImageNodeGroupByStartingIndex(currentIndex)
 		selector.autoSelectNodes(imageNodes)
 	pass
+
+
+func _on_select_all_pressed():
+	for node in imageNodes:
+		node.select()
+	pass # Replace with function body.
+
+
+func _on_deselect_pressed():
+	for node in imageNodes:
+		node.deselect()
+	pass # Replace with function body.
