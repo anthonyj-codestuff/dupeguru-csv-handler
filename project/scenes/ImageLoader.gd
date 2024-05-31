@@ -1,7 +1,7 @@
 extends Control
 const MODULE_NAME = "ImageLoader"
 var logger = LogWriter.new()
-var ImageScenePacked = preload("res://Image.tscn")
+var ImageScenePacked = preload("res://scenes/Image.tscn")
 
 # define important reference nodes
 @onready var imageBoxNode = get_node("ImageBox")

@@ -1,14 +1,14 @@
 [gd_scene load_steps=5 format=3 uid="uid://dnh2tu3ju0e26"]
 
-[ext_resource type="Script" path="res://ImageLoader.gd" id="1_wsykj"]
-[ext_resource type="Script" path="res://ImageBox.gd" id="2_aoym1"]
-[ext_resource type="Script" path="res://core/classes/RunPython.gd" id="3_5ifmg"]
-[ext_resource type="Script" path="res://AutoSelector.gd" id="4_et7o0"]
+[ext_resource type="Script" path="res://scenes/ImageLoader.gd" id="1_j07pe"]
+[ext_resource type="Script" path="res://scenes/ImageBox.gd" id="2_vsm7g"]
+[ext_resource type="Script" path="res://core/classes/RunPython.gd" id="3_pmo71"]
+[ext_resource type="Script" path="res://core/classes/AutoSelector.gd" id="4_sxujo"]
 
 [node name="ImageLoader" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("1_wsykj")
+script = ExtResource("1_j07pe")
 
 [node name="ImageBox" type="HBoxContainer" parent="."]
 layout_mode = 1
@@ -17,7 +17,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("2_aoym1")
+script = ExtResource("2_vsm7g")
 
 [node name="Node2D" type="Node2D" parent="."]
 
@@ -29,7 +29,7 @@ offset_bottom = 327.0
 autowrap_mode = 3
 
 [node name="PythonManager" type="Node" parent="."]
-script = ExtResource("3_5ifmg")
+script = ExtResource("3_pmo71")
 
 [node name="AutoSelector" type="Node" parent="."]
-script = ExtResource("4_et7o0")
+script = ExtResource("4_sxujo")
