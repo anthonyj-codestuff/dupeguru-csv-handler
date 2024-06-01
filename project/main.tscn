@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cbvk31312xpcu"]
 
 [ext_resource type="PackedScene" uid="uid://dnh2tu3ju0e26" path="res://scenes/ImageLoader.tscn" id="1_4jp8q"]
-[ext_resource type="Texture2D" uid="uid://c8nvxky504dxj" path="res://assets/bg_texture.png" id="1_aiko0"]
+[ext_resource type="Texture2D" uid="uid://eotsjihd5vmb" path="res://assets/bg_texture.png" id="1_aiko0"]
 [ext_resource type="Script" path="res://core/singletons/WindowSizeManager.gd" id="2_06db7"]
 [ext_resource type="PackedScene" uid="uid://mjocemssgx40" path="res://scenes/ControlPanel.tscn" id="2_chg8m"]
 
@@ -64,8 +64,3 @@ layout_mode = 2
 
 [node name="WindowSizeManager" type="Node" parent="."]
 script = ExtResource("2_06db7")
-
-[connection signal="left_pressed" from="ControlPanel" to="MarginContainer/ImageLoader" method="_on_control_panel_left_pressed"]
-[connection signal="right_pressed" from="ControlPanel" to="MarginContainer/ImageLoader" method="_on_control_panel_right_pressed"]
-[connection signal="select_all_pressed" from="ControlPanel" to="MarginContainer/ImageLoader" method="_on_control_panel_select_all_pressed"]
-[connection signal="select_none_pressed" from="ControlPanel" to="MarginContainer/ImageLoader" method="_on_control_panel_select_none_pressed"]
