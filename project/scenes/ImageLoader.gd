@@ -162,3 +162,12 @@ func _on_control_panel_right_pressed()->void:
 		loadImageNodeGroupByStartingIndex(currentIndex)
 		selector.autoSelectNodes(imageNodes)
 	pass
+
+func _on_control_panel_commit_pressed():
+	pass # Replace with function body.
+
+func _on_control_panel_undo_pressed():
+	pass # Replace with function body.
+
+func _on_control_panel_delete_pressed():
+	pass # Replace with function body.
