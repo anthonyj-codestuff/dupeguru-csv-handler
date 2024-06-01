@@ -179,6 +179,7 @@ texture_hover = ExtResource("14_iihtp")
 stretch_mode = 5
 
 [node name="Commit" type="TextureButton" parent="."]
+z_index = 1
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 size_flags_vertical = 8
@@ -191,7 +192,7 @@ texture_disabled = ExtResource("18_lma8f")
 stretch_mode = 5
 
 [node name="TextureRect2" type="Panel" parent="Commit"]
-z_index = 1
+z_index = -1
 custom_minimum_size = Vector2(50, 50)
 layout_direction = 2
 layout_mode = 1
