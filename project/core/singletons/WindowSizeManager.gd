@@ -8,30 +8,9 @@ extends Node
  
 @onready var defaultSize = DisplayServer.window_get_size()
 @onready var previousSize = defaultSize
- 
+var min_window_size = Vector2(640,360) # The minimum window resolution you want. 
+
 func _ready():
-	get_tree().get_root().size_changed.connect(resize_screen)
- 
-func resize_screen():
-	var newSize = DisplayServer.window_get_size()
-	var scale = Vector2(newSize) / Vector2(defaultSize)
-	# TODO this is probably not a foolproof way of determining which way the window is being scaled
-	var scaleUp = newSize > previousSize
-	
-	if DisplayServer.window_get_position().y < 0:
-		DisplayServer.window_set_position(Vector2i(DisplayServer.window_get_position().x, 0))
-	
-	if newSize != previousSize:
-		if not scaleUp and (scale.x < 0.25 or scale.y < 0.25):
-			newSize = defaultSize / 4
-			previousSize = newSize
-			DisplayServer.window_set_size(newSize)
-		else:
-			if (scaleUp and scale.x >= scale.y) or (not scaleUp and scale.x < scale.y):
-				newSize = Vector2i(newSize.x, defaultSize.y * scale.x)
-				previousSize = newSize
-				DisplayServer.window_set_size(newSize)
-			elif (scaleUp and scale.x < scale.y) or (not scaleUp and scale.x >= scale.y):
-				newSize = Vector2i(defaultSize.x * scale.y, newSize.y)
-				previousSize = newSize
-				DisplayServer.window_set_size(newSize)
+	#get_tree().get_root().size_changed.connect(resize_screen) # Disabling the resize code here, feel free to delete if no longer needed.
+	DisplayServer.window_set_min_size(min_window_size)
+	pass
