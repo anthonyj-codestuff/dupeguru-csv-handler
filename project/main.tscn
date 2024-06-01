@@ -64,3 +64,8 @@ layout_mode = 2
 
 [node name="WindowSizeManager" type="Node" parent="."]
 script = ExtResource("2_06db7")
+
+[connection signal="left_pressed" from="ControlPanel" to="MarginContainer/ImageLoader" method="_on_control_panel_left_pressed"]
+[connection signal="right_pressed" from="ControlPanel" to="MarginContainer/ImageLoader" method="_on_control_panel_right_pressed"]
+[connection signal="select_all_pressed" from="ControlPanel" to="MarginContainer/ImageLoader" method="_on_control_panel_select_all_pressed"]
+[connection signal="select_none_pressed" from="ControlPanel" to="MarginContainer/ImageLoader" method="_on_control_panel_select_none_pressed"]
