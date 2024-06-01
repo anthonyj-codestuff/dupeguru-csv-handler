@@ -1,31 +1,32 @@
-[gd_scene load_steps=29 format=3 uid="uid://mjocemssgx40"]
+[gd_scene load_steps=30 format=3 uid="uid://mjocemssgx40"]
 
-[ext_resource type="Texture2D" uid="uid://bebmvkp1yowe2" path="res://assets/keyicons/help.png" id="1_qkrw5"]
-[ext_resource type="Texture2D" uid="uid://bqucrjea4hmuj" path="res://assets/keyicons/help_hover.png" id="2_jml8w"]
-[ext_resource type="Texture2D" uid="uid://bht4dopmmo1qm" path="res://assets/keyicons/left.png" id="3_c80q1"]
-[ext_resource type="Texture2D" uid="uid://dhfnx2e3a81uv" path="res://assets/keyicons/left_pressed.png" id="4_lh203"]
-[ext_resource type="Texture2D" uid="uid://bcfmbgyqxm13f" path="res://assets/keyicons/left_hover.png" id="5_3b32y"]
-[ext_resource type="Texture2D" uid="uid://bmrangi1qcj5g" path="res://assets/keyicons/all.png" id="6_cxqak"]
-[ext_resource type="Texture2D" uid="uid://caf82y55fgoti" path="res://assets/keyicons/all_pressed.png" id="7_2p816"]
-[ext_resource type="Texture2D" uid="uid://dqbyeerfh6gsq" path="res://assets/keyicons/all_hover.png" id="8_f0235"]
-[ext_resource type="Texture2D" uid="uid://dguap6lmu5d13" path="res://assets/keyicons/none.png" id="9_vjhrn"]
-[ext_resource type="Texture2D" uid="uid://bbauyyjpi1pkc" path="res://assets/keyicons/none_pressed.png" id="10_rffj1"]
-[ext_resource type="Texture2D" uid="uid://bcw5pmawhmhf0" path="res://assets/keyicons/none_hover.png" id="11_qp6l7"]
-[ext_resource type="Texture2D" uid="uid://ksmuosu44ok4" path="res://assets/keyicons/right.png" id="12_b8nrk"]
-[ext_resource type="Texture2D" uid="uid://ig0ftud03mcy" path="res://assets/keyicons/right_pressed.png" id="13_qrnyn"]
-[ext_resource type="Texture2D" uid="uid://kv8fh4oits5" path="res://assets/keyicons/right_hover.png" id="14_iihtp"]
-[ext_resource type="Texture2D" uid="uid://ih8k5v62f0mp" path="res://assets/keyicons/commit.png" id="15_8jol7"]
-[ext_resource type="Texture2D" uid="uid://dulxy8mrfobpw" path="res://assets/keyicons/commit_pressed.png" id="16_tc0ui"]
-[ext_resource type="Texture2D" uid="uid://frxqyjki4kk3" path="res://assets/keyicons/commit_hover.png" id="17_fc64b"]
-[ext_resource type="Texture2D" uid="uid://bmf7k5du2joo6" path="res://assets/keyicons/commit_disabled.png" id="18_lma8f"]
-[ext_resource type="Texture2D" uid="uid://dxtyn8ojwmoju" path="res://assets/keyicons/undo.png" id="19_8wkl1"]
-[ext_resource type="Texture2D" uid="uid://d07novhypkyhg" path="res://assets/keyicons/undo_pressed.png" id="20_tgikn"]
-[ext_resource type="Texture2D" uid="uid://b6fxlg0bnfk1c" path="res://assets/keyicons/undo_hover.png" id="21_mofrs"]
-[ext_resource type="Texture2D" uid="uid://cdg5sbfe6x81j" path="res://assets/keyicons/undo_disabled.png" id="22_wvbve"]
-[ext_resource type="Texture2D" uid="uid://b3646a3ydqr3q" path="res://assets/keyicons/trash.png" id="23_q2xhl"]
-[ext_resource type="Texture2D" uid="uid://m3k76ss01yru" path="res://assets/keyicons/trash_pressed.png" id="24_ecaws"]
-[ext_resource type="Texture2D" uid="uid://d0np0g2jb7ch7" path="res://assets/keyicons/trash_hover.png" id="25_44043"]
-[ext_resource type="Texture2D" uid="uid://jwki3sfyd576" path="res://assets/keyicons/trash_disabled.png" id="26_4xn1v"]
+[ext_resource type="Theme" uid="uid://ifb2gtb5tddr" path="res://scenes/ControlPanel_BasicTheme.tres" id="1_aqfcd"]
+[ext_resource type="Texture2D" uid="uid://cqvauxpcr148i" path="res://assets/keyicons/help.png" id="1_qkrw5"]
+[ext_resource type="Texture2D" uid="uid://i8im4m28ud7s" path="res://assets/keyicons/help_hover.png" id="2_jml8w"]
+[ext_resource type="Texture2D" uid="uid://66mamxrbjrlh" path="res://assets/keyicons/left.png" id="3_c80q1"]
+[ext_resource type="Texture2D" uid="uid://dpkshmhkccknd" path="res://assets/keyicons/left_pressed.png" id="4_lh203"]
+[ext_resource type="Texture2D" uid="uid://qg0yljx0hkje" path="res://assets/keyicons/left_hover.png" id="5_3b32y"]
+[ext_resource type="Texture2D" uid="uid://dwepsaaxj6qnc" path="res://assets/keyicons/all.png" id="6_cxqak"]
+[ext_resource type="Texture2D" uid="uid://c8nkdo4yoc8qi" path="res://assets/keyicons/all_pressed.png" id="7_2p816"]
+[ext_resource type="Texture2D" uid="uid://b7eeueo7m1jhi" path="res://assets/keyicons/all_hover.png" id="8_f0235"]
+[ext_resource type="Texture2D" uid="uid://duc2xcv8gvqij" path="res://assets/keyicons/none.png" id="9_vjhrn"]
+[ext_resource type="Texture2D" uid="uid://byc3n00hkxxx4" path="res://assets/keyicons/none_pressed.png" id="10_rffj1"]
+[ext_resource type="Texture2D" uid="uid://b48xpm00mmdje" path="res://assets/keyicons/none_hover.png" id="11_qp6l7"]
+[ext_resource type="Texture2D" uid="uid://cq3pslpd48kj7" path="res://assets/keyicons/right.png" id="12_b8nrk"]
+[ext_resource type="Texture2D" uid="uid://ddluccarhhbtb" path="res://assets/keyicons/right_pressed.png" id="13_qrnyn"]
+[ext_resource type="Texture2D" uid="uid://ch2454sjfu3ch" path="res://assets/keyicons/right_hover.png" id="14_iihtp"]
+[ext_resource type="Texture2D" uid="uid://cvsnrmnruemlv" path="res://assets/keyicons/commit.png" id="15_8jol7"]
+[ext_resource type="Texture2D" uid="uid://c7ray1qobl3pm" path="res://assets/keyicons/commit_pressed.png" id="16_tc0ui"]
+[ext_resource type="Texture2D" uid="uid://cjrjlc1ck0ifm" path="res://assets/keyicons/commit_hover.png" id="17_fc64b"]
+[ext_resource type="Texture2D" uid="uid://drnr37o2omgoc" path="res://assets/keyicons/commit_disabled.png" id="18_lma8f"]
+[ext_resource type="Texture2D" uid="uid://co52jpvl8wbli" path="res://assets/keyicons/undo.png" id="19_8wkl1"]
+[ext_resource type="Texture2D" uid="uid://5orbdkicq703" path="res://assets/keyicons/undo_pressed.png" id="20_tgikn"]
+[ext_resource type="Texture2D" uid="uid://bywuo5ua2uxaw" path="res://assets/keyicons/undo_hover.png" id="21_mofrs"]
+[ext_resource type="Texture2D" uid="uid://b0rciqlo5q72d" path="res://assets/keyicons/undo_disabled.png" id="22_wvbve"]
+[ext_resource type="Texture2D" uid="uid://d2mflgdnng06" path="res://assets/keyicons/trash.png" id="23_q2xhl"]
+[ext_resource type="Texture2D" uid="uid://bkenfi36q12iq" path="res://assets/keyicons/trash_pressed.png" id="24_ecaws"]
+[ext_resource type="Texture2D" uid="uid://caysrd0ffel2e" path="res://assets/keyicons/trash_hover.png" id="25_44043"]
+[ext_resource type="Texture2D" uid="uid://c12xkuieuvlp8" path="res://assets/keyicons/trash_disabled.png" id="26_4xn1v"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_al5kg"]
 content_margin_left = 10.0
@@ -41,33 +42,46 @@ corner_radius_bottom_left = 3
 [sub_resource type="Theme" id="Theme_5qh80"]
 TooltipPanel/styles/panel = SubResource("StyleBoxFlat_al5kg")
 
-[node name="ControlPanel" type="Control"]
-layout_mode = 3
+[node name="ControlPanel" type="HBoxContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="TextureRect2" type="Panel" parent="."]
-z_index = 1
-layout_direction = 2
-layout_mode = 0
-offset_left = 15.0
-offset_top = 655.0
-offset_right = 65.0
-offset_bottom = 705.0
 size_flags_horizontal = 3
+size_flags_vertical = 10
+alignment = 1
 
-[node name="BoxContainer" type="BoxContainer" parent="."]
+[node name="LeftControls" type="Control" parent="."]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 8
+
+[node name="TextureRect2" type="Panel" parent="LeftControls"]
+z_index = 1
+custom_minimum_size = Vector2(50, 50)
+layout_direction = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_aqfcd")
+
+[node name="BoxContainer" type="BoxContainer" parent="LeftControls"]
 z_index = 3
-layout_mode = 0
-offset_left = 15.0
-offset_top = 655.0
-offset_right = 65.0
-offset_bottom = 705.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
 
-[node name="Query" type="TextureButton" parent="BoxContainer"]
+[node name="Query" type="TextureButton" parent="LeftControls/BoxContainer"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 tooltip_text = "Which images get auto-selected?
@@ -80,125 +94,148 @@ Images are not deleted until the Delete All button is pressed."
 theme = SubResource("Theme_5qh80")
 texture_normal = ExtResource("1_qkrw5")
 texture_hover = ExtResource("2_jml8w")
-stretch_mode = 0
+stretch_mode = 5
 
-[node name="TextureRect" type="Panel" parent="."]
+[node name="InvisibleMiddleSpacer" type="Panel" parent="."]
+modulate = Color(0, 0, 0, 0)
 z_index = 1
+custom_minimum_size = Vector2(50, 50)
 layout_direction = 2
-layout_mode = 0
-offset_left = 512.0
-offset_top = 655.0
-offset_right = 768.0
-offset_bottom = 705.0
-size_flags_horizontal = 3
+layout_mode = 2
+size_flags_vertical = 8
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-z_index = 3
-layout_mode = 1
-offset_left = 512.0
-offset_top = 655.0
-offset_right = 768.0
-offset_bottom = 705.0
-size_flags_horizontal = 3
-theme_override_constants/separation = 5
-
-[node name="Left" type="TextureButton" parent="HBoxContainer"]
+[node name="MiddleControls" type="Control" parent="."]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+
+[node name="TextureRect" type="Panel" parent="MiddleControls"]
+z_index = 1
+custom_minimum_size = Vector2(50, 50)
+layout_direction = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_aqfcd")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MiddleControls"]
+z_index = 3
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MiddleControls/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Left" type="TextureButton" parent="MiddleControls/HBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 3
 tooltip_text = "Previous Group"
 texture_normal = ExtResource("3_c80q1")
 texture_pressed = ExtResource("4_lh203")
 texture_hover = ExtResource("5_3b32y")
-stretch_mode = 0
+stretch_mode = 5
 
-[node name="Container" type="Container" parent="HBoxContainer"]
-custom_minimum_size = Vector2(10, 2.08165e-12)
+[node name="Select All" type="TextureButton" parent="MiddleControls/HBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="Select All" type="TextureButton" parent="HBoxContainer"]
-layout_mode = 2
 tooltip_text = "Select All"
 texture_normal = ExtResource("6_cxqak")
 texture_pressed = ExtResource("7_2p816")
 texture_hover = ExtResource("8_f0235")
-stretch_mode = 0
+stretch_mode = 5
 
-[node name="Container2" type="Container" parent="HBoxContainer"]
-custom_minimum_size = Vector2(10, 2.08165e-12)
+[node name="Deselect" type="TextureButton" parent="MiddleControls/HBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="Deselect" type="TextureButton" parent="HBoxContainer"]
-layout_mode = 2
 tooltip_text = "Select None"
 texture_normal = ExtResource("9_vjhrn")
 texture_pressed = ExtResource("10_rffj1")
 texture_hover = ExtResource("11_qp6l7")
-stretch_mode = 0
+stretch_mode = 5
 
-[node name="Container3" type="Container" parent="HBoxContainer"]
-custom_minimum_size = Vector2(10, 2.08165e-12)
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Right" type="TextureButton" parent="HBoxContainer"]
+[node name="Right" type="TextureButton" parent="MiddleControls/HBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
+size_flags_horizontal = 3
 tooltip_text = "Next Group"
 texture_normal = ExtResource("12_b8nrk")
 texture_pressed = ExtResource("13_qrnyn")
 texture_hover = ExtResource("14_iihtp")
-stretch_mode = 0
+stretch_mode = 5
 
-[node name="TextureRect3" type="Panel" parent="."]
-z_index = 1
-layout_direction = 2
-layout_mode = 0
-offset_left = 783.0
-offset_top = 655.0
-offset_right = 833.0
-offset_bottom = 705.0
-size_flags_horizontal = 3
-
-[node name="BoxContainer2" type="BoxContainer" parent="."]
-z_index = 3
-layout_mode = 0
-offset_left = 783.0
-offset_top = 655.0
-offset_right = 833.0
-offset_bottom = 705.0
-
-[node name="Commit" type="TextureButton" parent="BoxContainer2"]
+[node name="Commit" type="TextureButton" parent="."]
+custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_vertical = 8
 tooltip_text = "Stage Selected Images"
 disabled = true
 texture_normal = ExtResource("15_8jol7")
 texture_pressed = ExtResource("16_tc0ui")
 texture_hover = ExtResource("17_fc64b")
 texture_disabled = ExtResource("18_lma8f")
-stretch_mode = 0
+stretch_mode = 5
 
-[node name="TextureRect4" type="Panel" parent="."]
+[node name="TextureRect2" type="Panel" parent="Commit"]
 z_index = 1
+custom_minimum_size = Vector2(50, 50)
 layout_direction = 2
-layout_mode = 0
-offset_left = 1215.0
-offset_top = 591.0
-offset_right = 1265.0
-offset_bottom = 705.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
+theme = ExtResource("1_aqfcd")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="RightControls" type="Control" parent="."]
+custom_minimum_size = Vector2(50, 110)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 8
+
+[node name="TextureRect4" type="Panel" parent="RightControls"]
+z_index = 1
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_aqfcd")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightControls"]
 z_index = 3
-layout_mode = 0
-offset_left = 1215.0
-offset_top = 591.0
-offset_right = 1265.0
-offset_bottom = 705.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+alignment = 1
 
-[node name="Undo" type="TextureButton" parent="VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="RightControls/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_top = 5
+
+[node name="Undo" type="TextureButton" parent="RightControls/VBoxContainer/MarginContainer"]
 layout_mode = 2
 tooltip_text = "Undelete Last Group"
 disabled = true
@@ -206,18 +243,15 @@ texture_normal = ExtResource("19_8wkl1")
 texture_pressed = ExtResource("20_tgikn")
 texture_hover = ExtResource("21_mofrs")
 texture_disabled = ExtResource("22_wvbve")
-stretch_mode = 0
+stretch_mode = 5
 
-[node name="Container" type="Container" parent="VBoxContainer"]
-custom_minimum_size = Vector2(2.08165e-12, 10)
+[node name="Delete" type="TextureButton" parent="RightControls/VBoxContainer"]
 layout_mode = 2
-
-[node name="Delete" type="TextureButton" parent="VBoxContainer"]
-layout_mode = 2
+size_flags_vertical = 10
 tooltip_text = "Delete All Selected"
 disabled = true
 texture_normal = ExtResource("23_q2xhl")
 texture_pressed = ExtResource("24_ecaws")
 texture_hover = ExtResource("25_44043")
 texture_disabled = ExtResource("26_4xn1v")
-stretch_mode = 0
+stretch_mode = 5

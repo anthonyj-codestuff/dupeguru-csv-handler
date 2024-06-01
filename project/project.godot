@@ -26,7 +26,7 @@ window/size/viewport_width=1280
 window/size/viewport_height=720
 window/size/initial_position_type=0
 window/stretch/mode="canvas_items"
-window/stretch/aspect="ignore"
+window/stretch/aspect="expand"
 mouse_cursor/custom_image_hotspot=Vector2(1, 1)
 
 [importer_defaults]

@@ -4,6 +4,7 @@ var logger = LogWriter.new()
 
 @onready var BorderNode
 @onready var TextureNode
+@onready var TextureNodeBG
 @onready var FilenameLabelNode
 @onready var InfoLabelNode
 @onready var ReasonsLabelNode
@@ -19,10 +20,10 @@ func _process(delta):
 
 func setProperties(options:ImageOptions):
 	BorderNode = get_node("SelectedBorder")
-	TextureNode = get_node("PanelContainer/TextureRect")
-	FilenameLabelNode = get_node("PanelContainer/MarginContainer/FilenameLabel")
-	InfoLabelNode = get_node("PanelContainer/MarginContainer/HBoxContainer/InfoLabel")
-	ReasonsLabelNode = get_node("PanelContainer/MarginContainer/HBoxContainer/ReasonsLabel")
+	TextureNode = get_node("TextureRect")
+	FilenameLabelNode = get_node("PanelContainer/MarginContainer/VBoxContainer/FilenameLabel")
+	InfoLabelNode = get_node("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/InfoLabel")
+	ReasonsLabelNode = get_node("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/ReasonsLabel")
 	BorderNode.visible = false
 	if not options.initLoadingError:
 		imageOptions = options
