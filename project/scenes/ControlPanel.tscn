@@ -1,5 +1,6 @@
-[gd_scene load_steps=29 format=3 uid="uid://mjocemssgx40"]
+[gd_scene load_steps=30 format=3 uid="uid://mjocemssgx40"]
 
+[ext_resource type="Script" path="res://scenes/ControlPanel.gd" id="1_bf573"]
 [ext_resource type="Texture2D" uid="uid://bebmvkp1yowe2" path="res://assets/keyicons/help.png" id="1_qkrw5"]
 [ext_resource type="Texture2D" uid="uid://bqucrjea4hmuj" path="res://assets/keyicons/help_hover.png" id="2_jml8w"]
 [ext_resource type="Texture2D" uid="uid://bht4dopmmo1qm" path="res://assets/keyicons/left.png" id="3_c80q1"]
@@ -48,6 +49,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_bf573")
 
 [node name="TextureRect2" type="Panel" parent="."]
 z_index = 1
@@ -221,3 +223,11 @@ texture_pressed = ExtResource("24_ecaws")
 texture_hover = ExtResource("25_44043")
 texture_disabled = ExtResource("26_4xn1v")
 stretch_mode = 0
+
+[connection signal="pressed" from="HBoxContainer/Left" to="." method="_on_left_pressed"]
+[connection signal="pressed" from="HBoxContainer/Select All" to="." method="_on_select_all_pressed"]
+[connection signal="pressed" from="HBoxContainer/Deselect" to="." method="_on_deselect_pressed"]
+[connection signal="pressed" from="HBoxContainer/Right" to="." method="_on_right_pressed"]
+[connection signal="pressed" from="BoxContainer2/Commit" to="." method="_on_commit_pressed"]
+[connection signal="pressed" from="VBoxContainer/Undo" to="." method="_on_undo_pressed"]
+[connection signal="pressed" from="VBoxContainer/Delete" to="." method="_on_delete_pressed"]

@@ -1,5 +1,5 @@
 extends Control
-const MODULE_NAME = "ImageLoader"
+const MODULE_NAME = " "
 var logger = LogWriter.new()
 var ImageScenePacked = preload("res://scenes/Image.tscn")
 
@@ -124,7 +124,24 @@ func getPrevGroupZeroIndex(currentIndex: int):
 		# this will happen if there is only one valid group in dupedata
 		return null
 
-func _on_left_pressed()->void:
+####################################
+
+signal no_images_selected()
+signal some_images_selected()
+signal no_deletes_committed()
+signal some_deletes_committed()
+
+func _on_control_panel_select_all_pressed():
+	for node in imageNodes:
+		node.select()
+	pass
+
+func _on_control_panel_select_none_pressed():
+	for node in imageNodes:
+		node.deselect()
+	pass 
+
+func _on_control_panel_left_pressed()->void:
 	clearImageNodes()
 	if not dupeData.size():
 		return
@@ -135,7 +152,7 @@ func _on_left_pressed()->void:
 		selector.autoSelectNodes(imageNodes)
 	pass
 
-func _on_right_pressed()->void:
+func _on_control_panel_right_pressed()->void:
 	clearImageNodes()
 	if not dupeData.size():
 		return
@@ -145,15 +162,3 @@ func _on_right_pressed()->void:
 		loadImageNodeGroupByStartingIndex(currentIndex)
 		selector.autoSelectNodes(imageNodes)
 	pass
-
-
-func _on_select_all_pressed():
-	for node in imageNodes:
-		node.select()
-	pass # Replace with function body.
-
-
-func _on_deselect_pressed():
-	for node in imageNodes:
-		node.deselect()
-	pass # Replace with function body.
