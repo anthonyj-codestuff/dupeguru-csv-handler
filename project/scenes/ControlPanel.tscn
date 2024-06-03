@@ -55,6 +55,7 @@ alignment = 1
 script = ExtResource("1_rgujp")
 
 [node name="LeftControls" type="Control" parent="."]
+z_index = 9
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 size_flags_horizontal = 2
@@ -107,6 +108,7 @@ layout_mode = 2
 size_flags_vertical = 8
 
 [node name="MiddleControls" type="Control" parent="."]
+z_index = 9
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -179,7 +181,7 @@ texture_hover = ExtResource("14_iihtp")
 stretch_mode = 5
 
 [node name="Commit" type="TextureButton" parent="."]
-z_index = 1
+z_index = 11
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 size_flags_vertical = 8
@@ -205,6 +207,7 @@ size_flags_horizontal = 3
 theme = ExtResource("1_aqfcd")
 
 [node name="RightControls" type="Control" parent="."]
+z_index = 9
 custom_minimum_size = Vector2(50, 110)
 layout_mode = 2
 size_flags_horizontal = 10
