@@ -45,10 +45,10 @@ func addPotentialDeletionReason(reason: String = ""):
 ####################################
 
 func _on_image_button_pressed():
-	if imageOptions.selected:
-		deselectFromUser()
-	else:
+	if !imageOptions.selected and imageOptions.fileExists:
 		selectFromUser()
+	else:
+		deselectFromUser()
 
 func selectFromUser():
 	selectInternal()

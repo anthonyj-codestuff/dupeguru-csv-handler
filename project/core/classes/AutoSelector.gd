@@ -11,7 +11,7 @@ var logger = LogWriter.new()
 
 func autoSelectNodes(nodes: Array):
 	# Do no attempt to compare nodes if any had issues loading properties
-	if nodes.all(func(node): return !node.imageOptions.initLoadingError):
+	if nodes.all(func(node): return !node.imageOptions.initLoadingError and node.imageOptions.fileExists):
 		var nodesToMark = []
 		var keepLooking: bool = true
 

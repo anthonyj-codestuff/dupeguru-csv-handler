@@ -27,6 +27,7 @@ var pyCreationDateUnix: int
 # Control variables
 var initLoadingError: bool = false
 var selected: bool = false
+var fileExists: bool = false
 
 func _init(index, values: Dictionary, python):
 	if not index and index != 0 or not index is int:
@@ -64,6 +65,8 @@ func setRequiredValues(values):
 		initLoadingError = true
 	else:
 		imageFolder = values["Folder"]
+
+	fileExists = FileAccess.file_exists(imageFolder.path_join(imageFilename))
 
 func setOptionalValues(values):
 	if not values["Size (KB)"] or not values["Size (KB)"] is int:
