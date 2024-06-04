@@ -4,12 +4,10 @@ var logger = LogWriter.new()
 
 @onready var BorderNode
 @onready var TextureNode
-@onready var TextureNodeBG
 @onready var FilenameLabelNode
 @onready var InfoLabelNode
 @onready var ReasonsLabelNode
 var imageOptions: ImageOptions
-var styleBox: StyleBoxFlat
 var autoselectReasons = []
 
 func setProperties(options:ImageOptions):

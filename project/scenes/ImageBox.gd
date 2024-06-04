@@ -11,16 +11,16 @@ func _ready():
 func addImageNode(node):
 	add_child(node)
 
+
+
 # From instantiated Image nodes
 func _on_image_selected(value):
-	logger.info("image selected [%s]" % value, MODULE_NAME)
 	if imageLoaderNode.someImagesAreSelected():
 		SignalBus.emit_signal("some_images_selected")
 	else:
 		SignalBus.emit_signal("no_images_selected")
 
 func _on_image_deselected(value):
-	logger.info("image deselected [%s]" % value, MODULE_NAME)
 	if imageLoaderNode.someImagesAreSelected():
 		SignalBus.emit_signal("some_images_selected")
 	else:
