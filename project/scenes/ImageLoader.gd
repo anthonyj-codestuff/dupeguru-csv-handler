@@ -1,5 +1,5 @@
 extends Control
-const MODULE_NAME = " "
+const MODULE_NAME = "ImageLoader"
 var logger = LogWriter.new()
 var ImageScenePacked = preload("res://scenes/Image.tscn")
 
@@ -15,8 +15,14 @@ var imageNodes = []
 # if on group 2 of [0,0,1,1,2,2,3,3,3], index should be 4
 var currentIndex = 0
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
+	SignalBus.select_all_pressed.connect(_on_control_panel_select_all_pressed)
+	SignalBus.select_none_pressed.connect(_on_control_panel_select_none_pressed)
+	SignalBus.left_pressed.connect(_on_control_panel_left_pressed)
+	SignalBus.right_pressed.connect(_on_control_panel_right_pressed)
+	SignalBus.commit_pressed.connect(_on_control_panel_commit_pressed)
+	SignalBus.undo_pressed.connect(_on_control_panel_undo_pressed)
+	SignalBus.delete_pressed.connect(_on_control_panel_delete_pressed)
 	dupeData = Utils.importCSV(Data.CSV_FILE_PATH, Data.CSV_OPTIONS)
 	var headers: Array = Array(dupeData[0]) if dupeData else []
 	# if the CSV file does not have the absolutely necessary keys,
@@ -69,6 +75,7 @@ func createImageNodeByIndex(index:int):
 	imageBoxNode.addImageNode(newNode)
 	# add new node to list
 	imageNodes.append(newNode)
+#	newNode.connect("image_node_clicked", )
 	pass
 
 func clearImageNodes():
@@ -76,6 +83,10 @@ func clearImageNodes():
 		n.queue_free()
 	imageNodes = []
 	pass
+
+func someImagesAreSelected()->bool:
+	var count = imageNodes.filter(func(node): return node.imageOptions.selected == true).size()
+	return count > 0
 
 func getNextGroupZeroIndex(currentIndex: int):
 	if not dupeData.size():
@@ -126,19 +137,16 @@ func getPrevGroupZeroIndex(currentIndex: int):
 
 ####################################
 
-signal no_images_selected()
-signal some_images_selected()
-signal no_deletes_committed()
-signal some_deletes_committed()
-
 func _on_control_panel_select_all_pressed():
 	for node in imageNodes:
-		node.select()
+		node.selectInternal()
+	SignalBus.emit_signal("some_images_selected")
 	pass
 
 func _on_control_panel_select_none_pressed():
 	for node in imageNodes:
-		node.deselect()
+		node.deselectInternal()
+	SignalBus.emit_signal("no_images_selected")
 	pass 
 
 func _on_control_panel_left_pressed()->void:
@@ -150,6 +158,10 @@ func _on_control_panel_left_pressed()->void:
 	if currentIndex != null:
 		loadImageNodeGroupByStartingIndex(currentIndex)
 		selector.autoSelectNodes(imageNodes)
+		if someImagesAreSelected():
+			SignalBus.emit_signal("some_images_selected")
+		else:
+			SignalBus.emit_signal("no_images_selected")
 	pass
 
 func _on_control_panel_right_pressed()->void:
@@ -161,13 +173,20 @@ func _on_control_panel_right_pressed()->void:
 	if currentIndex != null:
 		loadImageNodeGroupByStartingIndex(currentIndex)
 		selector.autoSelectNodes(imageNodes)
+		if someImagesAreSelected():
+			SignalBus.emit_signal("some_images_selected")
+		else:
+			SignalBus.emit_signal("no_images_selected")
 	pass
 
 func _on_control_panel_commit_pressed():
+	logger.info("Hit function for commit", MODULE_NAME)
 	pass # Replace with function body.
 
 func _on_control_panel_undo_pressed():
+	logger.info("Hit function for undo", MODULE_NAME)
 	pass # Replace with function body.
 
 func _on_control_panel_delete_pressed():
+	logger.info("Hit function for delete", MODULE_NAME)
 	pass # Replace with function body.

@@ -49,17 +49,29 @@ func addPotentialDeletionReason(reason: String = ""):
 		autoselectReasons.append(reason)
 		ReasonsLabelNode.text = "\n".join(autoselectReasons)
 
-func select():
-	imageOptions.selected = true
-	BorderNode.visible = true
-	
-func deselect():
-	imageOptions.selected = false
-	BorderNode.visible = false
+####################################
 
 func _on_image_button_pressed():
 	if imageOptions.selected:
-		deselect()
+		deselectFromUser()
 	else:
-		select()
+		selectFromUser()
 	pass
+
+func selectFromUser():
+	selectInternal()
+	SignalBus.emit_signal("image_selected", imageOptions.imageFilename)
+	
+func deselectFromUser():
+	deselectInternal()
+	SignalBus.emit_signal("image_deselected", imageOptions.imageFilename)
+
+func selectInternal():
+	# called directly by ControlPanel
+	imageOptions.selected = true
+	BorderNode.visible = true
+	
+func deselectInternal():
+	# called directly by ControlPanel
+	imageOptions.selected = false
+	BorderNode.visible = false

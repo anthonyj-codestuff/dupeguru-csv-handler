@@ -48,7 +48,7 @@ func autoSelectNodes(nodes: Array):
 		# at this point, all nodes have been marked against all others
 		# and the first n-1 have been selected (maximum)
 		for node in nodesToMark:
-			node.select()
+			node.selectInternal()
 	pass
 	
 func imageIsSmaller(target, nodes: Array):
