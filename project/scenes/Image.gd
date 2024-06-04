@@ -58,8 +58,9 @@ func deselectFromUser():
 
 func selectInternal():
 	# called directly by ControlPanel
-	imageOptions.selected = true
-	BorderNode.visible = true
+	if imageOptions.fileExists:
+		imageOptions.selected = true
+		BorderNode.visible = true
 	
 func deselectInternal():
 	# called directly by ControlPanel
