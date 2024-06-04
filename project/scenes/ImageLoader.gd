@@ -249,20 +249,13 @@ func _on_control_panel_undo_pressed():
 				uncommitMore = false
 			else:
 				committedImages.pop_back()
-		# if the user is viewing the group, refresh the page
-		var currentGroup
-		if imageNodes.size():
-			currentGroup = imageNodes[0].imageOptions.groupId
-		else:
-			# if the user uncommits the final group, there will be no current group
-			# manually set the current index to fix this
-			currentIndex = getNextGroupZeroIndex(0)
-			currentGroup = dupeData[currentIndex]["Group ID"]
-			noImagesNode.visible = false
-		if currentGroup == groupToUncommit:
-			clearImageNodes()
-			loadImageNodeGroupByStartingIndex(currentIndex)
+		# after uncomitting, load the uncomitted group and re-auto-select
+		var uncomittedGroup = getIndexListForGroupId(groupToUncommit)
+		currentIndex = uncomittedGroup[0]
+		clearImageNodes()
+		loadImageNodeGroupByStartingIndex(currentIndex)
 		updateCommitLabels()
+		selector.autoSelectNodes(imageNodes)
 
 func _on_control_panel_delete_pressed():
 	logger.info("Hit function for delete", MODULE_NAME)
