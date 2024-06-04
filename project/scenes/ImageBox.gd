@@ -7,11 +7,9 @@ var logger = LogWriter.new()
 func _ready():
 	SignalBus.image_selected.connect(_on_image_selected)
 	SignalBus.image_deselected.connect(_on_image_deselected)
-	pass
 
 func addImageNode(node):
 	add_child(node)
-	pass
 
 # From instantiated Image nodes
 func _on_image_selected(value):
@@ -20,7 +18,6 @@ func _on_image_selected(value):
 		SignalBus.emit_signal("some_images_selected")
 	else:
 		SignalBus.emit_signal("no_images_selected")
-	pass
 
 func _on_image_deselected(value):
 	logger.info("image deselected [%s]" % value, MODULE_NAME)
@@ -28,4 +25,3 @@ func _on_image_deselected(value):
 		SignalBus.emit_signal("some_images_selected")
 	else:
 		SignalBus.emit_signal("no_images_selected")
-	pass

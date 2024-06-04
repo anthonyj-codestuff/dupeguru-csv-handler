@@ -12,12 +12,6 @@ var imageOptions: ImageOptions
 var styleBox: StyleBoxFlat
 var autoselectReasons = []
 
-func _ready():
-	pass
-
-func _process(delta):
-	pass
-
 func setProperties(options:ImageOptions):
 	BorderNode = get_node("SelectedBorder")
 	TextureNode = get_node("TextureRect")
@@ -32,7 +26,6 @@ func setProperties(options:ImageOptions):
 		InfoLabelNode.text = imageOptions.getStatsReadableString()
 	else:
 		loadImageFile("", TextureNode)
-	pass
 
 func loadImageFile(path: String, node: Node):
 	node.texture = Utils.loadImageToTexture(path)
@@ -56,7 +49,6 @@ func _on_image_button_pressed():
 		deselectFromUser()
 	else:
 		selectFromUser()
-	pass
 
 func selectFromUser():
 	selectInternal()

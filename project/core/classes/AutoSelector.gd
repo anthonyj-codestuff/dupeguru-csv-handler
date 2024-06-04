@@ -1,4 +1,6 @@
 extends Node
+const MODULE_NAME = "AutoSelector"
+var logger = LogWriter.new()
 
 #~~~~~~~~~~#
 # Basically what this does is look at all of the nodes that are currently
@@ -49,8 +51,7 @@ func autoSelectNodes(nodes: Array):
 		# and the first n-1 have been selected (maximum)
 		for node in nodesToMark:
 			node.selectInternal()
-	pass
-	
+
 func imageIsSmaller(target, nodes: Array):
 	# returns true if any other image has more pixels
 	var isSmaller: bool = false

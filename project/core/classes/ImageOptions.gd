@@ -45,7 +45,6 @@ func _init(index, values: Dictionary, python):
 		logger.error("error detected with dictionary ["+str(values)+"]", MODULE_NAME)
 	else:
 		logger.info("options for node "+str(dictIndex)+" loaded successfully", MODULE_NAME)
-	pass
 
 func setRequiredValues(values):
 	if not values["Group ID"] and values["Group ID"] != 0 or not values["Group ID"] is int:
@@ -114,7 +113,6 @@ func setDerivedValues(values):
 		dateAndTime[0] = dateAndTime[0].replace("/", "-")
 		var ISO8601Datestring = "T".join(dateAndTime)
 		modificationDateUnix = Time.get_unix_time_from_datetime_string(ISO8601Datestring)
-	pass
 
 func setExtendedStats(filepath, python):
 	var stats = python.getFileProperties(filepath)
@@ -132,7 +130,6 @@ func setExtendedStats(filepath, python):
 		imageHeight = stats.imageHeight
 	if "imageDimensionsReadable" in stats and not imageDimensionsReadable:
 		imageDimensionsReadable = stats.imageDimensionsReadable
-	pass
 
 func getStatsReadableString():
 	var strings = []

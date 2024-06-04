@@ -1,4 +1,6 @@
 extends Node
+const MODULE_NAME = "SignalBus"
+var logger = LogWriter.new()
 # checked when an image is de/selected or staged for deletion
 # used to control which buttons are disabled
 signal no_images_selected

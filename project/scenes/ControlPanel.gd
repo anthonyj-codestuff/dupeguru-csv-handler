@@ -11,9 +11,8 @@ func _ready():
 	SignalBus.some_images_selected.connect(_on_image_loader_some_images_selected)
 	SignalBus.no_deletes_committed.connect(_on_image_loader_no_deletes_committed)
 	SignalBus.some_deletes_committed.connect(_on_image_loader_some_deletes_committed)
-	pass
 
-# From ControlPanel
+# Emitted signals
 func _on_select_all_pressed():
 	logger.info("emitting signal [select_all_pressed]", MODULE_NAME)
 	SignalBus.emit_signal("select_all_pressed")
@@ -45,18 +44,14 @@ func _on_delete_pressed():
 # From ImageLoader
 func _on_image_loader_no_images_selected():
 	commitNode.disabled = true
-	pass
 
 func _on_image_loader_some_images_selected():
 	commitNode.disabled = false
-	pass
 
 func _on_image_loader_no_deletes_committed():
 	undoNode.disabled = true
 	deleteNode.disabled = true
-	pass
 
 func _on_image_loader_some_deletes_committed():
 	undoNode.disabled = false
 	deleteNode.disabled = false
-	pass

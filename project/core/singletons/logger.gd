@@ -50,4 +50,3 @@ func _write(level: int, module: String, text: String) -> void:
 	elif level == 2 || level == 3:
 		print_rich("[color=red]%s[/color]" % [content])
 		print_stack()
-	pass
