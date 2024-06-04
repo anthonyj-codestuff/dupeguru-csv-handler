@@ -90,8 +90,9 @@ func loadImageNodeGroupByStartingIndex(startingIndex: int):
 	var groupIndices = []
 	groupIndices.append(startingIndex)
 	while(index+1 < dupeData.size() and dupeData[index+1]["Group ID"] == currentGroup):
-		# this should usually only run once
-		groupIndices.append(index+1)
+		if not committedImages.has(index+1):
+			# it's fine to load a group with committed images, but do not render them
+			groupIndices.append(index+1)
 		index+=1
 	for i in groupIndices:
 		createImageNodeByIndex(i)
@@ -162,9 +163,18 @@ func getPrevGroupZeroIndex(currentIndex: int):
 		# this will happen if there is only one valid group in dupedata
 		return null
 
-func updateCommitCount():
+func updateCommitLabels():
 	if committedImages.size():
-		SignalBus.some_deletes_committed.emit(committedImages.size())
+		var committedCount = committedImages.size()
+		var lastUndoGroup = dupeData[committedImages[-1]]["Group ID"]
+		var lastUndoCount = 0
+		for i in range(committedImages.size()-1,-1,-1):
+			var group = dupeData[committedImages[i]]["Group ID"]
+			if group == lastUndoGroup:
+				lastUndoCount += 1
+			else:
+				break
+		SignalBus.some_deletes_committed.emit(committedCount, lastUndoCount)
 	else:
 		SignalBus.no_deletes_committed.emit()
 
@@ -221,13 +231,38 @@ func _on_control_panel_commit_pressed():
 			logger.info("committing [%s]" % imageNodes[i].imageOptions.imageFilename, MODULE_NAME)
 			committedImages.append(imageNodes[i].imageOptions.dictIndex)
 			imageNodes.pop_at(i).queue_free()
-	updateCommitCount()
+	updateCommitLabels()
 	if imageNodes.filter(func(n): return n.imageOptions.fileExists).size() < 2:
 		# if the remaining nodes have 1 or 0 images remaining, move on to the next group
 		_on_control_panel_right_pressed()
 
 func _on_control_panel_undo_pressed():
-	logger.info("Hit function for undo", MODULE_NAME)
+	# uncommit all consectutive images of the last committed group
+	if committedImages.size():
+		var lastImageIndex = committedImages[-1]
+		var groupToUncommit = dupeData[lastImageIndex]["Group ID"]
+		var uncommitMore = true
+		while uncommitMore and committedImages.size():
+			lastImageIndex = committedImages[-1]
+			var groupId = dupeData[lastImageIndex]["Group ID"]
+			if groupId != groupToUncommit:
+				uncommitMore = false
+			else:
+				committedImages.pop_back()
+		# if the user is viewing the group, refresh the page
+		var currentGroup
+		if imageNodes.size():
+			currentGroup = imageNodes[0].imageOptions.groupId
+		else:
+			# if the user uncommits the final group, there will be no current group
+			# manually set the current index to fix this
+			currentIndex = getNextGroupZeroIndex(0)
+			currentGroup = dupeData[currentIndex]["Group ID"]
+			noImagesNode.visible = false
+		if currentGroup == groupToUncommit:
+			clearImageNodes()
+			loadImageNodeGroupByStartingIndex(currentIndex)
+		updateCommitLabels()
 
 func _on_control_panel_delete_pressed():
 	logger.info("Hit function for delete", MODULE_NAME)

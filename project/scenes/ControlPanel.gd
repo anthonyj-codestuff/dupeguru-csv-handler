@@ -6,6 +6,7 @@ var logger = LogWriter.new()
 @onready var undoNode = get_node("RightControls/VBoxContainer/MarginContainer/Undo")
 @onready var deleteNode = get_node("RightControls/VBoxContainer/Delete")
 @onready var commitCountNode = get_node("RightControls/CommitCount")
+@onready var undoCountNode = get_node("RightControls/UndoCount")
 
 func _ready():
 	SignalBus.no_images_selected.connect(_on_image_loader_no_images_selected)
@@ -52,9 +53,11 @@ func _on_image_loader_some_images_selected():
 func _on_image_loader_no_deletes_committed():
 	undoNode.disabled = true
 	deleteNode.disabled = true
-	commitCountNode.text = "0"
+	commitCountNode.text = ""
+	undoCountNode.text = ""
 
-func _on_image_loader_some_deletes_committed(num: int):
+func _on_image_loader_some_deletes_committed(commitNum: int, undoNum: int):
 	undoNode.disabled = false
 	deleteNode.disabled = false
-	commitCountNode.text = str(num)
+	commitCountNode.text = str(commitNum)
+	undoCountNode.text = str(undoNum)
