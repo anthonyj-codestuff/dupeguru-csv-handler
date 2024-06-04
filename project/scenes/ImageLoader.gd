@@ -110,8 +110,7 @@ func clearImageNodes():
 	imageNodes = []
 
 func someImagesAreSelected()->bool:
-	var count = imageNodes.filter(func(node): return node.imageOptions.selected == true).size()
-	return count > 0
+	return imageNodes.any(func(node): return node.imageOptions.selected == true)
 
 func getNextGroupZeroIndex(currentIndex: int):
 	if not dupeData.size():
@@ -163,6 +162,12 @@ func getPrevGroupZeroIndex(currentIndex: int):
 		# this will happen if there is only one valid group in dupedata
 		return null
 
+func updateCommitCount():
+	if committedImages.size():
+		SignalBus.some_deletes_committed.emit(committedImages.size())
+	else:
+		SignalBus.no_deletes_committed.emit()
+
 ####################################
 
 func _on_control_panel_select_all_pressed():
@@ -190,6 +195,7 @@ func _on_control_panel_left_pressed()->void:
 			SignalBus.emit_signal("no_images_selected")
 	else:
 		noImagesNode.visible = true
+		SignalBus.emit_signal("no_images_selected")
 
 func _on_control_panel_right_pressed()->void:
 	clearImageNodes()
@@ -206,6 +212,7 @@ func _on_control_panel_right_pressed()->void:
 			SignalBus.emit_signal("no_images_selected")
 	else:
 		noImagesNode.visible = true
+		SignalBus.emit_signal("no_images_selected")
 
 func _on_control_panel_commit_pressed():
 	# add all selected images to commit list, remove nodes from tree
@@ -214,6 +221,7 @@ func _on_control_panel_commit_pressed():
 			logger.info("committing [%s]" % imageNodes[i].imageOptions.imageFilename, MODULE_NAME)
 			committedImages.append(imageNodes[i].imageOptions.dictIndex)
 			imageNodes.pop_at(i).queue_free()
+	updateCommitCount()
 	if imageNodes.filter(func(n): return n.imageOptions.fileExists).size() < 2:
 		# if the remaining nodes have 1 or 0 images remaining, move on to the next group
 		_on_control_panel_right_pressed()
