@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://dnh2tu3ju0e26"]
+[gd_scene load_steps=6 format=3 uid="uid://dnh2tu3ju0e26"]
 
 [ext_resource type="Script" path="res://scenes/ImageLoader.gd" id="1_j07pe"]
 [ext_resource type="Script" path="res://scenes/ImageBox.gd" id="2_vsm7g"]
 [ext_resource type="Script" path="res://core/classes/RunPython.gd" id="3_pmo71"]
 [ext_resource type="Script" path="res://core/classes/AutoSelector.gd" id="4_sxujo"]
+[ext_resource type="Texture2D" uid="uid://ijtow3yvq5rw" path="res://assets/noimages.png" id="5_wgquo"]
 
 [node name="ImageLoader" type="Control"]
 layout_mode = 3
@@ -39,3 +40,20 @@ script = ExtResource("3_pmo71")
 
 [node name="AutoSelector" type="Node" parent="."]
 script = ExtResource("4_sxujo")
+
+[node name="TextureNoImages" type="TextureRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -375.0
+offset_top = -250.0
+offset_right = 375.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("5_wgquo")

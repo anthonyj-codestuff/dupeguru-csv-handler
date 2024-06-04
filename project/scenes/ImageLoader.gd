@@ -7,6 +7,7 @@ var ImageScenePacked = preload("res://scenes/Image.tscn")
 @onready var imageBoxNode = get_node("ImageBox")
 @onready var python = get_node("PythonManager")
 @onready var selector = get_node("AutoSelector")
+@onready var noImagesNode = get_node("TextureNoImages")
 # data from csv file
 var dupeData = []
 # storage for generated nodes (currently displayed)
@@ -187,6 +188,8 @@ func _on_control_panel_left_pressed()->void:
 			SignalBus.emit_signal("some_images_selected")
 		else:
 			SignalBus.emit_signal("no_images_selected")
+	else:
+		noImagesNode.visible = true
 
 func _on_control_panel_right_pressed()->void:
 	clearImageNodes()
@@ -201,6 +204,8 @@ func _on_control_panel_right_pressed()->void:
 			SignalBus.emit_signal("some_images_selected")
 		else:
 			SignalBus.emit_signal("no_images_selected")
+	else:
+		noImagesNode.visible = true
 
 func _on_control_panel_commit_pressed():
 	# add all selected images to commit list, remove nodes from tree
