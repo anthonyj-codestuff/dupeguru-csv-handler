@@ -66,7 +66,7 @@ func setRequiredValues(values):
 	else:
 		imageFolder = values["Folder"]
 
-	fileExists = FileAccess.file_exists(imageFolder.path_join(imageFilename))
+	fileExists = Utils.fileExistsAtLocation(imageFolder.path_join(imageFilename))
 
 func setOptionalValues(values):
 	if not values["Size (KB)"] or not values["Size (KB)"] is int:

@@ -9,8 +9,10 @@ var ImageScenePacked = preload("res://scenes/Image.tscn")
 @onready var selector = get_node("AutoSelector")
 # data from csv file
 var dupeData = []
-# storage for generated nodes
+# storage for generated nodes (currently displayed)
 var imageNodes = []
+# storage for committed image indices
+var committedImages = []
 # Indicates the 0th index of the current group
 # if on group 2 of [0,0,1,1,2,2,3,3,3], index should be 4
 var currentIndex = 0
@@ -46,12 +48,33 @@ func _ready():
 	else:
 		SignalBus.emit_signal("no_images_selected")
 
-func getIndexListForGroupId(id: int):
-	var list = []
+func getIndexListForGroupId(id: int)->Array[int]:
+	var list: Array[int] = []
 	for i in range(dupeData.size()):
 		if dupeData[i]["Group ID"] == id:
 			list.append(i)
 	return list
+
+func groupIndexListIsValid(ids: Array[int])->bool:
+	# a list of indices is valid for display if
+	# all ids belong to the same group
+	# at least two images that exist have not been committed
+	if not ids.size():
+		return false
+
+	var group = dupeData[ids[0]]["Group ID"]
+	if not group and not group == 0:
+		return false
+
+	var sameGroup = ids.all(func(i): return dupeData[i]["Group ID"] == group)
+	if not sameGroup:
+		return false
+
+	var validImageCount = 0
+	for i in ids:
+		if not committedImages.has(i) and fileExistsForIndex(i):
+			validImageCount += 1
+	return validImageCount > 1
 
 func fileExistsForIndex(id: int):
 	var dict = dupeData[id]
@@ -91,20 +114,24 @@ func someImagesAreSelected()->bool:
 
 func getNextGroupZeroIndex(currentIndex: int):
 	if not dupeData.size():
-		return
+		return null
 	var currentGroup = dupeData[currentIndex]["Group ID"]
 	var index = currentIndex + 1
 	var foundNewIndex:bool = false
 	while not foundNewIndex and index != currentIndex:
-		if len(dupeData)-1 < index:
+		if index >= len(dupeData):
 			index = 0
-		if dupeData[index]["Group ID"] != currentGroup:
-			var groupIndexList = getIndexListForGroupId(dupeData[index]["Group ID"])
-			if groupIndexList.any(func(i): return fileExistsForIndex(i)):
-				# if there is any file that exists for this group, accept it
-				foundNewIndex = true
+			if index == currentIndex: #edge case for if currentIndex is 0
 				break
-		index += 1
+		var group = dupeData[index]["Group ID"]
+		if group != currentGroup:
+			var groupIndexList = getIndexListForGroupId(group)
+			if groupIndexListIsValid(groupIndexList):
+				foundNewIndex = true
+			else:
+				index += groupIndexList.size()
+		else:
+			index += 1
 	if foundNewIndex:
 		return index
 	else:
@@ -118,15 +145,14 @@ func getPrevGroupZeroIndex(currentIndex: int):
 	var index = currentIndex - 1
 	var foundNewIndex:bool = false
 	while not foundNewIndex and index != currentIndex:
-		if 0 > index:
+		if index < 0:
 			index = dupeData.size() - 1
 		var thisGroupId = dupeData[index]["Group ID"]
 		var beforeThisGroupId = dupeData[index-1]["Group ID"] if index>0 else dupeData[-1]["Group ID"]
 		# we have reached the correct index if it has a different group and it is the earliest instance of that group
 		if thisGroupId != currentGroup and thisGroupId != beforeThisGroupId:
-			var groupIndexList = getIndexListForGroupId(dupeData[index]["Group ID"])
-			if groupIndexList.any(func(i): return fileExistsForIndex(i)):
-				# if there is any file that exists for this group, accept it
+			var groupIndexList = getIndexListForGroupId(thisGroupId)
+			if groupIndexListIsValid(groupIndexList):
 				foundNewIndex = true
 				break
 		index -= 1
@@ -177,10 +203,15 @@ func _on_control_panel_right_pressed()->void:
 			SignalBus.emit_signal("no_images_selected")
 
 func _on_control_panel_commit_pressed():
-	logger.info("Hit function for commit", MODULE_NAME)
-	for n in imageNodes:
-		if n.imageOptions.selected:
-			logger.info("committing [%s]" % n.imageOptions.imageFilename)
+	# add all selected images to commit list, remove nodes from tree
+	for i in range(imageNodes.size()-1,-1,-1):
+		if imageNodes[i].imageOptions.selected:
+			logger.info("committing [%s]" % imageNodes[i].imageOptions.imageFilename, MODULE_NAME)
+			committedImages.append(imageNodes[i].imageOptions.dictIndex)
+			imageNodes.pop_at(i).queue_free()
+	if imageNodes.filter(func(n): return n.imageOptions.fileExists).size() < 2:
+		# if the remaining nodes have 1 or 0 images remaining, move on to the next group
+		_on_control_panel_right_pressed()
 
 func _on_control_panel_undo_pressed():
 	logger.info("Hit function for undo", MODULE_NAME)
