@@ -2,7 +2,8 @@
 *.import
 .DS_Store
 /exports/
-/external_assets/
+/external_assets/*
+!/external_assets/put_dupes_csv_here
 # Godot 4+ specific ignores
 .godot/
 *.csv

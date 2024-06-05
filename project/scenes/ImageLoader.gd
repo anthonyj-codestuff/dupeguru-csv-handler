@@ -8,6 +8,7 @@ var ImageScenePacked = preload("res://scenes/Image.tscn")
 @onready var python = get_node("PythonManager")
 @onready var selector = get_node("AutoSelector")
 @onready var noImagesNode = get_node("TextureNoImages")
+@onready var errLabelNode = get_node("ErrorLabel")
 # data from csv file
 var dupeData = []
 # storage for generated nodes (currently displayed)
@@ -31,11 +32,13 @@ func _ready():
 	var headers: Array = Array(dupeData[0]) if dupeData else []
 	# if the CSV file does not have the absolutely necessary keys,
 	# post an error message and delete the loaded CSV data
+	if not Utils.fileExistsAtLocation(Data.CSV_FILE_PATH):
+		errLabelNode.text = errLabelNode.text + "CSV file not found. Export \"dupes.csv\" from DupeGuru and copy it into external_assets/ and try again.\n"
+		dupeData = []
 	if not Data.CSV_FOOTPRINT_MVP.all(func(key): return headers.has(key)):
-		var errLabelNode = get_node("Node2D/ErrorLabel")
 		var missingKeys = Data.CSV_FOOTPRINT_MVP.filter(func(key): return not headers.has(key))
 		var missingKeysStr = ", ".join(missingKeys)
-		errLabelNode.text = "CSV file not found or does not have expected minimum footprint. Missing keys [%s]" % missingKeysStr
+		errLabelNode.text = errLabelNode.text + "CSV file does not have expected minimum footprint. Missing keys [%s]\n" % missingKeysStr
 		dupeData = []
 	# Remove CSV header, it will only get in the way
 	dupeData.pop_front()
