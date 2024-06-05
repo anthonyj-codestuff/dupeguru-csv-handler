@@ -20,20 +20,13 @@ func setProperties(options:ImageOptions):
 	if not options.initLoadingError:
 		imageOptions = options
 		loadImageFile(imageOptions.imageFilepath, TextureNode)
-		FilenameLabelNode.text = getFilepathByLayers(imageOptions.imageFilepath, 3)
+		FilenameLabelNode.text = Utils.getFilepathByLayers(imageOptions.imageFilepath, 3)
 		InfoLabelNode.text = imageOptions.getStatsReadableString()
 	else:
 		loadImageFile("", TextureNode)
 
 func loadImageFile(path: String, node: Node):
 	node.texture = Utils.loadImageToTexture(path)
-
-func getFilepathByLayers(path: String, layers: int):
-	var fileLayers = path.split("/")
-	if fileLayers.size() > layers:
-		return "/".join(fileLayers.slice(fileLayers.size()-layers, fileLayers.size()))
-	else:
-		return imageOptions.imageFilepath
 
 func addPotentialDeletionReason(reason: String = ""):
 	if reason.length():

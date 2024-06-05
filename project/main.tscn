@@ -1,7 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://cbvk31312xpcu"]
+[gd_scene load_steps=7 format=3 uid="uid://cbvk31312xpcu"]
 
 [ext_resource type="PackedScene" uid="uid://dnh2tu3ju0e26" path="res://scenes/ImageLoader.tscn" id="1_4jp8q"]
+[ext_resource type="Script" path="res://main.gd" id="1_6n6xl"]
 [ext_resource type="Texture2D" uid="uid://eotsjihd5vmb" path="res://assets/bg_texture.png" id="1_aiko0"]
+[ext_resource type="PackedScene" uid="uid://485g6wamdvcj" path="res://scenes/ConfirmDeleteWindow.tscn" id="1_vpa1g"]
 [ext_resource type="Script" path="res://core/singletons/WindowSizeManager.gd" id="2_06db7"]
 [ext_resource type="PackedScene" uid="uid://mjocemssgx40" path="res://scenes/ControlPanel.tscn" id="2_chg8m"]
 
@@ -15,6 +17,9 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 1
+script = ExtResource("1_6n6xl")
+
+[node name="ConfirmDeleteWindow" parent="." instance=ExtResource("1_vpa1g")]
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 1
@@ -58,3 +63,5 @@ layout_mode = 2
 
 [node name="WindowSizeManager" type="Node" parent="."]
 script = ExtResource("2_06db7")
+
+[connection signal="confirmed" from="ConfirmDeleteWindow" to="." method="_on_confirm_delete_window_confirmed"]

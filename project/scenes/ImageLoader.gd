@@ -26,7 +26,6 @@ func _ready():
 	SignalBus.right_pressed.connect(_on_control_panel_right_pressed)
 	SignalBus.commit_pressed.connect(_on_control_panel_commit_pressed)
 	SignalBus.undo_pressed.connect(_on_control_panel_undo_pressed)
-	SignalBus.delete_pressed.connect(_on_control_panel_delete_pressed)
 	# import CSV data
 	dupeData = Utils.importCSV(Data.CSV_FILE_PATH, Data.CSV_OPTIONS)
 	var headers: Array = Array(dupeData[0]) if dupeData else []
@@ -256,6 +255,3 @@ func _on_control_panel_undo_pressed():
 		loadImageNodeGroupByStartingIndex(currentIndex)
 		updateCommitLabels()
 		selector.autoSelectNodes(imageNodes)
-
-func _on_control_panel_delete_pressed():
-	logger.info("Hit function for delete", MODULE_NAME)

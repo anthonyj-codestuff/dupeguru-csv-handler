@@ -80,6 +80,13 @@ func printFilesInDirectory(path):
 	else:
 		print("Could not load the path " + path)
 
+func getFilepathByLayers(path: String, layers: int):
+	var fileLayers = path.split("/")
+	if fileLayers.size() > layers:
+		return "/".join(fileLayers.slice(fileLayers.size()-layers, fileLayers.size()))
+	else:
+		return path
+
 func loadImageToTexture(path: String)->ImageTexture:
 	var image_texture = ImageTexture.new()
 	if(fileExistsAtLocation(path)):
