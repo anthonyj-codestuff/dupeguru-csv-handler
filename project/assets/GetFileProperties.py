@@ -1,16 +1,9 @@
 import sys
-import signal
 import os
 import datetime
 import struct
 import json
 import platform
-
-def handler(signum, frame):
-    print("{}")
-    sys.exit(1)
-signal.signal(signal.SIGALRM, handler)
-signal.alarm(1)
 
 def unix_to_datetime(unix_timestamp):
     dt_object = datetime.datetime.fromtimestamp(unix_timestamp)
@@ -88,5 +81,3 @@ if __name__ == "__main__":
             get_file_properties(file_path)
         except Exception as e:
             sys.exit(1)
-        finally:
-            signal.alarm(0)
