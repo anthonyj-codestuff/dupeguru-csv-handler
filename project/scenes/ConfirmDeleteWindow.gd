@@ -7,3 +7,6 @@ var logger = LogWriter.new()
 func setWindowProperties(text: String):
 	self.visible = true
 	textNode.text = text
+
+func _on_check_box_toggled(button_pressed):
+	SignalBus.delete_mode_toggled.emit(button_pressed)

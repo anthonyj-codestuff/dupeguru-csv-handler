@@ -7,6 +7,7 @@
 title = "Confirm Delete"
 position = Vector2i(390, 210)
 size = Vector2i(500, 300)
+visible = true
 unresizable = true
 ok_button_text = "Delete All"
 script = ExtResource("1_rvtvo")
@@ -38,3 +39,15 @@ theme = ExtResource("1_ktsjk")
 [node name="RichTextLabel" type="Label" parent="VBoxContainer/MarginContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="HBox" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="CheckBox" type="CheckBox" parent="VBoxContainer/HBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBox"]
+layout_mode = 2
+text = "Don't delete, but print filenames to console"
+
+[connection signal="toggled" from="VBoxContainer/HBox/CheckBox" to="." method="_on_check_box_toggled"]

@@ -1,6 +1,7 @@
 # Game Debug information logger.
 class_name LogWriter
 const MODULE_NAME = "LogWriter"
+const enabled = false
 
 var _level_dict : Dictionary = {
 	0 : "INFO",
@@ -43,6 +44,8 @@ func _get_prefix(level: int, module: String = "NONE") -> String:
 # Build string and write
 func _write(level: int, module: String, text: String) -> void:
 	var content = "%s%s" % [_get_prefix(level, module), text]
+	if not enabled:
+		return
 	if level == 0:
 		print(content)
 	elif level == 1:

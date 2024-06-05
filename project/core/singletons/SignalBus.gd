@@ -20,3 +20,6 @@ signal right_pressed
 signal commit_pressed
 signal undo_pressed
 signal delete_pressed
+
+# Miscellaneous
+signal delete_mode_toggled

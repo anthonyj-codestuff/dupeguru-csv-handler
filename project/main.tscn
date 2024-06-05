@@ -20,6 +20,7 @@ mouse_filter = 1
 script = ExtResource("1_6n6xl")
 
 [node name="ConfirmDeleteWindow" parent="." instance=ExtResource("1_vpa1g")]
+visible = false
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 1
