@@ -7,7 +7,7 @@ var logger = LogWriter.new()
 
 var dupes = []
 var commits = []
-var writeFilenames: bool = false
+var writeFilenames: bool = true
 
 func _ready():
 	SignalBus.delete_pressed.connect(_on_control_panel_delete_pressed)
@@ -35,15 +35,16 @@ func _on_control_panel_delete_pressed():
 
 func _on_confirm_delete_window_confirmed():
 	var files = []
-	if writeFilenames:
-		print("\n###########################")
-		print("## Filenames")
 	for i in commits:
 		files.append(dupeToFilename(i))
-	for f in files:
-		if Utils.fileExistsAtLocation(f):
-			if writeFilenames:
-				print(f)
-			else:
+	if writeFilenames:
+		var datetime_string = Time.get_unix_time_from_system()
+		var newFilename = Data.EXTERNAL_ASSETS_FOLDER.path_join("%s.txt" % datetime_string)
+		var newFile = FileAccess.open(newFilename, FileAccess.WRITE)
+		for f in files:
+			newFile.store_line(f)
+	else:
+		for f in files:
+			if Utils.fileExistsAtLocation(f):
 				print("Deleting %s" % f)
 				OS.move_to_trash(f)
