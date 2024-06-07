@@ -32,7 +32,8 @@ func _ready():
 	SignalBus.delete_confirmed.connect(_on_user_delete_confirmed)
 	# import CSV data
 	dupeData = Utils.importCSV(Data.CSV_FILE_PATH, Data.CSV_OPTIONS, errLabelNode)
-	changeScene(NEXT)
+	if dupeData.size():
+		changeScene(NEXT)
 
 # Master function manages everything else
 func changeScene(ascending:bool = true, inclusive: bool = true):
@@ -140,6 +141,8 @@ func getNextValidGroupZeroIndex(startingIndex: int, inclusive: bool)->int:
 	# group is still valid before moving on
 	# outputs -1 if there is no valid group
 	###*/
+	if not dupeData.size():
+		return -1
 	var index = startingIndex
 	var startingGroupId = dupeData[index]["Group ID"]
 	var foundNextGroup = false
@@ -170,6 +173,8 @@ func getPrevValidGroupZeroIndex(startingIndex)->int:
 	# outputs the 0th index of the previous group that meets display requirements
 	# outputs -1 if there is no valid group
 	###*/
+	if not dupeData.size():
+		return -1
 	var index = startingIndex
 	var startingGroupId = dupeData[index]["Group ID"]
 	var foundPrevGroup = false
