@@ -7,13 +7,33 @@ func replaceWindowsBackslashes(string: String):
 		return string.replace("\\", "/")
 	return string
 
-func importCSV(source_file, options):
+func importCSV(source_file, options, errorLabelNode):
+	var handleImportedCSV = func(data, errors = []):
+		var headers: Array = data[0] if data.size() else []
+		# if the CSV file does not have the absolutely necessary keys,
+		# post an error message and delete the loaded CSV data
+		if not Data.CSV_FOOTPRINT_MVP.all(func(key): return headers.has(key)):
+			var missingKeys = Data.CSV_FOOTPRINT_MVP.filter(func(key): return not headers.has(key))
+			var missingKeysStr = ", ".join(missingKeys)
+			errors.append("CSV file does not have expected minimum footprint. Missing keys [%s]\n" % missingKeysStr)
+			data = []
+		errors = errors.map(func(e): return "- " + e)
+		errorLabelNode.text = "\n".join(errors)
+		
+		# Remove CSV header, it will only get in the way
+		data.pop_front()
+		return data
+
+	if not Utils.fileExistsAtLocation(Data.CSV_FILE_PATH):
+		var error = "CSV file not found. Export \"dupes.csv\" from DupeGuru and copy it into external_assets/ and try again."
+		return handleImportedCSV.call([], [error])
 	# TODO sort the array by group ID just in case, a lot of logic depends on that
 	var file = FileAccess.open(source_file, FileAccess.READ)
 	printFilesInDirectory(Data.EXTERNAL_ASSETS_FOLDER)
 	if not file:
-		printerr("Failed to open file: ", source_file)
-		return
+		var error = "Failed to open file: %s" % source_file
+		logger.error(error, MODULE_NAME)
+		return handleImportedCSV.call([], [error])
 
 	var lines = []
 	# load each line to the array
@@ -43,25 +63,29 @@ func importCSV(source_file, options):
 
 	if options.headers:
 		if lines.is_empty():
-			printerr("Can't find header in empty file")
-			return ERR_PARSE_ERROR
+			var error = "Can't find header in empty file"
+			logger.error(error, MODULE_NAME)
+			return handleImportedCSV.call([], [error])
 
 		var headers = lines[0]
 		for i in range(1, lines.size()):
 			var fields = lines[i]
 			if fields.size() > headers.size():
-				printerr("Line %d has more fields than headers" % i)
-				return ERR_PARSE_ERROR
+				var error = "Line %d has more fields than headers" % i
+				logger.error(error, MODULE_NAME)
+				return handleImportedCSV.call([], [error])
 			var dict = {}
 			for j in headers.size():
 				var name = headers[j]
 				var value = fields[j] if j < fields.size() else null
 				dict[name] = value
 			lines[i] = dict
-		return lines
+		# If import is successful, pass the array and pass any errors to the user
+		return handleImportedCSV.call(lines)
 	else:
-		return lines
-	pass
+		var error = "CSV parsed without checking headers. This is probably a configuration mistake"
+		logger.warn(error, MODULE_NAME)
+		return handleImportedCSV.call(lines, [error])
 
 func printFilesInDirectory(path):
 	var Logger = LogWriter.new()
@@ -76,9 +100,9 @@ func printFilesInDirectory(path):
 					Logger.info(file, MODULE_NAME)
 			dir.list_dir_end()
 		else:
-			print("Could not open the directory " + path)
+			logger.error("Could not open the directory " + path, MODULE_NAME)
 	else:
-		print("Could not load the path " + path)
+		logger.error("Could not load the path " + path, MODULE_NAME)
 
 func getFilepathByLayers(path: String, layers: int):
 	var fileLayers = path.split("/")

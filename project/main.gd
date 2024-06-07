@@ -48,3 +48,4 @@ func _on_confirm_delete_window_confirmed():
 			if Utils.fileExistsAtLocation(f):
 				print("Deleting %s" % f)
 				OS.move_to_trash(f)
+	SignalBus.delete_confirmed.emit()
