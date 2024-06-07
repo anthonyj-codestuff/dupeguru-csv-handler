@@ -355,6 +355,11 @@ func _on_control_panel_undo_pressed():
 		changeScene()
 
 func _on_user_delete_confirmed():
+	# on delete, there may or may not be images remaining
+	# if user deletes everything, no problem, but if they write to a file,
+	# make sure to reset their view instead of leaving them on the blank screen
+	if currentIndex == -1:
+		currentIndex = 0
 	committedImages = []
 	updateCommitLabels()
 	changeScene(NEXT)
