@@ -20,6 +20,11 @@ var imageWidth: int
 var imageHeight: int
 var modificationDateUnix: int
 
+# Extended values (requires gallery-dl)
+var gdlParentJSONFilename: String
+var gdlCreationDateReadable: String
+var gdlCreationDateUnix: int
+
 # Extended values (requires Python)
 var pyCreationDateReadable: String
 var pyCreationDateUnix: int
@@ -39,13 +44,21 @@ func _init(index, values: Dictionary, python):
 	setRequiredValues(values)
 	setOptionalValues(values)
 	setDerivedValues(values)
-	if imageFilepath:
+	if imageFilepath and Utils.fileExistsAtLocation(imageFilepath):
 		setExtendedStats(imageFilepath, python)
 
 	if initLoadingError:
 		logger.error("error detected with dictionary ["+str(values)+"]", MODULE_NAME)
 	else:
 		logger.info("options for node "+str(dictIndex)+" loaded successfully", MODULE_NAME)
+
+func getUnixCreationDate():
+	if gdlCreationDateUnix:
+		return gdlCreationDateUnix
+	elif pyCreationDateUnix:
+		return pyCreationDateUnix
+	else:
+		return null
 
 func setRequiredValues(values):
 	if not values["Group ID"] and values["Group ID"] != 0 or not values["Group ID"] is int:
@@ -118,21 +131,29 @@ func setDerivedValues(values):
 		modificationDateUnix = Time.get_unix_time_from_datetime_string(ISO8601Datestring)
 
 func setExtendedStats(filepath, python):
-	var stats = python.getFileProperties(filepath)
-	if "creationDateReadable" in stats:
-		pyCreationDateReadable = stats.creationDateReadable
-	if "creationDateUnix" in stats:
-		pyCreationDateUnix = stats.creationDateUnix
-	if "modificationDateReadable" in stats and not modificationDateReadable:
-		modificationDateReadable = stats.modificationDateReadable
-	if "modificationDateUnix" in stats and not modificationDateUnix:
-		modificationDateUnix = stats.modificationDateUnix
-	if "imageWidth" in stats and not imageWidth:
-		imageWidth = stats.imageWidth
-	if "imageHeight" in stats and not imageHeight:
-		imageHeight = stats.imageHeight
-	if "imageDimensionsReadable" in stats and not imageDimensionsReadable:
-		imageDimensionsReadable = stats.imageDimensionsReadable
+	var gdlstats = getFileProperties(filepath)
+	var pystats = python.getFileProperties(filepath)
+	if "gdlDateReadable" in gdlstats:
+		gdlCreationDateReadable = gdlstats.gdlDateReadable
+	if "gdlDateUnix" in gdlstats:
+		gdlCreationDateUnix = gdlstats.gdlDateUnix
+	if "jsonFilename" in gdlstats:
+		gdlParentJSONFilename = gdlstats.jsonFilename
+	if "creationDateReadable" in pystats:
+		pyCreationDateReadable = pystats.creationDateReadable
+	if "creationDateUnix" in pystats:
+		pyCreationDateUnix = pystats.creationDateUnix
+
+	if "modificationDateReadable" in pystats and not modificationDateReadable:
+		modificationDateReadable = pystats.modificationDateReadable
+	if "modificationDateUnix" in pystats and not modificationDateUnix:
+		modificationDateUnix = pystats.modificationDateUnix
+	if "imageWidth" in pystats and not imageWidth:
+		imageWidth = pystats.imageWidth
+	if "imageHeight" in pystats and not imageHeight:
+		imageHeight = pystats.imageHeight
+	if "imageDimensionsReadable" in pystats and not imageDimensionsReadable:
+		imageDimensionsReadable = pystats.imageDimensionsReadable
 
 func getStatsReadableString():
 	var strings = []
@@ -146,14 +167,66 @@ func getStatsReadableString():
 		strings.append("Size: %s KB" % fileSizeKB)
 	if imageDimensionsReadable:
 		strings.append("Dimensions: %s" % imageDimensionsReadable)
-	if pyCreationDateReadable:
+	if gdlCreationDateReadable:
+		strings.append("Created At: %s" % gdlCreationDateReadable)
+	if pyCreationDateReadable and not gdlCreationDateReadable:
 		strings.append("Created At: %s" % pyCreationDateReadable)
 	if modificationDateReadable:
 		strings.append("Modified At: %s" % modificationDateReadable)
 	if matchPercent or matchPercent is int:
 		strings.append("Match Percent: %s%%" % matchPercent)
-	if imageWidth and imageWidth is int:
+	if imageWidth and imageWidth is int and not imageDimensionsReadable:
 		strings.append("Width: %spx" % imageWidth)
-	if imageHeight and imageHeight is int:
+	if imageHeight and imageHeight is int and not imageDimensionsReadable:
 		strings.append("Height: %spx" % imageHeight)
 	return "\n".join(strings)
+
+# # # # # # # # # # # #
+# Gallery-dl Functions
+
+func isGallerydlAsset(filename: String)->bool:
+	return Utils.stringMatchesRegex(filename, "^.*-\\d{1,2}\\.(png|jpg|jpeg|mp4)$")
+
+func getFileProperties(filepath: String):
+	var json: Dictionary = getGallerydlJSON(filepath)
+	var filename = filepath.get_file()
+	if json.has("date") and json.has("JSONFilename"):
+		var dateFormatted = json["date"].replace("-", "/")
+		return {
+			"gdlDateReadable": dateFormatted,
+			"gdlDateUnix": Time.get_unix_time_from_datetime_string(json["date"]),
+			"jsonFilename": json["JSONFilename"]
+		}
+	return {}
+
+func getGallerydlJSON(filepath: String)->Dictionary:
+	var filename = filepath.get_file()
+	if not isGallerydlAsset(filename):
+		logger.info("filename [%s] is not a gallery-dl asset" % filename, MODULE_NAME)
+		return {}
+	var path = filepath.get_base_dir()
+	var baseFilename
+	var last_index = filename.rfind("-")
+	if last_index != -1:
+		baseFilename = filename.left(last_index)
+	else:
+		logger.info("filename [%s] does not meet requirements" % filename, MODULE_NAME)
+		return {}
+	
+	var jsonFilename = baseFilename + ".json"
+	if Utils.fileExistsAtLocation(path.path_join(jsonFilename)):
+		var json_text = FileAccess.get_file_as_string(path.path_join(jsonFilename))
+		var json = JSON.new()
+		var error = json.parse(json_text)
+		if error == OK:
+			var data_received = json.data
+			if typeof(data_received) == TYPE_DICTIONARY:
+				# pop this on there so we can save it
+				data_received["JSONFilename"] = jsonFilename
+				return data_received
+			else:
+				logger.error("Unexpected data when parsing JSON file [%s]" % jsonFilename, MODULE_NAME)
+		else:
+			logger.error("JSON Parse Error: [%s] in [%s] at line [%s]" % [json.get_error_message(), jsonFilename, json.get_error_line()], MODULE_NAME)
+	return {}
+

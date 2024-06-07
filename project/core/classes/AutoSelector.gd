@@ -82,11 +82,11 @@ func imageIsNewer(target, nodes: Array):
 	# returns true if this image is newer than any other match
 	# this is prone to failure if the user does not have python installed
 	var isNewer: bool = false
-	var tt = target.imageOptions.pyCreationDateUnix
+	var tt = target.imageOptions.getUnixCreationDate()
 	if not tt:
 		return false
 	for node in nodes:
-		var nt = node.imageOptions.pyCreationDateUnix
+		var nt = node.imageOptions.getUnixCreationDate()
 		if nt and tt > nt:
 			isNewer = true
 	return isNewer
