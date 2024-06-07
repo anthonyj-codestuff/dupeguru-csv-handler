@@ -13,11 +13,11 @@ To generate a CSV file using DupeGuru 4.3.1 (available [here](https://github.com
 ### Setting up Python
 To get file properties, the handler will attempt to run a Python script to get around Godot's internal limitations. This is not required, but Godot will not be able to tell which file is oldest without access to Python
 
-####On Windows
+#### On Windows
 
 blah
 
-####On MacOS
+#### On MacOS
 
 - Download the latest PKG for Python 3.x [here](https://www.python.org/downloads/macos/)
 
@@ -27,10 +27,10 @@ blah
 
 - Test that Python was installed correctly by opening a terminal and running
 
-    python3 --version
+> python3 --version
 
 - If you see the Python version in the terminal, then everything is fine
 
-####On Linux
+#### On Linux
 
 blah
