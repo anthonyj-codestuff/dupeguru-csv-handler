@@ -48,8 +48,8 @@ size_flags_vertical = 3
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 5
 text = "TEXT"
-autowrap_mode = 3
 justification_flags = 160
+text_overrun_behavior = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -63,12 +63,11 @@ size_flags_vertical = 1
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 5
 text = "TEXT"
-autowrap_mode = 2
+text_overrun_behavior = 3
 
 [node name="ReasonsLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 z_index = 1
 layout_mode = 2
-size_flags_horizontal = 3
 size_flags_vertical = 1
 theme_override_colors/font_color = Color(1, 1, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
