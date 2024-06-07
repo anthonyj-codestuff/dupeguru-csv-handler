@@ -11,8 +11,6 @@ func _ready():
 func addImageNode(node):
 	add_child(node)
 
-
-
 # From instantiated Image nodes
 func _on_image_selected(value):
 	if imageLoaderNode.someImagesAreSelected():

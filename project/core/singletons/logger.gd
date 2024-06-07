@@ -1,7 +1,7 @@
 # Game Debug information logger.
 class_name LogWriter
 const MODULE_NAME = "LogWriter"
-const enabled = false
+const enabled = true
 
 var _level_dict : Dictionary = {
 	0 : "INFO",

@@ -17,31 +17,31 @@ func _ready():
 # Emitted signals
 func _on_select_all_pressed():
 	logger.info("emitting signal [select_all_pressed]", MODULE_NAME)
-	SignalBus.emit_signal("select_all_pressed")
+	SignalBus.select_all_pressed.emit()
 
 func _on_deselect_pressed():
 	logger.info("emitting signal [select_none_pressed]", MODULE_NAME)
-	SignalBus.emit_signal("select_none_pressed")
+	SignalBus.select_none_pressed.emit()
 
 func _on_left_pressed():
 	logger.info("emitting signal [left_pressed]", MODULE_NAME)
-	SignalBus.emit_signal("left_pressed")
+	SignalBus.left_pressed.emit()
 
 func _on_right_pressed():
 	logger.info("emitting signal [right_pressed]", MODULE_NAME)
-	SignalBus.emit_signal("right_pressed")
+	SignalBus.right_pressed.emit()
 
 func _on_commit_pressed():
 	logger.info("emitting signal [commit_pressed]", MODULE_NAME)
-	SignalBus.emit_signal("commit_pressed")
+	SignalBus.commit_pressed.emit()
 
 func _on_undo_pressed():
 	logger.info("emitting signal [undo_pressed]", MODULE_NAME)
-	SignalBus.emit_signal("undo_pressed")
+	SignalBus.undo_pressed.emit()
 
 func _on_delete_pressed():
 	logger.info("emitting signal [delete_pressed]", MODULE_NAME)
-	SignalBus.emit_signal("delete_pressed")
+	SignalBus.delete_pressed.emit()
 
 # From ImageLoader
 func _on_image_loader_no_images_selected():

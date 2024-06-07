@@ -3,7 +3,6 @@ const MODULE_NAME = "ImageLoader"
 var logger = LogWriter.new()
 var ImageScenePacked = preload("res://scenes/Image.tscn")
 
-# define important reference nodes
 @onready var imageBoxNode = get_node("ImageBox")
 @onready var python = get_node("PythonManager")
 @onready var selector = get_node("AutoSelector")
@@ -35,16 +34,10 @@ func _ready():
 	dupeData = Utils.importCSV(Data.CSV_FILE_PATH, Data.CSV_OPTIONS, errLabelNode)
 	changeScene(NEXT)
 
-# Master function that manages everything else
-# To change a scene
-# get the next or previous valid group
-# display it
-# If there isn't a next group, update the UI and display the No Images incidator
-# if the user selects or deselects images, update the UI accordingly
-# when the user commits images update the UI and render the next appropriate scene
+# Master function manages everything else
 func changeScene(ascending:bool = true, inclusive: bool = true):
 	if ascending:
-		# set index to next 0th place or -1
+		# set index to next 0th place or -1 if no valid index exists
 		currentIndex = getNextValidGroupZeroIndex(currentIndex, inclusive)
 	else:
 		currentIndex = getPrevValidGroupZeroIndex(currentIndex)
@@ -64,20 +57,17 @@ func changeScene(ascending:bool = true, inclusive: bool = true):
 # # # # # #
 # UTILITY
 
-# DONE
 func fileExistsForIndex(id: int)->bool:
 	var dict = dupeData[id]
 	var filepath = dict["Folder"].path_join(dict["Filename"])
 	return Utils.fileExistsAtLocation(filepath)
 
-# DONE, no full scan
 func someImagesAreSelected()->bool:
 	###/*
 	# simply returns true if there is at least one image with selected: true
 	###*/
 	return imageNodes.any(func(node): return node.imageOptions.selected == true)
 
-# DONE, O(2n) for short array
 func groupIndexListIsValid(ids: Array[int])->bool:
 	###/*
 	# a list of indices is valid for display if
@@ -101,7 +91,6 @@ func groupIndexListIsValid(ids: Array[int])->bool:
 			validImageCount += 1
 	return validImageCount > 1
 
-# DONE, potential full scan
 func getIndexListForGroupId(id: int, startingIndex: int = 0)->Array[int]:
 	# peace of mind check. Doesn't really do anything, but might alert dev to weird behavior
 	if dupeData[id-1]["Group ID"] == id:
@@ -131,7 +120,6 @@ func loadNodeGroupFromIndex(startingIndex: int):
 		if not committedImages.has(i):
 			createImageNodeByIndex(i)
 
-# DONE
 func createImageNodeByIndex(index:int)->void:
 	###/*
 	# creates a new image nodes using the data at index
@@ -202,7 +190,6 @@ func getPrevValidGroupZeroIndex(startingIndex)->int:
 			break
 	return index
 
-# DONE, no full scan
 func getNextGroupZeroIndex(startingIndex: int)->int:
 	###/*
 	# takes in an int representing the 0th instance of a group
@@ -230,7 +217,6 @@ func getNextGroupZeroIndex(startingIndex: int)->int:
 	else:
 		return -1
 
-# DONE, no full scan
 func getPrevGroupZeroIndex(startingIndex: int)->int:
 	###/*
 	# takes in an int representing the 0th instance of a group
@@ -258,11 +244,9 @@ func getPrevGroupZeroIndex(startingIndex: int)->int:
 	else:
 		return -1
 
-# DONE
 func runAutoselectorOnCurrentScene()->void:
 	selector.autoSelectNodes(imageNodes)
 
-# DONE
 func clearImageNodes()->void:
 	for n in imageNodes:
 		n.queue_free()
@@ -271,7 +255,6 @@ func clearImageNodes()->void:
 # # # # # # # #
 # UI Functions
 
-# DONE, no full scan
 func updateCommitLabels()->void:
 	###/*
 	# this function sends a signal to update UI elements
@@ -296,7 +279,6 @@ func updateCommitLabels()->void:
 func setNoImagesIndicatorVisible(setVisible: bool = false):
 	noImagesNode.visible = setVisible
 
-# DONE
 func updateControlPanelButtons()->void:
 	if someImagesAreSelected():
 		SignalBus.emit_signal("some_images_selected")

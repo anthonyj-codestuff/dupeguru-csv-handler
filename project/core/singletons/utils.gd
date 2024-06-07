@@ -29,7 +29,6 @@ func importCSV(source_file, options, errorLabelNode):
 		return handleImportedCSV.call([], [error])
 	# TODO sort the array by group ID just in case, a lot of logic depends on that
 	var file = FileAccess.open(source_file, FileAccess.READ)
-	printFilesInDirectory(Data.EXTERNAL_ASSETS_FOLDER)
 	if not file:
 		var error = "Failed to open file: %s" % source_file
 		logger.error(error, MODULE_NAME)
