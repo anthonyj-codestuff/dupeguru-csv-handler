@@ -132,3 +132,7 @@ func stringMatchesRegex(string: String, pattern: String)->bool:
 	if result:
 		return true
 	return false
+
+func getBareImageName(filepath: String)->String:
+	var filename = filepath.get_file().get_slice(".", 0)
+	return filename.rsplit("-", true, 1)[0]

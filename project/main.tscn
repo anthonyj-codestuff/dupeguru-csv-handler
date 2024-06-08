@@ -65,4 +65,5 @@ layout_mode = 2
 [node name="WindowSizeManager" type="Node" parent="."]
 script = ExtResource("2_06db7")
 
+[connection signal="canceled" from="ConfirmDeleteWindow" to="." method="_on_confirm_delete_window_canceled"]
 [connection signal="confirmed" from="ConfirmDeleteWindow" to="." method="_on_confirm_delete_window_confirmed"]

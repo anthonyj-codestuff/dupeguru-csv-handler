@@ -7,8 +7,8 @@ var logger = LogWriter.new()
 
 var dupes = []
 var commits = []
-@export var deleteFiles: bool = false
-@export var deleteGallerydlMetadata: bool = false
+var deleteFiles: bool = false
+var deleteGallerydlMetadata: bool = false
 
 func _ready():
 	SignalBus.delete_pressed.connect(_on_control_panel_delete_pressed)
@@ -49,14 +49,36 @@ func _on_confirm_delete_window_confirmed():
 	if deleteFiles:
 		for f in files:
 			if Utils.fileExistsAtLocation(f):
-				print("Deleting %s" % f)
+				logger.warn("deleting image - %s" % f, MODULE_NAME)
 				OS.move_to_trash(f)
+		if deleteGallerydlMetadata:
+			deleteAbandonedMetadataForDeletedFiles(files)
 	else:
 		var datetime_string = Time.get_unix_time_from_system()
 		var newFilename = Data.EXTERNAL_ASSETS_FOLDER.path_join("%s.txt" % datetime_string)
 		var newFile = FileAccess.open(newFilename, FileAccess.WRITE)
 		for f in files:
 			newFile.store_line(f)
-	if deleteGallerydlMetadata:
-		SignalBus.delete_json_requested.emit(files)
 	SignalBus.delete_confirmed.emit()
+
+func _on_confirm_delete_window_canceled():
+	SignalBus.delete_cancelled.emit()
+
+# TODO This is pretty expensive. There's got to be a cheaper faster way to do this
+# A CSV could point to several different directories in the same go, and we don't want to search every directories every step
+# since images should always be in the same place that their metadata is located
+# Key = /the/base/directory/of/the/ file for easy lookup
+# Value = A list of all files left in the directory after delete has taken place
+func deleteAbandonedMetadataForDeletedFiles(filepaths: Array)->void:
+	var directoriesToSearch = {}
+	for filepath in filepaths:
+		var directory = filepath.get_base_dir()
+		if not directory in directoriesToSearch:
+			var files = Array(DirAccess.get_files_at(directory))
+			directoriesToSearch[directory] = files
+		var baseFilename = Utils.getBareImageName(filepath)
+		var matches = directoriesToSearch[directory].filter(func(f): return f.contains(baseFilename))
+		if matches.all(func(f): return f.ends_with(".json")):
+			for m in matches:
+				logger.info("deleting json - %s" % m, MODULE_NAME)
+				OS.move_to_trash(directory.path_join(m))
