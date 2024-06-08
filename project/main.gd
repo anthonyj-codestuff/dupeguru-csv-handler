@@ -7,11 +7,13 @@ var logger = LogWriter.new()
 
 var dupes = []
 var commits = []
-var writeFilenames: bool = true
+@export var deleteFiles: bool = false
+@export var deleteGallerydlMetadata: bool = false
 
 func _ready():
 	SignalBus.delete_pressed.connect(_on_control_panel_delete_pressed)
 	SignalBus.delete_mode_toggled.connect(_on_delete_mode_toggled)
+	SignalBus.delete_json_mode_toggled.connect(_on_delete_json_mode_toggled)
 
 func dupeToFilename(index: int):
 	return dupes[index]["Folder"].path_join(dupes[index]["Filename"])
@@ -19,7 +21,14 @@ func dupeToFilename(index: int):
 ########################################
 
 func _on_delete_mode_toggled(pressed: bool):
-	writeFilenames = pressed
+	deleteFiles = pressed
+	if pressed:
+		confirmWindowNode.ok_button_text = "Delete All"
+	else:
+		confirmWindowNode.ok_button_text = "Save Filenames"
+
+func _on_delete_json_mode_toggled(pressed: bool):
+	deleteGallerydlMetadata = pressed
 
 func _on_control_panel_delete_pressed():
 	dupes = imageLoaderNode.dupeData
@@ -37,15 +46,17 @@ func _on_confirm_delete_window_confirmed():
 	var files = []
 	for i in commits:
 		files.append(dupeToFilename(i))
-	if writeFilenames:
+	if deleteFiles:
+		for f in files:
+			if Utils.fileExistsAtLocation(f):
+				print("Deleting %s" % f)
+				OS.move_to_trash(f)
+	else:
 		var datetime_string = Time.get_unix_time_from_system()
 		var newFilename = Data.EXTERNAL_ASSETS_FOLDER.path_join("%s.txt" % datetime_string)
 		var newFile = FileAccess.open(newFilename, FileAccess.WRITE)
 		for f in files:
 			newFile.store_line(f)
-	else:
-		for f in files:
-			if Utils.fileExistsAtLocation(f):
-				print("Deleting %s" % f)
-				OS.move_to_trash(f)
+	if deleteGallerydlMetadata:
+		SignalBus.delete_json_requested.emit(files)
 	SignalBus.delete_confirmed.emit()

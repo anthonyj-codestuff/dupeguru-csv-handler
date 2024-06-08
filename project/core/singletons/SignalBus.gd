@@ -24,3 +24,5 @@ signal delete_pressed
 # Miscellaneous
 signal delete_mode_toggled
 signal delete_confirmed
+signal delete_json_mode_toggled
+signal delete_json_requested
