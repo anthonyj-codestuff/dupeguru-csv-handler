@@ -33,6 +33,7 @@ func _ready():
 	# import CSV data
 	dupeData = Utils.importCSV(Data.CSV_FILE_PATH, Data.CSV_OPTIONS, errLabelNode)
 	if dupeData.size():
+		# TODO KNOWN BUG For some reason, the initial autoselect does not activate the commit button
 		changeScene(NEXT)
 
 # Master function manages everything else
@@ -334,12 +335,12 @@ func _on_control_panel_undo_pressed():
 				uncommitMore = false
 			else:
 				committedImages.pop_back()
+		updateCommitLabels()
 		# after uncomitting, load the uncomitted group and re-auto-select
 		# TODO This could be very expensive with large dupe lists
 		# Consider iterating backwards from the last index to find the 0
 		var uncomittedGroup = getIndexListForGroupId(groupToUncommit)
 		currentIndex = uncomittedGroup[0]
-		updateCommitLabels()
 		changeScene()
 
 func _on_user_delete_confirmed():
