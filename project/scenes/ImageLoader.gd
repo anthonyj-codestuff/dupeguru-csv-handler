@@ -339,6 +339,7 @@ func _on_control_panel_undo_pressed():
 		# Consider iterating backwards from the last index to find the 0
 		var uncomittedGroup = getIndexListForGroupId(groupToUncommit)
 		currentIndex = uncomittedGroup[0]
+		updateCommitLabels()
 		changeScene()
 
 func _on_user_delete_confirmed():
