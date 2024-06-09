@@ -6,6 +6,7 @@ var ImageScenePacked = preload("res://scenes/Image.tscn")
 @onready var imageBoxNode = get_node("ImageBox")
 @onready var python = get_node("PythonManager")
 @onready var selector = get_node("AutoSelector")
+@onready var shaders = get_node("ShaderManager")
 @onready var noImagesNode = get_node("TextureNoImages")
 @onready var errLabelNode = get_node("ErrorLabel")
 # data from csv file
@@ -20,6 +21,7 @@ var currentIndex: int = 0
 
 const NEXT = true
 const PREV = false
+var diffModeActive: bool = false
 
 func _ready():
 	# register signals from control panel
@@ -30,6 +32,7 @@ func _ready():
 	SignalBus.commit_pressed.connect(_on_control_panel_commit_pressed)
 	SignalBus.undo_pressed.connect(_on_control_panel_undo_pressed)
 	SignalBus.delete_confirmed.connect(_on_user_delete_confirmed)
+	SignalBus.view_diff_mode_toggled.connect(_on_view_diff_mode_toggled)
 	# import CSV data
 	dupeData = Utils.importCSV(Data.CSV_FILE_PATH, Data.CSV_OPTIONS, errLabelNode)
 	if dupeData.size():
@@ -121,6 +124,8 @@ func loadNodeGroupFromIndex(startingIndex: int):
 	for i in groupIndices:
 		if not committedImages.has(i):
 			createImageNodeByIndex(i)
+	if diffModeActive:
+		shaders.applyShaderToNodeArray(imageNodes)
 
 func createImageNodeByIndex(index:int)->void:
 	###/*
@@ -352,3 +357,11 @@ func _on_user_delete_confirmed():
 	committedImages = []
 	updateCommitLabels()
 	changeScene(NEXT)
+
+func _on_view_diff_mode_toggled(pressed):
+	if pressed:
+		diffModeActive = true
+		shaders.applyShaderToNodeArray(imageNodes)
+	else:
+		diffModeActive = false
+		shaders.removeShadersFromNodeArray(imageNodes)

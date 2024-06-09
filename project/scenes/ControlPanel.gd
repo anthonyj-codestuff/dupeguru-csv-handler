@@ -42,6 +42,10 @@ func _on_undo_pressed():
 func _on_delete_pressed():
 	logger.info("emitting signal [delete_pressed]", MODULE_NAME)
 	SignalBus.delete_pressed.emit()
+	
+func _on_view_diff_toggled(button_pressed):
+	logger.info("emitting signal [view_diff_mode_toggled]", MODULE_NAME)
+	SignalBus.view_diff_mode_toggled.emit(button_pressed)
 
 # From ImageLoader
 func _on_image_loader_no_images_selected():

@@ -33,6 +33,12 @@ func addPotentialDeletionReason(reason: String = ""):
 		autoselectReasons.append(reason)
 		ReasonsLabelNode.text = "\n".join(autoselectReasons)
 
+func setShader(shader: ShaderMaterial):
+	if shader:
+		TextureNode.material = shader
+	else:
+		TextureNode.material = null
+
 ####################################
 
 func _on_image_button_pressed():

@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://mjocemssgx40"]
+[gd_scene load_steps=35 format=3 uid="uid://mjocemssgx40"]
 
 [ext_resource type="Theme" uid="uid://ifb2gtb5tddr" path="res://scenes/ControlPanel_BasicTheme.tres" id="1_aqfcd"]
 [ext_resource type="Texture2D" uid="uid://bir1lutx0k0b" path="res://assets/keyicons/help.png" id="1_qkrw5"]
@@ -7,8 +7,12 @@
 [ext_resource type="Texture2D" uid="uid://cufdo8fkudgb8" path="res://assets/keyicons/left.png" id="3_c80q1"]
 [ext_resource type="Texture2D" uid="uid://bscl48n820ph5" path="res://assets/keyicons/left_pressed.png" id="4_lh203"]
 [ext_resource type="Texture2D" uid="uid://vyd4t3dyyus" path="res://assets/keyicons/left_hover.png" id="5_3b32y"]
+[ext_resource type="Texture2D" uid="uid://dwqy6m0m3ivqt" path="res://assets/keyicons/eye_closed.png" id="5_6arvt"]
 [ext_resource type="Texture2D" uid="uid://b4svtj4jwrgtf" path="res://assets/keyicons/all.png" id="6_cxqak"]
+[ext_resource type="Texture2D" uid="uid://h7aq3rwodfcy" path="res://assets/keyicons/eye_open_pressed.png" id="6_xa7jr"]
+[ext_resource type="Texture2D" uid="uid://b3xmyub7xscja" path="res://assets/keyicons/eye_closed_hover.png" id="7_1rrhx"]
 [ext_resource type="Texture2D" uid="uid://bcbn7yvjyjhpq" path="res://assets/keyicons/all_pressed.png" id="7_2p816"]
+[ext_resource type="Texture2D" uid="uid://bfmathfxka0fh" path="res://assets/keyicons/eye_closed_disabled.png" id="8_ec08n"]
 [ext_resource type="Texture2D" uid="uid://bjrggk7mf44la" path="res://assets/keyicons/all_hover.png" id="8_f0235"]
 [ext_resource type="Texture2D" uid="uid://bwoqjawb82qqf" path="res://assets/keyicons/none.png" id="9_vjhrn"]
 [ext_resource type="Texture2D" uid="uid://dx113thlf208u" path="res://assets/keyicons/none_pressed.png" id="10_rffj1"]
@@ -99,13 +103,32 @@ texture_normal = ExtResource("1_qkrw5")
 texture_hover = ExtResource("2_jml8w")
 stretch_mode = 5
 
-[node name="InvisibleMiddleSpacer" type="Panel" parent="."]
-modulate = Color(0, 0, 0, 0)
-z_index = 1
+[node name="ViewDiff" type="TextureButton" parent="."]
+z_index = 11
 custom_minimum_size = Vector2(50, 50)
-layout_direction = 2
 layout_mode = 2
 size_flags_vertical = 8
+tooltip_text = "Highlight Diff"
+toggle_mode = true
+texture_normal = ExtResource("5_6arvt")
+texture_pressed = ExtResource("6_xa7jr")
+texture_hover = ExtResource("7_1rrhx")
+texture_disabled = ExtResource("8_ec08n")
+stretch_mode = 5
+
+[node name="TextureRect2" type="Panel" parent="ViewDiff"]
+z_index = -1
+custom_minimum_size = Vector2(50, 50)
+layout_direction = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme = ExtResource("1_aqfcd")
 
 [node name="MiddleControls" type="Control" parent="."]
 z_index = 9
@@ -285,6 +308,7 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.745098)
 theme_override_constants/outline_size = 8
 
+[connection signal="toggled" from="ViewDiff" to="." method="_on_view_diff_toggled"]
 [connection signal="pressed" from="MiddleControls/HBoxContainer/HBoxContainer/Left" to="." method="_on_left_pressed"]
 [connection signal="pressed" from="MiddleControls/HBoxContainer/HBoxContainer/Select All" to="." method="_on_select_all_pressed"]
 [connection signal="pressed" from="MiddleControls/HBoxContainer/HBoxContainer/Deselect" to="." method="_on_deselect_pressed"]
