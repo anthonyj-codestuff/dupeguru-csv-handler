@@ -148,12 +148,13 @@ func setExtendedStats(filepath, python):
 		modificationDateReadable = pystats.modificationDateReadable
 	if "modificationDateUnix" in pystats and not modificationDateUnix:
 		modificationDateUnix = pystats.modificationDateUnix
-	if "imageWidth" in pystats and not imageWidth:
+	if "imageWidth" in pystats and (not imageWidth or imageWidth != pystats.imageWidth):
+		logger.info("overriding image [%s] width from [%s] to [%s]" % [imageFilename, imageWidth, pystats.imageWidth], MODULE_NAME)
 		imageWidth = pystats.imageWidth
-	if "imageHeight" in pystats and not imageHeight:
+	if "imageHeight" in pystats and (not imageHeight or imageHeight != pystats.imageHeight):
+		logger.info("overriding image [%s] height from [%s] to [%s]" % [imageFilename, imageHeight, pystats.imageHeight], MODULE_NAME)
 		imageHeight = pystats.imageHeight
-	if "imageDimensionsReadable" in pystats and not imageDimensionsReadable:
-		imageDimensionsReadable = pystats.imageDimensionsReadable
+	imageDimensionsReadable = "%s x %s" % [imageWidth, imageHeight]
 
 func getStatsReadableString():
 	var strings = []
