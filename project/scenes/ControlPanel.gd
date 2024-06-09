@@ -25,11 +25,19 @@ func _on_deselect_pressed():
 
 func _on_left_pressed():
 	logger.info("emitting signal [left_pressed]", MODULE_NAME)
-	SignalBus.left_pressed.emit()
+	SignalBus.left_pressed.emit(0)
 
 func _on_right_pressed():
 	logger.info("emitting signal [right_pressed]", MODULE_NAME)
-	SignalBus.right_pressed.emit()
+	SignalBus.right_pressed.emit(0)
+
+func _on_left2_pressed():
+	logger.info("emitting signal [left_pressed] with [9]", MODULE_NAME)
+	SignalBus.left_pressed.emit(9)
+
+func _on_right2_pressed():
+	logger.info("emitting signal [right_pressed] with [9]", MODULE_NAME)
+	SignalBus.right_pressed.emit(9)
 
 func _on_commit_pressed():
 	logger.info("emitting signal [commit_pressed]", MODULE_NAME)

@@ -1,12 +1,9 @@
-[gd_scene load_steps=49 format=3 uid="uid://mjocemssgx40"]
+[gd_scene load_steps=50 format=3 uid="uid://mjocemssgx40"]
 
 [ext_resource type="Theme" uid="uid://ifb2gtb5tddr" path="res://scenes/ControlPanel_BasicTheme.tres" id="1_aqfcd"]
 [ext_resource type="Texture2D" uid="uid://bir1lutx0k0b" path="res://assets/keyicons/help.png" id="1_qkrw5"]
 [ext_resource type="Script" path="res://scenes/ControlPanel.gd" id="1_rgujp"]
 [ext_resource type="Texture2D" uid="uid://cc7mn1myy0lk2" path="res://assets/keyicons/help_hover.png" id="2_jml8w"]
-[ext_resource type="Texture2D" uid="uid://cufdo8fkudgb8" path="res://assets/keyicons/left.png" id="3_c80q1"]
-[ext_resource type="Texture2D" uid="uid://bscl48n820ph5" path="res://assets/keyicons/left_pressed.png" id="4_lh203"]
-[ext_resource type="Texture2D" uid="uid://vyd4t3dyyus" path="res://assets/keyicons/left_hover.png" id="5_3b32y"]
 [ext_resource type="Texture2D" uid="uid://dwqy6m0m3ivqt" path="res://assets/keyicons/eye_closed.png" id="5_6arvt"]
 [ext_resource type="Texture2D" uid="uid://b4svtj4jwrgtf" path="res://assets/keyicons/all.png" id="6_cxqak"]
 [ext_resource type="Texture2D" uid="uid://h7aq3rwodfcy" path="res://assets/keyicons/eye_open_pressed.png" id="6_xa7jr"]
@@ -55,12 +52,19 @@ unicode = 98
 [sub_resource type="Shortcut" id="Shortcut_24dkj"]
 events = [SubResource("InputEventKey_g78gn")]
 
-[sub_resource type="InputEventKey" id="InputEventKey_ua5n4"]
+[sub_resource type="InputEventKey" id="InputEventKey_xwdj1"]
+shift_pressed = true
+keycode = 4194319
+
+[sub_resource type="Shortcut" id="Shortcut_0en0i"]
+events = [SubResource("InputEventKey_xwdj1")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_3egak"]
 device = -1
 keycode = 4194319
 
-[sub_resource type="Shortcut" id="Shortcut_5ks8k"]
-events = [SubResource("InputEventKey_ua5n4")]
+[sub_resource type="Shortcut" id="Shortcut_t05pn"]
+events = [SubResource("InputEventKey_3egak")]
 
 [sub_resource type="InputEventKey" id="InputEventKey_md2vg"]
 device = -1
@@ -76,12 +80,22 @@ keycode = 4194322
 [sub_resource type="Shortcut" id="Shortcut_kaixk"]
 events = [SubResource("InputEventKey_0whg3")]
 
-[sub_resource type="InputEventKey" id="InputEventKey_hqmhm"]
-device = -1
+[sub_resource type="InputEventKey" id="InputEventKey_86mwc"]
 keycode = 4194321
+physical_keycode = 4194321
+key_label = 4194321
 
-[sub_resource type="Shortcut" id="Shortcut_mnsfw"]
-events = [SubResource("InputEventKey_hqmhm")]
+[sub_resource type="Shortcut" id="Shortcut_a7me8"]
+events = [SubResource("InputEventKey_86mwc")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_j400w"]
+shift_pressed = true
+keycode = 4194321
+physical_keycode = 4194321
+key_label = 4194321
+
+[sub_resource type="Shortcut" id="Shortcut_w6ikt"]
+events = [SubResource("InputEventKey_j400w")]
 
 [sub_resource type="InputEventKey" id="InputEventKey_fclgj"]
 device = -1
@@ -159,7 +173,7 @@ z_index = 11
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 size_flags_vertical = 8
-tooltip_text = "[B] Highlight Diff"
+tooltip_text = "Highlight Diff"
 toggle_mode = true
 shortcut = SubResource("Shortcut_24dkj")
 texture_normal = ExtResource("5_6arvt")
@@ -217,21 +231,34 @@ theme_override_constants/separation = 20
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="Left10" type="TextureButton" parent="MiddleControls/HBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+tooltip_text = "Back 10 Groups"
+shortcut = SubResource("Shortcut_0en0i")
+texture_normal = ExtResource("12_b8nrk")
+texture_pressed = ExtResource("13_qrnyn")
+texture_hover = ExtResource("14_iihtp")
+ignore_texture_size = true
+stretch_mode = 5
+flip_h = true
+
 [node name="Left" type="TextureButton" parent="MiddleControls/HBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "[Left] Previous Group"
-shortcut = SubResource("Shortcut_5ks8k")
-texture_normal = ExtResource("3_c80q1")
-texture_pressed = ExtResource("4_lh203")
-texture_hover = ExtResource("5_3b32y")
+tooltip_text = "Previous Group"
+shortcut = SubResource("Shortcut_t05pn")
+texture_normal = ExtResource("12_b8nrk")
+texture_pressed = ExtResource("13_qrnyn")
+texture_hover = ExtResource("14_iihtp")
 stretch_mode = 5
+flip_h = true
 
 [node name="Select All" type="TextureButton" parent="MiddleControls/HBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "[Up] Select All"
+tooltip_text = "Select All"
 shortcut = SubResource("Shortcut_32lqa")
 texture_normal = ExtResource("6_cxqak")
 texture_pressed = ExtResource("7_2p816")
@@ -241,7 +268,7 @@ stretch_mode = 5
 [node name="Deselect" type="TextureButton" parent="MiddleControls/HBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "[Down] Select None"
+tooltip_text = "Select None"
 shortcut = SubResource("Shortcut_kaixk")
 texture_normal = ExtResource("9_vjhrn")
 texture_pressed = ExtResource("10_rffj1")
@@ -252,11 +279,22 @@ stretch_mode = 5
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "[Right] Next Group"
-shortcut = SubResource("Shortcut_mnsfw")
+tooltip_text = "Next Group"
+shortcut = SubResource("Shortcut_a7me8")
 texture_normal = ExtResource("12_b8nrk")
 texture_pressed = ExtResource("13_qrnyn")
 texture_hover = ExtResource("14_iihtp")
+stretch_mode = 5
+
+[node name="Right10" type="TextureButton" parent="MiddleControls/HBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+tooltip_text = "Skip 10 Groups"
+shortcut = SubResource("Shortcut_w6ikt")
+texture_normal = ExtResource("12_b8nrk")
+texture_pressed = ExtResource("13_qrnyn")
+texture_hover = ExtResource("14_iihtp")
+ignore_texture_size = true
 stretch_mode = 5
 
 [node name="Commit" type="TextureButton" parent="."]
@@ -264,7 +302,7 @@ z_index = 11
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 size_flags_vertical = 8
-tooltip_text = "[Space] Stage Images for Deletion"
+tooltip_text = "Stage Images for Deletion"
 disabled = true
 shortcut = SubResource("Shortcut_mw0rv")
 texture_normal = ExtResource("15_8jol7")
@@ -324,7 +362,7 @@ theme_override_constants/margin_top = 0
 
 [node name="Undo" type="TextureButton" parent="RightControls/VBoxContainer/MarginContainer"]
 layout_mode = 2
-tooltip_text = "[Backspace] Undelete Last Group"
+tooltip_text = "Undelete Last Group"
 disabled = true
 shortcut = SubResource("Shortcut_m28bl")
 texture_normal = ExtResource("19_8wkl1")
@@ -367,10 +405,12 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 0.745098)
 theme_override_constants/outline_size = 8
 
 [connection signal="toggled" from="ViewDiff" to="." method="_on_view_diff_toggled"]
+[connection signal="pressed" from="MiddleControls/HBoxContainer/HBoxContainer/Left10" to="." method="_on_left2_pressed"]
 [connection signal="pressed" from="MiddleControls/HBoxContainer/HBoxContainer/Left" to="." method="_on_left_pressed"]
 [connection signal="pressed" from="MiddleControls/HBoxContainer/HBoxContainer/Select All" to="." method="_on_select_all_pressed"]
 [connection signal="pressed" from="MiddleControls/HBoxContainer/HBoxContainer/Deselect" to="." method="_on_deselect_pressed"]
 [connection signal="pressed" from="MiddleControls/HBoxContainer/HBoxContainer/Right" to="." method="_on_right_pressed"]
+[connection signal="pressed" from="MiddleControls/HBoxContainer/HBoxContainer/Right10" to="." method="_on_right2_pressed"]
 [connection signal="pressed" from="Commit" to="." method="_on_commit_pressed"]
 [connection signal="pressed" from="RightControls/VBoxContainer/MarginContainer/Undo" to="." method="_on_undo_pressed"]
 [connection signal="pressed" from="RightControls/VBoxContainer/Delete" to="." method="_on_delete_pressed"]

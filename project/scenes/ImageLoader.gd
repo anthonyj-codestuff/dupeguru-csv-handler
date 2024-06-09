@@ -40,12 +40,12 @@ func _ready():
 		changeScene(NEXT)
 
 # Master function manages everything else
-func changeScene(ascending:bool = true, inclusive: bool = true):
+func changeScene(ascending:bool = true, skip: int = 0, inclusive: bool = true):
 	if ascending:
 		# set index to next 0th place or -1 if no valid index exists
-		currentIndex = getNextValidGroupZeroIndex(currentIndex, inclusive)
+		currentIndex = getNextValidGroupZeroIndex(currentIndex, skip, inclusive)
 	else:
-		currentIndex = getPrevValidGroupZeroIndex(currentIndex)
+		currentIndex = getPrevValidGroupZeroIndex(currentIndex, skip)
 	
 	if currentIndex < 0:
 		clearImageNodes()
@@ -139,7 +139,7 @@ func createImageNodeByIndex(index:int)->void:
 	# add new node to list
 	imageNodes.append(newNode)
 
-func getNextValidGroupZeroIndex(startingIndex: int, inclusive: bool)->int:
+func getNextValidGroupZeroIndex(startingIndex: int, skip: int = 0, inclusive: bool = true)->int:
 	###/*
 	# takes in an int representing the 0th instance of a group
 	# outputs the 0th index of the next group that meets display requirements
@@ -156,7 +156,7 @@ func getNextValidGroupZeroIndex(startingIndex: int, inclusive: bool)->int:
 		var startingGroup = getIndexListForGroupId(startingGroupId, index)
 		if groupIndexListIsValid(startingGroup):
 			foundNextGroup = true
-	
+
 	while not foundNextGroup:
 		index = getNextGroupZeroIndex(index)
 		if index < 0:
@@ -165,15 +165,19 @@ func getNextValidGroupZeroIndex(startingIndex: int, inclusive: bool)->int:
 		var nextGroupId = dupeData[index]["Group ID"]
 		var nextGroup = getIndexListForGroupId(nextGroupId, index)
 		if groupIndexListIsValid(nextGroup):
-			# this will return the starting index if it is the last valid group
-			foundNextGroup = true
+			# if the user has requested a skip, this valid group is not valid
+			if skip <= 0:
+				# this will return the starting index if it is the last valid group
+				foundNextGroup = true
+			else:
+				skip -= 1
 		elif nextGroupId == startingGroupId:
 			# if we have traversed the entire list and not found a valid group, quit
 			index = -1
 			break
 	return index
 
-func getPrevValidGroupZeroIndex(startingIndex)->int:
+func getPrevValidGroupZeroIndex(startingIndex:int, skip: int = 0)->int:
 	###/*
 	# takes in an int representing the 0th instance of a group
 	# outputs the 0th index of the previous group that meets display requirements
@@ -193,8 +197,12 @@ func getPrevValidGroupZeroIndex(startingIndex)->int:
 		var prevGroupId = dupeData[index]["Group ID"]
 		var prevGroup = getIndexListForGroupId(prevGroupId, index)
 		if groupIndexListIsValid(prevGroup):
-			# this will return the starting index if it is the last valid group
-			foundPrevGroup = true
+			# if the user has requested a skip, this valid group is not valid
+			if skip <= 0:
+				# this will return the starting index if it is the last valid group
+				foundPrevGroup = true
+			else:
+				skip -= 1
 		elif prevGroupId == startingGroupId:
 			# if we have traversed the entire list and not found a valid group, quit
 			index = -1
@@ -310,12 +318,12 @@ func _on_control_panel_select_none_pressed():
 		node.deselectInternal()
 	SignalBus.emit_signal("no_images_selected")
 
-func _on_control_panel_left_pressed()->void:
-	changeScene(PREV)
+func _on_control_panel_left_pressed(skip: int = 0)->void:
+	changeScene(PREV, skip)
 
-func _on_control_panel_right_pressed()->void:
+func _on_control_panel_right_pressed(skip: int = 0)->void:
 	# passing inclusive: false forces the scene to move on from a valid group
-	changeScene(NEXT, false)
+	changeScene(NEXT, skip, false)
 
 func _on_control_panel_commit_pressed():
 	# add all selected images to commit list, remove nodes from tree
