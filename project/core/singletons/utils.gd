@@ -136,3 +136,43 @@ func stringMatchesRegex(string: String, pattern: String)->bool:
 func getBareImageName(filepath: String)->String:
 	var filename = filepath.get_file().get_slice(".", 0)
 	return filename.rsplit("-", true, 1)[0]
+
+func mapOutOfBoundsIndex(arrayLength: int, badIndex: int)->int:
+	if arrayLength <= 0:
+		logger.warn("cannot adjust out-of-bounds index for zero-length array" % [badIndex, arrayLength], MODULE_NAME)
+		return badIndex
+	if badIndex >= 0 and badIndex < arrayLength:
+		logger.info("index [%s] is not out-of-bounds for array of length [%s]" % [badIndex, arrayLength], MODULE_NAME)
+		return badIndex
+	# If the user requests to skip groups while seeking, it is possible to move
+	# the currentIndex well beyond the length of the array. If this happens,
+	# loop back to the beginning and displace by the remainder
+	# ex. [0,1,2,3,4,5],-,-,-,-,-,-,-,-,X (User was at index 5 and requested index 14)
+	#     [0,1,2,3,4,5],-,-,X (reduced by the len, but still out-of-bounds at 8)
+	#     [0,1,X,3,4,5] (index is within bounds, return 2)
+	#     X,-,-,-,-,-,-,-,-,[0,1,2,3,4,5] -> (-9)
+	#     X,-,-,[0,1,2,3,4,5] -> (-3)
+	#     [0,1,2,X,4,5] -> (3)
+	var foundGoodIndex = false
+	var newIndex = badIndex
+	if newIndex >= arrayLength:
+		while not foundGoodIndex:
+			newIndex -= arrayLength
+			if newIndex < 0:
+				logger.error("cannot find good next value for index [%s] and array of length [%s]" % [badIndex, arrayLength], MODULE_NAME)
+				return badIndex
+			if newIndex < arrayLength-1:
+				foundGoodIndex = true
+		return newIndex
+	elif newIndex < 0:
+		while not foundGoodIndex:
+			newIndex += arrayLength
+			if newIndex >= arrayLength:
+				logger.error("cannot find good previous value for index [%s] and array of length [%s]" % [badIndex, arrayLength], MODULE_NAME)
+				return badIndex
+			if newIndex < arrayLength:
+				foundGoodIndex = true
+		return newIndex
+	else:
+		logger.error("reached unreachable code for index [%s] and array of length [%s]" % [badIndex, arrayLength], MODULE_NAME)
+		return badIndex
