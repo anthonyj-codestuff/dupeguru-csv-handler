@@ -32,17 +32,17 @@ func autoSelectNodes(nodes: Array):
 					if nodesToMark.size() >= nodes.size() - 1:
 						keepLooking = false
 		for node in nodes:
-			# any other image of the same type and size is bigger (in KB)
-			if fileSizeIsSmaller(node, nodes):
-				node.addPotentialDeletionReason("smaller filesize")
+			# any other image is older (re-upload)
+			if imageIsNewer(node, nodes):
+				node.addPotentialDeletionReason("newer")
 				if keepLooking:
 					nodesToMark.append(node)
 					if nodesToMark.size() >= nodes.size() - 1:
 						keepLooking = false
 		for node in nodes:
-			# any other image is older (re-upload)
-			if imageIsNewer(node, nodes):
-				node.addPotentialDeletionReason("newer")
+			# any other image of the same type and size is bigger (in KB)
+			if fileSizeIsSmaller(node, nodes):
+				node.addPotentialDeletionReason("smaller filesize")
 				if keepLooking:
 					nodesToMark.append(node)
 					if nodesToMark.size() >= nodes.size() - 1:
