@@ -7,12 +7,14 @@ var logger = LogWriter.new()
 @onready var deleteNode = get_node("RightControls/VBoxContainer/Delete")
 @onready var commitCountNode = get_node("RightControls/CommitCount")
 @onready var undoCountNode = get_node("RightControls/UndoCount")
+@onready var twitterLinkNode = get_node("ViewDiff/LinkButton")
 
 func _ready():
 	SignalBus.no_images_selected.connect(_on_image_loader_no_images_selected)
 	SignalBus.some_images_selected.connect(_on_image_loader_some_images_selected)
 	SignalBus.no_deletes_committed.connect(_on_image_loader_no_deletes_committed)
 	SignalBus.some_deletes_committed.connect(_on_image_loader_some_deletes_committed)
+	SignalBus.twitter_link_changed.connect(_on_twitter_link_changed)
 
 # Emitted signals
 func _on_select_all_pressed():
@@ -73,3 +75,11 @@ func _on_image_loader_some_deletes_committed(commitNum: int, undoNum: int):
 	deleteNode.disabled = false
 	commitCountNode.text = str(commitNum)
 	undoCountNode.text = str(undoNum)
+
+func _on_twitter_link_changed(link):
+	if link:
+		twitterLinkNode.visible = true
+		twitterLinkNode.uri = link
+	else:
+		twitterLinkNode.visible = false
+		twitterLinkNode.uri = ""

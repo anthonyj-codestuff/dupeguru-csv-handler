@@ -24,6 +24,7 @@ var modificationDateUnix: int
 var gdlParentJSONFilename: String
 var gdlCreationDateReadable: String
 var gdlCreationDateUnix: int
+var gdlTwitterUri: String
 
 # Extended values (requires Python)
 var pyCreationDateReadable: String
@@ -137,6 +138,8 @@ func setExtendedStats(filepath, python):
 		gdlCreationDateReadable = gdlstats.gdlDateReadable
 	if "gdlDateUnix" in gdlstats:
 		gdlCreationDateUnix = gdlstats.gdlDateUnix
+	if "twitterUri" in gdlstats:
+		gdlTwitterUri = gdlstats.twitterUri
 	if "jsonFilename" in gdlstats:
 		gdlParentJSONFilename = gdlstats.jsonFilename
 	if "creationDateReadable" in pystats:
@@ -196,7 +199,8 @@ func getFileProperties(filepath: String):
 		return {
 			"gdlDateReadable": dateFormatted,
 			"gdlDateUnix": Time.get_unix_time_from_datetime_string(json["date"]),
-			"jsonFilename": json["JSONFilename"]
+			"jsonFilename": json["JSONFilename"],
+			"twitterUri": "https://twitter.com/%s/status/%s" % [json["author"]["name"], json["tweet_id"]]
 		}
 	return {}
 

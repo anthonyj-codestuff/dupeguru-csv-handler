@@ -28,3 +28,4 @@ signal delete_cancelled
 signal delete_json_mode_toggled
 signal delete_json_requested
 signal view_diff_mode_toggled
+signal twitter_link_changed

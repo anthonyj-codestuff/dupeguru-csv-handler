@@ -182,6 +182,18 @@ texture_hover = ExtResource("7_1rrhx")
 texture_disabled = ExtResource("8_ec08n")
 stretch_mode = 5
 
+[node name="LinkButton" type="LinkButton" parent="ViewDiff"]
+z_index = 1
+offset_top = -24.0
+offset_right = 37.0
+offset_bottom = -1.0
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(1, 1, 1, 0.741176)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.741176)
+theme_override_constants/outline_size = 8
+text = "LINK"
+
 [node name="TextureRect2" type="Panel" parent="ViewDiff"]
 z_index = -1
 custom_minimum_size = Vector2(50, 50)
