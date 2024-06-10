@@ -15,6 +15,8 @@ var dupeData = []
 var imageNodes = []
 # storage for committed image indices
 var committedImages = []
+# storage for groupIds that have been checked and no longer meet display reqs
+var groupsIneligibleForDisplay = []
 # Indicates the 0th index of the current group
 # if on group 2 of [0,0,1,1,2,2,3,3,3], index should be 4
 var currentIndex: int = 0
@@ -86,6 +88,9 @@ func groupIndexListIsValid(ids: Array[int])->bool:
 	if not group and not group == 0:
 		return false
 
+	if groupsIneligibleForDisplay.has(group):
+		return false
+
 	var sameGroup = ids.all(func(i): return dupeData[i]["Group ID"] == group)
 	if not sameGroup:
 		return false
@@ -94,7 +99,12 @@ func groupIndexListIsValid(ids: Array[int])->bool:
 	for i in ids:
 		if not committedImages.has(i) and fileExistsForIndex(i):
 			validImageCount += 1
-	return validImageCount > 1
+	if validImageCount > 1:
+		return true
+	else:
+		# the next time this group is scanned will be much faster
+		groupsIneligibleForDisplay.append(group)
+		return false
 
 func getIndexListForGroupId(id: int, startingIndex: int = 0)->Array[int]:
 	# peace of mind check. Doesn't really do anything, but might alert dev to weird behavior
@@ -308,6 +318,7 @@ func updateControlPanelButtons()->void:
 # OUTGOING SIGNALS
 
 # TODO Consider disabling control panel buttons if there are no images available
+# TODO Also consider adding a loading bar if it takes longer than a second to do things
 func _on_control_panel_select_all_pressed():
 	for node in imageNodes:
 		node.selectInternal()
@@ -349,6 +360,11 @@ func _on_control_panel_undo_pressed():
 			else:
 				committedImages.pop_back()
 		updateCommitLabels()
+		var skipGroupIndex = groupsIneligibleForDisplay.find(groupToUncommit)
+		if skipGroupIndex > 0:
+			# the last commit has been undone, the relevant group is eligible
+			groupsIneligibleForDisplay.pop_at(skipGroupIndex)
+			
 		# after uncomitting, load the uncomitted group and re-auto-select
 		# TODO This could be very expensive with large dupe lists
 		# Consider iterating backwards from the last index to find the 0
