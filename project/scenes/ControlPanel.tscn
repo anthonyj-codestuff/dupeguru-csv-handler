@@ -131,7 +131,7 @@ size_flags_horizontal = 2
 size_flags_vertical = 8
 
 [node name="TextureRect2" type="Panel" parent="LeftControls"]
-z_index = 1
+z_index = 2
 custom_minimum_size = Vector2(50, 50)
 layout_direction = 2
 layout_mode = 1
@@ -169,7 +169,7 @@ texture_hover = ExtResource("2_jml8w")
 stretch_mode = 5
 
 [node name="ViewDiff" type="TextureButton" parent="."]
-z_index = 11
+z_index = 12
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 size_flags_vertical = 8
@@ -217,7 +217,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 8
 
 [node name="TextureRect" type="Panel" parent="MiddleControls"]
-z_index = 1
+z_index = 2
 custom_minimum_size = Vector2(50, 50)
 layout_direction = 2
 layout_mode = 1
@@ -311,7 +311,7 @@ ignore_texture_size = true
 stretch_mode = 5
 
 [node name="Commit" type="TextureButton" parent="."]
-z_index = 11
+z_index = 12
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 size_flags_vertical = 8
@@ -346,7 +346,7 @@ size_flags_horizontal = 10
 size_flags_vertical = 8
 
 [node name="TextureRect4" type="Panel" parent="RightControls"]
-z_index = 1
+z_index = 2
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 1
 anchors_preset = 15
