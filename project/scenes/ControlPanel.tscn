@@ -184,6 +184,7 @@ stretch_mode = 5
 
 [node name="LinkButton" type="LinkButton" parent="ViewDiff"]
 z_index = 1
+layout_mode = 0
 offset_top = -24.0
 offset_right = 37.0
 offset_bottom = -1.0

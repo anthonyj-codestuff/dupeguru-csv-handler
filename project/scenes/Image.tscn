@@ -12,10 +12,11 @@ PanelContainer/styles/panel = ExtResource("2_6wddg")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = -338.0
+offset_bottom = -52.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
 theme_override_constants/margin_left = 3
 theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 3
@@ -80,9 +81,9 @@ script = ExtResource("4_8ym5t")
 [node name="TextureRect" type="TextureRect" parent="."]
 clip_contents = true
 layout_mode = 2
-size_flags_vertical = 4
 texture = ExtResource("3_hgouh")
-expand_mode = 5
+expand_mode = 1
+stretch_mode = 5
 
 [node name="Button" type="Button" parent="TextureRect"]
 self_modulate = Color(0, 0, 0, 0)
