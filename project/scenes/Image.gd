@@ -11,7 +11,7 @@ var imageOptions: ImageOptions
 var autoselectReasons = []
 
 func setProperties(options:ImageOptions):
-	BorderNode = get_node("SelectedBorder")
+	BorderNode = get_node("PanelContainer/SelectedBorder")
 	TextureNode = get_node("TextureRect")
 	FilenameLabelNode = get_node("PanelContainer/MarginContainer/VBoxContainer/FilenameLabel")
 	InfoLabelNode = get_node("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/InfoLabel")
