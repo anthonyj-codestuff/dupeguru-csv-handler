@@ -1,5 +1,5 @@
 .idea/
-*.import
+.import/
 .DS_Store
 /exports/
 /external_assets/*
