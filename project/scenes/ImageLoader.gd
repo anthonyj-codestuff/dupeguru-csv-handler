@@ -108,11 +108,11 @@ func groupIndexListIsValid(ids: Array[int])->bool:
 
 func getIndexListForGroupId(id: int, startingIndex: int = 0)->Array[int]:
 	# peace of mind check. Doesn't really do anything, but might alert dev to weird behavior
-	if int(dupeData[id-1]["Group ID"]) == id:
+	if dupeData[id-1]["Group ID"] == id:
 		logger.warn("Getting index list using non-0th index [%s] for group [%s]" % [startingIndex, id], MODULE_NAME)
 	var list: Array[int] = []
 	for i in range(startingIndex, dupeData.size()):
-		if int(dupeData[i]["Group ID"]) == id:
+		if dupeData[i]["Group ID"] == id:
 			list.append(i)
 	return list
 
