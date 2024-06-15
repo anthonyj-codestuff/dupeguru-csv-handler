@@ -194,13 +194,15 @@ func isGallerydlAsset(filename: String)->bool:
 func getFileProperties(filepath: String):
 	var json: Dictionary = getGallerydlJSONForImageFilepath(filepath)
 	var filename = filepath.get_file()
+	var tweetIdString = getTweetIdFromJsonString(json["JSONRawString"])
 	if json.has("date") and json.has("JSONFilename"):
 		var dateFormatted = json["date"].replace("-", "/")
+		var tweetId = tweetIdString if tweetIdString and tweetIdString == str(json["tweet_id"]) else json["tweet_id"]
 		return {
 			"gdlDateReadable": dateFormatted,
 			"gdlDateUnix": Time.get_unix_time_from_datetime_string(json["date"]),
 			"jsonFilename": json["JSONFilename"],
-			"twitterUri": "https://twitter.com/%s/status/%s" % [json["author"]["name"], json["tweet_id"]]
+			"twitterUri": "https://twitter.com/%s/status/%s" % [json["author"]["name"], tweetId]
 		}
 	return {}
 
@@ -229,10 +231,37 @@ func getGallerydlJSONForImageFilepath(imageFilepath: String)->Dictionary:
 			if typeof(data_received) == TYPE_DICTIONARY:
 				# pop this on there so we can save it
 				data_received["JSONFilename"] = jsonFilename
+				data_received["JSONRawString"] = json_text
 				return data_received
 			else:
 				logger.error("Unexpected data when parsing JSON file [%s]" % jsonFilename, MODULE_NAME)
 		else:
 			logger.error("JSON Parse Error: [%s] in [%s] at line [%s]" % [json.get_error_message(), jsonFilename, json.get_error_line()], MODULE_NAME)
 	return {}
+
+# needed because JSON parsing casts number to float before int, so very large numbers get altered
+func getTweetIdFromJsonString(jsonString: String):
+	var result = ""
+	# start by finding the index of the key
+	var index = jsonString.find("tweet_id")
+	if index == -1:
+		return result
+
+	var numerals = ""
+	# move the index to the next valid digit after the current index
+	while index < jsonString.length() and not jsonString[index].is_valid_int():
+		index += 1
+
+	# now loop until we find the first non-digit
+	while index < jsonString.length():
+		var char = jsonString.substr(index, 1)
+		if char.is_valid_int():
+			numerals += char
+		else:
+			break
+		index += 1
+	if numerals.is_valid_int():
+		return numerals
+	else:
+		return result
 
