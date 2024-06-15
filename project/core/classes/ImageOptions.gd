@@ -197,7 +197,9 @@ func getFileProperties(filepath: String):
 	var tweetIdString = getTweetIdFromJsonString(json["JSONRawString"])
 	if json.has("date") and json.has("JSONFilename"):
 		var dateFormatted = json["date"].replace("-", "/")
-		var tweetId = tweetIdString if tweetIdString and tweetIdString == str(json["tweet_id"]) else json["tweet_id"]
+		# if the hand-extracted id doesn't match, then something happened with the floating-ppoint conversion
+		# use the string instead
+		var tweetId = tweetIdString if tweetIdString and tweetIdString != str(json["tweet_id"]) else json["tweet_id"]
 		return {
 			"gdlDateReadable": dateFormatted,
 			"gdlDateUnix": Time.get_unix_time_from_datetime_string(json["date"]),
