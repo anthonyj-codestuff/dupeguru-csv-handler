@@ -51,7 +51,7 @@ func autoSelectNodes(nodes: Array):
 		# and the first n-1 have been selected (maximum)
 		for node in nodesToMark:
 			node.selectInternal()
-		for i in range(0, nodes.size()-1, 1):
+		for i in range(0, nodes.size(), 1):
 			if !nodes[i].imageOptions.selected and nodes[i].imageOptions.gdlTwitterUri:
 				SignalBus.twitter_link_changed.emit(nodes[i].imageOptions.gdlTwitterUri)
 				return
