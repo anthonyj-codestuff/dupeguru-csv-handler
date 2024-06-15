@@ -192,7 +192,7 @@ func isGallerydlAsset(filename: String)->bool:
 	return Utils.stringMatchesRegex(filename, "^.*-\\d{1,2}\\.(png|jpg|jpeg|mp4)$")
 
 func getFileProperties(filepath: String):
-	var json: Dictionary = getGallerydlJSON(filepath)
+	var json: Dictionary = getGallerydlJSONForImageFilepath(filepath)
 	var filename = filepath.get_file()
 	if json.has("date") and json.has("JSONFilename"):
 		var dateFormatted = json["date"].replace("-", "/")
@@ -204,23 +204,24 @@ func getFileProperties(filepath: String):
 		}
 	return {}
 
-func getGallerydlJSON(filepath: String)->Dictionary:
-	var filename = filepath.get_file()
-	if not isGallerydlAsset(filename):
-		logger.info("filename [%s] is not a gallery-dl asset" % filename, MODULE_NAME)
+func getGallerydlJSONForImageFilepath(imageFilepath: String)->Dictionary:
+	var imageFilename = imageFilepath.get_file()
+	if not isGallerydlAsset(imageFilename):
+		logger.info("filename [%s] is not a gallery-dl asset" % imageFilename, MODULE_NAME)
 		return {}
-	var path = filepath.get_base_dir()
+	var path = imageFilepath.get_base_dir()
 	var baseFilename
-	var last_index = filename.rfind("-")
+	var last_index = imageFilename.rfind("-")
 	if last_index != -1:
-		baseFilename = filename.left(last_index)
+		baseFilename = imageFilename.left(last_index)
 	else:
-		logger.info("filename [%s] does not meet requirements" % filename, MODULE_NAME)
+		logger.info("filename [%s] does not meet requirements" % imageFilename, MODULE_NAME)
 		return {}
 	
 	var jsonFilename = baseFilename + ".json"
-	if Utils.fileExistsAtLocation(path.path_join(jsonFilename)):
-		var json_text = FileAccess.get_file_as_string(path.path_join(jsonFilename))
+	var jsonFilepath = path.path_join(jsonFilename)
+	if Utils.fileExistsAtLocation(jsonFilepath):
+		var json_text = FileAccess.get_file_as_string(jsonFilepath)
 		var json = JSON.new()
 		var error = json.parse(json_text)
 		if error == OK:
