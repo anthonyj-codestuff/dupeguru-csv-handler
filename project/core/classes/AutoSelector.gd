@@ -55,7 +55,7 @@ func autoSelectNodes(nodes: Array):
 			if !nodes[i].imageOptions.selected and nodes[i].imageOptions.gdlTwitterUri:
 				SignalBus.twitter_link_changed.emit(nodes[i].imageOptions.gdlTwitterUri)
 				return
-		SignalBus.twitter_link_changed.emit()
+		SignalBus.twitter_link_changed.emit(null)
 
 
 func imageIsSmaller(target, nodes: Array):

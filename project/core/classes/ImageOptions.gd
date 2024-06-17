@@ -194,7 +194,7 @@ func isGallerydlAsset(filename: String)->bool:
 func getFileProperties(filepath: String):
 	var json: Dictionary = getGallerydlJSONForImageFilepath(filepath)
 	var filename = filepath.get_file()
-	var tweetIdString = getTweetIdFromJsonString(json["JSONRawString"])
+	var tweetIdString = getTweetIdFromJsonString(json["JSONRawString"]) if json.has("JSONRawString") else ""
 	if json.has("date") and json.has("JSONFilename"):
 		var dateFormatted = json["date"].replace("-", "/")
 		# if the hand-extracted id doesn't match, then something happened with the floating-ppoint conversion
