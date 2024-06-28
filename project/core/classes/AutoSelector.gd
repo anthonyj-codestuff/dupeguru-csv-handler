@@ -17,7 +17,7 @@ func autoSelectNodes(nodes: Array):
 
 		for node in nodes:
 			# image size compared to others (height x width)
-			if imageIsSmaller(node, nodes):
+			if not nodesToMark.has(node) and imageIsSmaller(node, nodes):
 				node.addPotentialDeletionReason("smaller dimensions")
 				if keepLooking:
 					nodesToMark.append(node)
@@ -25,7 +25,7 @@ func autoSelectNodes(nodes: Array):
 						keepLooking = false
 		for node in nodes:
 			# this image is jpeg and any other is not
-			if imageIsJpeg(node, nodes):
+			if not nodesToMark.has(node) and imageIsJpeg(node, nodes):
 				node.addPotentialDeletionReason("jpeg")
 				if keepLooking:
 					nodesToMark.append(node)
@@ -33,7 +33,7 @@ func autoSelectNodes(nodes: Array):
 						keepLooking = false
 		for node in nodes:
 			# any other image is older (re-upload)
-			if imageIsNewer(node, nodes):
+			if not nodesToMark.has(node) and imageIsNewer(node, nodes):
 				node.addPotentialDeletionReason("newer")
 				if keepLooking:
 					nodesToMark.append(node)
@@ -41,7 +41,7 @@ func autoSelectNodes(nodes: Array):
 						keepLooking = false
 		for node in nodes:
 			# any other image of the same type and size is bigger (in KB)
-			if fileSizeIsSmaller(node, nodes):
+			if not nodesToMark.has(node) and fileSizeIsSmaller(node, nodes):
 				node.addPotentialDeletionReason("smaller filesize")
 				if keepLooking:
 					nodesToMark.append(node)
