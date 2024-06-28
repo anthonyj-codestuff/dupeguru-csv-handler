@@ -65,7 +65,7 @@ func _on_confirm_delete_window_canceled():
 	SignalBus.delete_cancelled.emit()
 
 # TODO This is pretty expensive. There's got to be a cheaper faster way to do this
-# A CSV could point to several different directories in the same go, and we don't want to search every directories every step
+# A CSV could point to several different directories in the same go, and we don't want to search every directory every step
 # since images should always be in the same place that their metadata is located
 # Key = /the/base/directory/of/the/ file for easy lookup
 # Value = A list of all files left in the directory after delete has taken place
