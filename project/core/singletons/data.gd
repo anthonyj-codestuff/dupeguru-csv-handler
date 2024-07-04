@@ -3,6 +3,9 @@ extends Node
 const MODULE_NAME = "GlobalData"
 var logger = LogWriter.new()
 
+# Global Variables
+var deleteInProgress = false
+
 # Resource & Packages --------------------
 
 var LOADER_WAIT_TIME : float = 0.5

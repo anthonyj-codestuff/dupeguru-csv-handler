@@ -21,6 +21,12 @@ signal commit_pressed
 signal undo_pressed
 signal delete_pressed
 
+# Progress bar for tracking deletion
+signal show_progress_bar
+signal hide_progress_bar
+signal set_progress_bar
+signal set_secondary_progress_bar
+
 # Miscellaneous
 signal delete_mode_toggled
 signal delete_confirmed

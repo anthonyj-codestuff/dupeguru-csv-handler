@@ -1,0 +1,55 @@
+[gd_scene load_steps=8 format=3 uid="uid://dcxyx74lvkdgt"]
+
+[ext_resource type="Texture2D" uid="uid://dq17iloq8g21j" path="res://assets/progressbar_under.png" id="1_3guuc"]
+[ext_resource type="Script" path="res://scenes/ProgressBar.gd" id="1_7m5ma"]
+[ext_resource type="Texture2D" uid="uid://ct1rkdfbvgd0h" path="res://assets/progressbar_over.png" id="2_6tx8i"]
+[ext_resource type="Texture2D" uid="uid://d3licn410mipj" path="res://assets/progressbar_progress.png" id="3_tpmxr"]
+
+[sub_resource type="Theme" id="Theme_anjt8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_epy5o"]
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.1, 0.1, 0.1, 0.686275)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="Theme" id="Theme_66cpk"]
+Panel/styles/panel = SubResource("StyleBoxFlat_epy5o")
+
+[node name="ProgressBar" type="Node2D"]
+position = Vector2(2.08165e-12, 2.08165e-12)
+script = ExtResource("1_7m5ma")
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="."]
+offset_right = 500.0
+offset_bottom = 46.0
+scale = Vector2(1, 1.2)
+mouse_filter = 0
+theme = SubResource("Theme_anjt8")
+rounded = true
+texture_under = ExtResource("1_3guuc")
+texture_over = ExtResource("2_6tx8i")
+texture_progress = ExtResource("3_tpmxr")
+
+[node name="Panel" type="Panel" parent="."]
+offset_right = 500.0
+offset_bottom = 55.0
+theme = SubResource("Theme_66cpk")
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 200.0
+offset_top = 16.0
+offset_right = 299.0
+offset_bottom = 39.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Progress: 0%"

@@ -44,21 +44,25 @@ func _on_control_panel_delete_pressed():
 
 func _on_confirm_delete_window_confirmed():
 	var files = []
+	SignalBus.show_progress_bar.emit()
 	for i in commits:
 		files.append(dupeToFilename(i))
 	if deleteFiles:
-		for f in files:
-			if Utils.fileExistsAtLocation(f):
-				logger.warn("deleting image - %s" % f, MODULE_NAME)
-				OS.move_to_trash(f)
+		for i in range(files.size()):
+			if Utils.fileExistsAtLocation(files[i]):
+				logger.warn("deleting image - %s" % files[i], MODULE_NAME)
+				OS.move_to_trash(files[i])
+				SignalBus.set_progress_bar.emit((i+1)*100/files.size())
+				await get_tree().process_frame
 		if deleteGallerydlMetadata:
-			deleteAbandonedMetadataForDeletedFiles(files)
+			await deleteAbandonedMetadataForDeletedFiles(files)
 	else:
 		var datetime_string = Time.get_unix_time_from_system()
 		var newFilename = Data.EXTERNAL_ASSETS_FOLDER.path_join("%s.txt" % datetime_string)
 		var newFile = FileAccess.open(newFilename, FileAccess.WRITE)
 		for f in files:
 			newFile.store_line(f)
+	SignalBus.hide_progress_bar.emit()
 	SignalBus.delete_confirmed.emit()
 
 func _on_confirm_delete_window_canceled():
@@ -71,6 +75,8 @@ func _on_confirm_delete_window_canceled():
 # Value = A list of all files left in the directory after delete has taken place
 func deleteAbandonedMetadataForDeletedFiles(filepaths: Array)->void:
 	var directoriesToSearch = {}
+	var filesToDelete = []
+	SignalBus.set_secondary_progress_bar.emit()
 	for filepath in filepaths:
 		var directory = filepath.get_base_dir()
 		if not directory in directoriesToSearch:
@@ -79,6 +85,10 @@ func deleteAbandonedMetadataForDeletedFiles(filepaths: Array)->void:
 		var baseFilename = Utils.getBareImageName(filepath)
 		var matches = directoriesToSearch[directory].filter(func(f): return f.contains(baseFilename))
 		if matches.all(func(f): return f.ends_with(".json")):
-			for m in matches:
-				logger.info("deleting json - %s" % m, MODULE_NAME)
-				OS.move_to_trash(directory.path_join(m))
+			for i in matches:
+				filesToDelete.append(directory.path_join(i))
+	for i in range(filesToDelete.size()):
+		logger.info("deleting json - %s" % filesToDelete[i], MODULE_NAME)
+		OS.move_to_trash(filesToDelete[i])
+		SignalBus.set_progress_bar.emit((i+1)*100/filesToDelete.size())
+		await get_tree().process_frame
