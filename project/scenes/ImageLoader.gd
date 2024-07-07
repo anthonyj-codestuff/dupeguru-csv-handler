@@ -149,6 +149,7 @@ func createImageNodeByIndex(index:int)->void:
 	# add new node to list
 	imageNodes.append(newNode)
 
+# TODO DupeGuru occasionally counts a picture as a dupe of itself. This is not a valid group
 func getNextValidGroupZeroIndex(startingIndex: int, skip: int = 0, inclusive: bool = true)->int:
 	###/*
 	# takes in an int representing the 0th instance of a group
@@ -187,6 +188,7 @@ func getNextValidGroupZeroIndex(startingIndex: int, skip: int = 0, inclusive: bo
 			break
 	return index
 
+# TODO DupeGuru occasionally counts a picture as a dupe of itself. This is not a valid group
 func getPrevValidGroupZeroIndex(startingIndex:int, skip: int = 0)->int:
 	###/*
 	# takes in an int representing the 0th instance of a group
