@@ -75,7 +75,6 @@ func someImagesAreSelected()->bool:
 	###*/
 	return imageNodes.any(func(node): return node.imageOptions.selected == true)
 
-# TODO DupeGuru occasionally counts a picture as a dupe of itself. This is not a valid group
 func groupIndexListIsValid(ids: Array[int])->bool:
 	###/*
 	# a list of indices is valid for display if
@@ -95,7 +94,15 @@ func groupIndexListIsValid(ids: Array[int])->bool:
 	var sameGroup = ids.all(func(i): return dupeData[i]["Group ID"] == group)
 	if not sameGroup:
 		return false
+	
+	# This checks if ALL images in the group refer to the same file
+	# DupeGuru does this sometimes and causes the AutoSelector to fail
+	var firstImageFilepath = dupeData[ids[0]]["Folder"].path_join(dupeData[ids[0]]["Filename"])
+	var allImagesAreIdentical = ids.all(func(i): return firstImageFilepath == dupeData[i]["Folder"].path_join(dupeData[i]["Filename"]))
+	if allImagesAreIdentical:
+		return false
 
+	# Check if all images exist
 	var validImageCount = 0
 	for i in ids:
 		if not committedImages.has(i) and fileExistsForIndex(i):
