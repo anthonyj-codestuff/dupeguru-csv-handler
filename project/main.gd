@@ -52,7 +52,8 @@ func _on_confirm_delete_window_confirmed():
 			if Utils.fileExistsAtLocation(files[i]):
 				logger.warn("deleting image - %s" % files[i], MODULE_NAME)
 				OS.move_to_trash(files[i])
-				SignalBus.set_progress_bar.emit((i+1)*100/files.size())
+				var percentage = (i+1)*100/files.size()
+				SignalBus.set_progress_bar.emit(percentage, i+1, files.size())
 				await get_tree().process_frame
 		if deleteGallerydlMetadata:
 			await deleteAbandonedMetadataForDeletedFiles(files)
@@ -90,5 +91,6 @@ func deleteAbandonedMetadataForDeletedFiles(filepaths: Array)->void:
 	for i in range(filesToDelete.size()):
 		logger.info("deleting json - %s" % filesToDelete[i], MODULE_NAME)
 		OS.move_to_trash(filesToDelete[i])
-		SignalBus.set_progress_bar.emit((i+1)*100/filesToDelete.size())
+		var percentage = (i+1)*100/filesToDelete.size()
+		SignalBus.set_progress_bar.emit(percentage, i+1, filesToDelete.size())
 		await get_tree().process_frame
