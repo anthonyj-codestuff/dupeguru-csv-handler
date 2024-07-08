@@ -24,7 +24,7 @@ func importCSV(source_file, options, errorLabelNode):
 		data.pop_front()
 		return data
 
-	if not Utils.fileExistsAtLocation(Data.CSV_FILE_PATH):
+	if not fileExistsAtLocation(Data.CSV_FILE_PATH):
 		var error = "CSV file not found. Export \"dupes.csv\" from DupeGuru, copy it into external_assets/ and try again."
 		return handleImportedCSV.call([], [error])
 	# TODO sort the array by group ID just in case, a lot of logic depends on that
