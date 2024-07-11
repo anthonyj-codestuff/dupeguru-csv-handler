@@ -24,6 +24,7 @@ To retrieve JSON metadata along with images, you can fill your config fill with 
         "twitter": {
             "username": "",
             "password": "",
+            "skip":"exit:3",
             "text-tweets":false,
             "quoted":false,
             "retweets":false,
@@ -31,16 +32,28 @@ To retrieve JSON metadata along with images, you can fill your config fill with 
             "postprocessors":[
                 {"name": "metadata", "event": "post", "filename": "{author[name]}-{tweet_id}.json"}
             ]
-        }
+        },
+        "mastodon": {
+            "metadata":true,
+            "skip":"exit:3",
+            "filename" : "artist({account[username]})-{id}-{media[id]}.{extension}",
+            "directory": {
+            "locals().get('bkey')": ["mastodon-{instance}", "{bkey}"],
+            "": ["mastodon-{instance}", "{account[username]}"]
+            },
+            "postprocessors":[
+            {"name": "metadata", "event": "post", "filename": "artist({account[username]})-{id}.json"}
+            ]
+        },
     }
 }
 ```
 The important lines here are these two.
-> "filename": "{author[name]}-{tweet_id}-{num}.{extension}",
+> "filename": "{author[name]}-{tweet_id}-{id}.{extension}",
 > 
 > {"name": "metadata", "event": "post", "filename": "{author[name]}-{tweet_id}.json"}
 
-If `filename` ends in `{whatever}-{num}.{extension}` and metadata `filename` matches `{whatever}.json`, then the JSON will be detected properly. The only important thing here is that the image filename matches the JSON, but with a hyphen and a number at the end.
+If `filename` ends in `{whatever}-{idendifier}.{extension}` and metadata `filename` matches `{whatever}.json`, then the JSON will be detected properly. The only important thing here is that the image filename matches the JSON, but with a hyphen and a string at the end.
 
 If gallery-dl metadata is detected, two main things will happen
 

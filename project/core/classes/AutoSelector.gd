@@ -52,8 +52,8 @@ func autoSelectNodes(nodes: Array):
 		for node in nodesToMark:
 			node.selectInternal()
 		for i in range(0, nodes.size(), 1):
-			if !nodes[i].imageOptions.selected and nodes[i].imageOptions.gdlTwitterUri:
-				SignalBus.twitter_link_changed.emit(nodes[i].imageOptions.gdlTwitterUri)
+			if !nodes[i].imageOptions.selected and nodes[i].imageOptions.gdlExternalUri:
+				SignalBus.twitter_link_changed.emit(nodes[i].imageOptions.gdlExternalUri)
 				return
 		SignalBus.twitter_link_changed.emit(null)
 

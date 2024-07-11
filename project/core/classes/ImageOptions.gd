@@ -24,7 +24,7 @@ var modificationDateUnix: int
 var gdlParentJSONFilename: String
 var gdlCreationDateReadable: String
 var gdlCreationDateUnix: int
-var gdlTwitterUri: String
+var gdlExternalUri: String
 
 # Extended values (requires Python)
 var pyCreationDateReadable: String
@@ -34,6 +34,11 @@ var pyCreationDateUnix: int
 var initLoadingError: bool = false
 var selected: bool = false
 var fileExists: bool = false
+
+var imageHostFolderNames = {
+	"twitter": {"name": "twitter", "match": "/twitter/"},
+	"mastodon": {"name": "mastodon", "match": "/mastodon/"}
+}
 
 func _init(index, values: Dictionary, python):
 	if not index and index != 0 or not index is int:
@@ -138,8 +143,8 @@ func setExtendedStats(filepath, python):
 		gdlCreationDateReadable = gdlstats.gdlDateReadable
 	if "gdlDateUnix" in gdlstats:
 		gdlCreationDateUnix = gdlstats.gdlDateUnix
-	if "twitterUri" in gdlstats:
-		gdlTwitterUri = gdlstats.twitterUri
+	if "externalUri" in gdlstats:
+		gdlExternalUri = gdlstats.externalUri
 	if "jsonFilename" in gdlstats:
 		gdlParentJSONFilename = gdlstats.jsonFilename
 	if "creationDateReadable" in pystats:
@@ -189,23 +194,36 @@ func getStatsReadableString():
 # Gallery-dl Functions
 
 func isGallerydlAsset(filename: String)->bool:
-	return Utils.stringMatchesRegex(filename, "^.*-\\d{1,2}\\.(png|jpg|jpeg|mp4)$")
+	return Utils.stringMatchesRegex(filename, "^.*-\\d{1,20}\\.(png|jpg|jpeg|mp4)$")
 
 func getFileProperties(filepath: String):
 	var json: Dictionary = getGallerydlJSONForImageFilepath(filepath)
 	var filename = filepath.get_file()
-	var tweetIdString = getTweetIdFromJsonString(json["JSONRawString"]) if json.has("JSONRawString") else ""
+	var hostType = getImageHostFromFilepath(filepath)
+	var idString
+	if json.has("JSONRawString") and hostType == imageHostFolderNames["twitter"]["name"]:
+		idString = getBigNumberValueFromJsonString(json["JSONRawString"], "tweet_id")
+	elif json.has("JSONRawString") and hostType == imageHostFolderNames["mastodon"]["name"]:
+		idString = getBigNumberValueFromJsonString(json["JSONRawString"], "id")
+	else:
+		idString = ""
+
 	if json.has("date") and json.has("JSONFilename"):
 		var dateFormatted = json["date"].replace("-", "/")
-		# if the hand-extracted id doesn't match, then something happened with the floating-ppoint conversion
-		# use the string instead
-		var tweetId = tweetIdString if tweetIdString and tweetIdString != str(json["tweet_id"]) else json["tweet_id"]
-		return {
+		var properties = {
 			"gdlDateReadable": dateFormatted,
 			"gdlDateUnix": Time.get_unix_time_from_datetime_string(json["date"]),
 			"jsonFilename": json["JSONFilename"],
-			"twitterUri": "https://twitter.com/%s/status/%s" % [json["author"]["name"], tweetId]
 		}
+		# if the hand-extracted id doesn't match, then something happened with the floating-point conversion
+		# use the string instead
+		if hostType == imageHostFolderNames["twitter"]["name"]:
+			var tweetId = idString if idString and idString != str(json["tweet_id"]) else json["tweet_id"]
+			properties.externalUri = "https://twitter.com/%s/status/%s" % [json["author"]["name"], tweetId]
+		elif hostType == imageHostFolderNames["mastodon"]["name"]:
+			properties.externalUri = json["url"]
+
+		return properties
 	return {}
 
 func getGallerydlJSONForImageFilepath(imageFilepath: String)->Dictionary:
@@ -241,11 +259,17 @@ func getGallerydlJSONForImageFilepath(imageFilepath: String)->Dictionary:
 			logger.error("JSON Parse Error: [%s] in [%s] at line [%s]" % [json.get_error_message(), jsonFilename, json.get_error_line()], MODULE_NAME)
 	return {}
 
+func getImageHostFromFilepath(imageFilepath: String)->String:
+	for i in imageHostFolderNames.keys():
+		if imageFilepath.find(imageHostFolderNames[i]["match"]) > 0:
+			return i
+	return ""
+
 # needed because JSON parsing casts number to float before int, so very large numbers get altered
-func getTweetIdFromJsonString(jsonString: String):
+func getBigNumberValueFromJsonString(jsonString: String, key: String):
 	var result = ""
 	# start by finding the index of the key
-	var index = jsonString.find("tweet_id")
+	var index = jsonString.find(key)
 	if index == -1:
 		return result
 
