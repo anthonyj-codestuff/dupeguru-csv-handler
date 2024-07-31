@@ -36,8 +36,10 @@ var selected: bool = false
 var fileExists: bool = false
 
 var imageHostFolderNames = {
-	"twitter": {"name": "twitter", "match": "/twitter/"},
-	"mastodon": {"name": "mastodon", "match": "/mastodon/"}
+	"twitter": {"name": "twitter", "match": "/twitter/", "pattern": "/twitter/"},
+	"mastodon": {"name": "mastodon", "match": "/mastodon/", "pattern": "/mastodon/"},
+	"pixiv": {"name": "pixiv", "match": "/pixiv/", "pattern": "/pixiv/"},
+	"e6ng": {"name": "e6ng", "match": "/e621/", "pattern": "/e[0-9]{3}/|/e6ai/"}
 }
 
 func _init(index, values: Dictionary, python):
@@ -197,13 +199,18 @@ func isGallerydlAsset(filename: String)->bool:
 	return Utils.stringMatchesRegex(filename, "^.*-\\d{1,20}\\.(png|jpg|jpeg|mp4)$")
 
 func getFileProperties(filepath: String):
-	var json: Dictionary = getGallerydlJSONForImageFilepath(filepath)
 	var filename = filepath.get_file()
 	var hostType = getImageHostFromFilepath(filepath)
+	var json: Dictionary = getGallerydlJSONForImageFilepath(filepath, hostType)
 	var idString
+
 	if json.has("JSONRawString") and hostType == imageHostFolderNames["twitter"]["name"]:
 		idString = getBigNumberValueFromJsonString(json["JSONRawString"], "tweet_id")
 	elif json.has("JSONRawString") and hostType == imageHostFolderNames["mastodon"]["name"]:
+		idString = getBigNumberValueFromJsonString(json["JSONRawString"], "id")
+	elif json.has("JSONRawString") and hostType == imageHostFolderNames["pixiv"]["name"]:
+		idString = getBigNumberValueFromJsonString(json["JSONRawString"], "id")
+	elif json.has("JSONRawString") and hostType == imageHostFolderNames["e6ng"]["name"]:
 		idString = getBigNumberValueFromJsonString(json["JSONRawString"], "id")
 	else:
 		idString = ""
@@ -222,22 +229,37 @@ func getFileProperties(filepath: String):
 			properties.externalUri = "https://twitter.com/%s/status/%s" % [json["author"]["name"], tweetId]
 		elif hostType == imageHostFolderNames["mastodon"]["name"]:
 			properties.externalUri = json["url"]
+		elif hostType == imageHostFolderNames["pixiv"]["name"]:
+			properties.externalUri = "https://www.pixiv.net/en/artworks/%s" % [json["id"]]
+		elif hostType == imageHostFolderNames["e6ng"]["name"]:
+			properties.externalUri = "https://%s.net/posts/%s" % [json["category"], json["id"]]
 
 		return properties
 	return {}
 
-func getGallerydlJSONForImageFilepath(imageFilepath: String)->Dictionary:
+func getGallerydlJSONForImageFilepath(imageFilepath: String, hostType: String)->Dictionary:
 	var imageFilename = imageFilepath.get_file()
 	if not isGallerydlAsset(imageFilename):
 		logger.info("filename [%s] is not a gallery-dl asset" % imageFilename, MODULE_NAME)
 		return {}
 	var path = imageFilepath.get_base_dir()
 	var baseFilename
-	var last_index = imageFilename.rfind("-")
-	if last_index != -1:
-		baseFilename = imageFilename.left(last_index)
+	if hostType in ["twitter", "mastodon", "pixiv"]:
+		var rindex = imageFilename.rfind("-")
+		if rindex != -1:
+			baseFilename = imageFilename.left(rindex)
+		else:
+			logger.info("filename [%s] does not meet requirements" % imageFilename, MODULE_NAME)
+			return {}
+	elif hostType in ["e6ng"]:
+		# e6ng sites do not allow multiple images per post, use the base name
+		var extension = imageFilename.get_extension()
+		var rindex = imageFilename.rfind(extension)
+		if rindex < 0:
+			return {}
+		baseFilename = imageFilename.left(rindex-1)
 	else:
-		logger.info("filename [%s] does not meet requirements" % imageFilename, MODULE_NAME)
+		logger.warn("host type [%s] is not supported. Cannot find JSON" % hostType, MODULE_NAME)
 		return {}
 	
 	var jsonFilename = baseFilename + ".json"
@@ -260,9 +282,17 @@ func getGallerydlJSONForImageFilepath(imageFilepath: String)->Dictionary:
 	return {}
 
 func getImageHostFromFilepath(imageFilepath: String)->String:
+	var matchNormal = false
+	var matchRegex = false
 	for i in imageHostFolderNames.keys():
 		if imageFilepath.find(imageHostFolderNames[i]["match"]) > 0:
-			return i
+			matchNormal = true
+			if Utils.stringMatchesRegex(imageFilepath, imageHostFolderNames[i]["pattern"]):
+				matchRegex = true
+			if matchNormal and matchRegex:
+				return i
+			else:
+				return ""
 	return ""
 
 # needed because JSON parsing casts number to float before int, so very large numbers get altered
