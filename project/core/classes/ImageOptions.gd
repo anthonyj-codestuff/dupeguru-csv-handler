@@ -36,10 +36,10 @@ var selected: bool = false
 var fileExists: bool = false
 
 var imageHostFolderNames = {
-	"twitter": {"name": "twitter", "match": "/twitter/", "pattern": "/twitter/"},
-	"mastodon": {"name": "mastodon", "match": "/mastodon/", "pattern": "/mastodon/"},
-	"pixiv": {"name": "pixiv", "match": "/pixiv/", "pattern": "/pixiv/"},
-	"e6ng": {"name": "e6ng", "match": "/e621/", "pattern": "/e[0-9]{3}/|/e6ai/"}
+	"twitter": {"name": "twitter", "pattern": "/twitter/"},
+	"mastodon": {"name": "mastodon", "pattern": "/mastodon/"},
+	"pixiv": {"name": "pixiv", "pattern": "/pixiv/"},
+	"e6ng": {"name": "e6ng", "pattern": "/e[0-9]{3}/|/e6ai/"}
 }
 
 func _init(index, values: Dictionary, python):
@@ -282,17 +282,9 @@ func getGallerydlJSONForImageFilepath(imageFilepath: String, hostType: String)->
 	return {}
 
 func getImageHostFromFilepath(imageFilepath: String)->String:
-	var matchNormal = false
-	var matchRegex = false
 	for i in imageHostFolderNames.keys():
-		if imageFilepath.find(imageHostFolderNames[i]["match"]) > 0:
-			matchNormal = true
-			if Utils.stringMatchesRegex(imageFilepath, imageHostFolderNames[i]["pattern"]):
-				matchRegex = true
-			if matchNormal and matchRegex:
-				return i
-			else:
-				return ""
+		if Utils.stringMatchesRegex(imageFilepath, imageHostFolderNames[i]["pattern"]):
+			return i
 	return ""
 
 # needed because JSON parsing casts number to float before int, so very large numbers get altered
