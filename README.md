@@ -29,6 +29,7 @@ To retrieve JSON metadata along with images, you can fill your config fill with 
             "quoted":false,
             "retweets":false,
             "filename": "{author[name]}-{tweet_id}-{num}.{extension}",
+            "directory": ["twitter", "{user[name]}"]
             "postprocessors":[
                 {"name": "metadata", "event": "post", "filename": "{author[name]}-{tweet_id}.json"}
             ]
@@ -37,10 +38,7 @@ To retrieve JSON metadata along with images, you can fill your config fill with 
             "metadata":true,
             "skip":"exit:3",
             "filename" : "artist({account[username]})-{id}-{media[id]}.{extension}",
-            "directory": {
-            "locals().get('bkey')": ["mastodon-{instance}", "{bkey}"],
-            "": ["mastodon-{instance}", "{account[username]}"]
-            },
+            "directory": ["mastodon", "{instance}", "{account[username]}"],
             "postprocessors":[
             {"name": "metadata", "event": "post", "filename": "artist({account[username]})-{id}.json"}
             ]

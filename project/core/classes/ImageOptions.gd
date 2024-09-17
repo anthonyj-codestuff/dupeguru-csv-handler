@@ -312,4 +312,3 @@ func getBigNumberValueFromJsonString(jsonString: String, key: String):
 		return numerals
 	else:
 		return result
-
